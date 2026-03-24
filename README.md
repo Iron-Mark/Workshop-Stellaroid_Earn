@@ -1,28 +1,225 @@
-# Soroban QuickStart
+# 🚀 Stellar Philippines UniTour — University of East Caloocan
 
-Starter repository for Soroban workshop setup and practice.
+**Platform:** [Rise In](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan)  
+**Track:** Stellar Smart Contract Bootcamp  
+**Duration:** 4 Hours | 4:00 PM - 8:00 PM
 
-## Prerequisites
+---
 
-- macOS, Linux, or Windows with terminal access
-- Rust toolchain (`rustup`, `cargo`)
-- Soroban CLI and related Stellar tooling
+## 📋 Overview
 
-## Setup Guide
+Welcome to the Stellar Philippines UniTour at University of East Caloocan! In this session, you will be given an assigned smart contract to complete, deploy to the Stellar testnet, and submit for certification - all through the Rise In platform.
 
-Follow the full setup instructions in:
+No prior Web3 experience needed. Just follow the steps below and you'll have your certificate by the end of the session.
+
+---
+
+## 🎯 Your Goal
+
+1. **Receive** your assigned Soroban smart contract
+2. **Complete** the contract code as instructed
+3. **Test** it locally using `cargo test`
+4. **Deploy** it to the Stellar testnet
+5. **Submit** your Contract ID and GitHub repo on Rise In to earn your certificate
+
+---
+
+## ✅ Step-by-Step Guide
+
+### Step 1 - Set Up Your Environment
+
+For complete installation instructions and troubleshooting, use the local guide:
 
 - `[ENG] Pre-Workshop Setup Guide.pdf`
 
-## Typical Workflow
+Install the following before or at the start of the session:
 
-1. Complete environment setup from the PDF.
-2. Create or open your Soroban project.
-3. Build and test contracts locally.
-4. Deploy and interact with contracts using the CLI.
+- [Rust](https://rustup.rs/) - run `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+- Add WASM target:
 
-## Notes
+```bash
+rustup target add wasm32-unknown-unknown
+```
 
+- [Stellar CLI](https://developers.stellar.org/docs/tools/stellar-cli):
+
+```bash
+cargo install --locked stellar-cli --features opt
+```
+
+- [Freighter Wallet](https://freighter.app) - browser extension, set to **Testnet**
+
+### Step 2 - Get Your Assigned Contract
+
+Your facilitator will share the assigned smart contract during the session.  
+Clone or copy the starter contract into your local machine:
+
+```bash
+git clone <facilitator-provided-repo-link>
+cd <contract-folder>
+```
+
+### Step 3 - Complete the Contract
+
+Open `src/lib.rs` and complete the contract logic as instructed.  
+Make sure you also have at least **3 passing unit tests** in `src/test.rs`.
+
+Run tests locally:
+
+```bash
+cargo test
+```
+
+All tests must pass before you proceed.
+
+### Step 4 - Deploy to Stellar Testnet
+
+**Configure your Stellar CLI identity (first time only):**
+
+```bash
+stellar keys generate --global my-key --network testnet
+stellar keys address my-key
+```
+
+**Fund your testnet account:**
+
+```bash
+stellar keys fund my-key --network testnet
+```
+
+**Build your contract:**
+
+```bash
+stellar contract build
+```
+
+**Deploy to testnet:**
+
+```bash
+stellar contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/<your_contract>.wasm \
+  --source my-key \
+  --network testnet
+```
+
+Copy the **Contract ID** from the output - it looks like: `CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`
+
+**Verify on Stellar Expert:**
+
+```text
+https://stellar.expert/explorer/testnet/contract/<YOUR_CONTRACT_ID>
+```
+
+### Step 5 - Submit on Rise In
+
+Go to your Rise In program page and submit the following:
+
+| Field | What to Submit |
+|-------|----------------|
+| **GitHub Repository** | Public repo link with your contract source code |
+| **Contract ID** | Your deployed testnet contract address |
+| **Stellar Expert Link** | `https://stellar.expert/explorer/testnet/contract/<CONTRACT_ID>` |
+| **Short Description** | 2-3 sentences on what your contract does |
+
+🔗 Submit here: [Rise In Program Page](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan)
+
+---
+
+## 📁 Required Repo Structure
+
+Your GitHub repository must follow this structure to qualify:
+
+```text
+my-soroban-contract/
+├── src/
+│   ├── lib.rs        # Your completed contract logic
+│   └── test.rs       # At least 3 passing unit tests
+├── Cargo.toml
+└── README.md         # Brief description of your contract
+```
+
+---
+
+## 🏆 Certificate Requirements
+
+| Requirement | Status |
+|-------------|--------|
+| ✅ Attend the bootcamp session | Required |
+| ✅ Complete the assigned smart contract | Required |
+| ✅ Pass `cargo test` with 3+ tests | Required |
+| ✅ Deploy contract to Stellar testnet | Required |
+| ✅ Submit on Rise In (repo + contract ID) | Required |
+
+> Certificates are issued digitally within **3-5 business days** after your submission is reviewed.  
+> Incomplete submissions (missing deployment or failing tests) will not qualify. You may resubmit once after feedback.
+
+---
+
+## 🔗 Resources
+
+| Resource | Link |
+|----------|------|
+| Rise In Program | [risein.com](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan) |
+| Stellar Docs | [developers.stellar.org](https://developers.stellar.org) |
+| Soroban SDK | [docs.rs/soroban-sdk](https://docs.rs/soroban-sdk) |
+| Stellar CLI Docs | [developers.stellar.org/docs/tools/stellar-cli](https://developers.stellar.org/docs/tools/stellar-cli) |
+| Freighter Wallet | [freighter.app](https://freighter.app) |
+| Stellar Expert (Testnet) | [stellar.expert/explorer/testnet](https://stellar.expert/explorer/testnet) |
+| Stellar Lab | [lab.stellar.org](https://lab.stellar.org) |
+
+---
+
+## 🇵🇭 About Stellar Philippines UniTour
+
+The Stellar UniTour is a university roadshow bringing Stellar and Soroban smart contract education to students across the Philippines. This stop is at **University of East Caloocan**, powered by [Rise In](https://risein.com).
+
+---
+
+*Questions? Ask your facilitator during the session or reach out via the Rise In platform.*
+# 🚀 Stellar Philippines UniTour — University of East Caloocan
+
+**Platform:** [Rise In](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan)  
+**Track:** Stellar Smart Contract Bootcamp  
+**Duration:** 4 Hours | 4:00 PM - 8:00 PM
+
+---
+
+## 📋 Overview
+
+Welcome to the Stellar Philippines UniTour at University of East Caloocan! In this session, you will be given an assigned smart contract to complete, deploy to the Stellar testnet, and submit for certification - all through the Rise In platform.
+
+No prior Web3 experience needed. Just follow the steps below and you'll have your certificate by the end of the session.
+
+---
+
+## 🎯 Your Goal
+
+1. **Receive** your assigned Soroban smart contract
+2. **Complete** the contract code as instructed
+3. **Test** it locally using `cargo test`
+4. **Deploy** it to the Stellar testnet
+5. **Submit** your Contract ID and GitHub repo on Rise In to earn your certificate
+
+---
+
+## ✅ Step-by-Step Guide
+
+### Step 1 - Set Up Your Environment
+
+For complete installation instructions and troubleshooting, use the local guide:
+
+- `[ENG] Pre-Workshop Setup Guide.pdf`
+
+Install the following before or at the start of the session:
+
+- [Rust](https://rustup.rs/) - run `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+- Add WASM target:
+
+```bash
+rustup target add wasm32-unknown-unknown
+```
+
+<<<<<<< HEAD
 - This repository currently includes the pre-workshop setup guide as the main resource.
 - Add your contract source files and examples here as you progress.
 
@@ -173,10 +370,108 @@ The last line is your **Contract ID** — save it, you will need it for all invo
 ```bash
 # Save it as a variable for convenience
 export CONTRACT_ID=CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+=======
+- [Stellar CLI](https://developers.stellar.org/docs/tools/stellar-cli):
+
+```bash
+cargo install --locked stellar-cli --features opt
+```
+
+- [Freighter Wallet](https://freighter.app) - browser extension, set to **Testnet**
+
+### Step 2 - Get Your Assigned Contract
+
+Your facilitator will share the assigned smart contract during the session.  
+Clone or copy the starter contract into your local machine:
+
+```bash
+git clone <facilitator-provided-repo-link>
+cd <contract-folder>
+```
+
+### Step 3 - Complete the Contract
+
+Open `src/lib.rs` and complete the contract logic as instructed.  
+Make sure you also have at least **3 passing unit tests** in `src/test.rs`.
+
+Run tests locally:
+
+```bash
+cargo test
+```
+
+All tests must pass before you proceed.
+
+### Step 4 - Deploy to Stellar Testnet
+
+**Configure your Stellar CLI identity (first time only):**
+
+```bash
+stellar keys generate --global my-key --network testnet
+stellar keys address my-key
+```
+
+**Fund your testnet account:**
+
+```bash
+stellar keys fund my-key --network testnet
+```
+
+**Build your contract:**
+
+```bash
+stellar contract build
+```
+
+**Deploy to testnet:**
+
+```bash
+stellar contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/<your_contract>.wasm \
+  --source my-key \
+  --network testnet
+```
+
+Copy the **Contract ID** from the output - it looks like: `CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`
+
+**Verify on Stellar Expert:**
+
+```text
+https://stellar.expert/explorer/testnet/contract/<YOUR_CONTRACT_ID>
+```
+
+### Step 5 - Submit on Rise In
+
+Go to your Rise In program page and submit the following:
+
+| Field | What to Submit |
+|-------|----------------|
+| **GitHub Repository** | Public repo link with your contract source code |
+| **Contract ID** | Your deployed testnet contract address |
+| **Stellar Expert Link** | `https://stellar.expert/explorer/testnet/contract/<CONTRACT_ID>` |
+| **Short Description** | 2-3 sentences on what your contract does |
+
+🔗 Submit here: [Rise In Program Page](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan)
+
+---
+
+## 📁 Required Repo Structure
+
+Your GitHub repository must follow this structure to qualify:
+
+```text
+my-soroban-contract/
+├── src/
+│   ├── lib.rs        # Your completed contract logic
+│   └── test.rs       # At least 3 passing unit tests
+├── Cargo.toml
+└── README.md         # Brief description of your contract
+>>>>>>> 08aeb8a (add)
 ```
 
 ---
 
+<<<<<<< HEAD
 ## Step 5 — Initialize Your Contract
 
 Most contracts have an `initialize` or constructor function that must be called once after deployment. Use `stellar contract invoke` to call it:
@@ -390,3 +685,41 @@ stellar contract invoke \
   --network testnet \
   -- <function> --<param> <value>
 ```
+=======
+## 🏆 Certificate Requirements
+
+| Requirement | Status |
+|-------------|--------|
+| ✅ Attend the bootcamp session | Required |
+| ✅ Complete the assigned smart contract | Required |
+| ✅ Pass `cargo test` with 3+ tests | Required |
+| ✅ Deploy contract to Stellar testnet | Required |
+| ✅ Submit on Rise In (repo + contract ID) | Required |
+
+> Certificates are issued digitally within **3-5 business days** after your submission is reviewed.  
+> Incomplete submissions (missing deployment or failing tests) will not qualify. You may resubmit once after feedback.
+
+---
+
+## 🔗 Resources
+
+| Resource | Link |
+|----------|------|
+| Rise In Program | [risein.com](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan) |
+| Stellar Docs | [developers.stellar.org](https://developers.stellar.org) |
+| Soroban SDK | [docs.rs/soroban-sdk](https://docs.rs/soroban-sdk) |
+| Stellar CLI Docs | [developers.stellar.org/docs/tools/stellar-cli](https://developers.stellar.org/docs/tools/stellar-cli) |
+| Freighter Wallet | [freighter.app](https://freighter.app) |
+| Stellar Expert (Testnet) | [stellar.expert/explorer/testnet](https://stellar.expert/explorer/testnet) |
+| Stellar Lab | [lab.stellar.org](https://lab.stellar.org) |
+
+---
+
+## 🇵🇭 About Stellar Philippines UniTour
+
+The Stellar UniTour is a university roadshow bringing Stellar and Soroban smart contract education to students across the Philippines. This stop is at **University of East Caloocan**, powered by [Rise In](https://risein.com).
+
+---
+
+*Questions? Ask your facilitator during the session or reach out via the Rise In platform.*
+>>>>>>> 08aeb8a (add)
