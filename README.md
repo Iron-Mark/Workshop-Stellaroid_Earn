@@ -219,7 +219,6 @@ Install the following before or at the start of the session:
 rustup target add wasm32-unknown-unknown
 ```
 
-<<<<<<< HEAD
 - This repository currently includes the pre-workshop setup guide as the main resource.
 - Add your contract source files and examples here as you progress.
 
