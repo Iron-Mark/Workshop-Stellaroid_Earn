@@ -83,6 +83,29 @@ stellar keys address my-key
 stellar keys fund my-key --network testnet
 ```
 
+**Fund XLM to your Freighter Testnet wallet (macOS + Windows):**
+
+1. Open Freighter and switch network to **Testnet**.
+2. Copy your wallet public address (starts with `G...`).
+3. Open Friendbot and fund your address:
+   - [https://friendbot.stellar.org](https://friendbot.stellar.org)
+4. Paste your `G...` address and submit.
+5. Wait a few seconds, then refresh Freighter to see test XLM.
+
+If Friendbot UI is unavailable, use this CLI fallback:
+
+- **macOS (Terminal):**
+
+```bash
+curl "https://friendbot.stellar.org?addr=<YOUR_FREIGHTER_TESTNET_ADDRESS>"
+```
+
+- **Windows (PowerShell):**
+
+```powershell
+Invoke-WebRequest "https://friendbot.stellar.org?addr=<YOUR_FREIGHTER_TESTNET_ADDRESS>"
+```
+
 **Build your contract:**
 
 ```bash
