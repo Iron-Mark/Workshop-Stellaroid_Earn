@@ -1,6 +1,6 @@
-# 🚀 Stellar Philippines UniTour — University of East Caloocan
+# 🚀 Stellar Philippines UniTour — University Campus Bootcamp Tour
 
-**Platform:** [Rise In](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan)  
+**Platform:** [Rise In](https://www.risein.com/programs)  
 **Track:** Stellar Smart Contract Bootcamp  
 **Duration:** 4 Hours | 4:00 PM - 8:00 PM
 
@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-Welcome to the Stellar Philippines UniTour at University of East Caloocan. In this session, you’ll receive an assigned Soroban smart contract, complete it, deploy to Stellar **testnet**, then submit your work on Rise In for certification.
+Welcome to the **Stellar Philippines UniTour**—a **university-wide campus bootcamp tour** that brings Soroban and Stellar to students across Philippine campuses. In this session, you’ll receive an assigned Soroban smart contract, complete it, deploy to Stellar **testnet**, then submit your work on Rise In for certification.
 
 No prior Web3 experience needed—follow the steps below.
 
@@ -146,7 +146,7 @@ Submit the following on your Rise In program page:
 | **Stellar Expert Link** | `https://stellar.expert/explorer/testnet/contract/<CONTRACT_ID>` |
 | **Short Description** | 2-3 sentences on what your contract does |
 
-Submit here: [Rise In Program Page](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan)
+Submit on the **Rise In program page** your facilitator shares for your campus stop, or browse programs at [risein.com/programs](https://www.risein.com/programs).
 
 ---
 
@@ -181,7 +181,7 @@ my-soroban-contract/
 
 | Resource | Link |
 |----------|------|
-| Rise In Program | [risein.com](https://www.risein.com/programs/stellar-philippines-unitour-university-of-east-caloocan) |
+| Rise In Programs | [risein.com/programs](https://www.risein.com/programs) |
 | Stellar Docs | [developers.stellar.org](https://developers.stellar.org) |
 | Soroban SDK | [docs.rs/soroban-sdk](https://docs.rs/soroban-sdk) |
 | Stellar CLI Docs | [developers.stellar.org/docs/tools/stellar-cli](https://developers.stellar.org/docs/tools/stellar-cli) |
@@ -193,7 +193,7 @@ my-soroban-contract/
 
 ## 🇵🇭 About Stellar Philippines UniTour
 
-The Stellar UniTour is a university roadshow bringing Stellar and Soroban smart contract education to students across the Philippines. This stop is at **University of East Caloocan**, powered by [Rise In](https://risein.com).
+The Stellar UniTour is a **multi-campus roadshow**: the same Stellar Smart Contract Bootcamp format travels to universities across the Philippines so more students can build and deploy on **testnet** with guided support. It is run in partnership with [Rise In](https://risein.com).
 
 ---
 
