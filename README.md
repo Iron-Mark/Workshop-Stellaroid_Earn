@@ -1,4 +1,4 @@
-# 🚀 Stellar Philippines UniTour — University Campus Bootcamp Tour
+# Stellar Philippines UniTour — University Campus Bootcamp Tour
 
 **Platform:** [Rise In](https://www.risein.com/programs)  
 **Track:** Stellar Smart Contract Bootcamp  
