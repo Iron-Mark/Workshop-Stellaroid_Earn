@@ -37,15 +37,30 @@ Install the following before or at the start of the session:
 - [Rust](https://rustup.rs/)
 - Add WASM target:
 
+- **macOS (Terminal):**
+
 ```bash
+rustup target add wasm32-unknown-unknown
+```
+
+- **Windows (PowerShell):**
+
+```powershell
 rustup target add wasm32-unknown-unknown
 ```
 
 - [Stellar CLI](https://developers.stellar.org/docs/tools/stellar-cli):
 
-```bash
-cargo install --locked stellar-cli 
+- **macOS (Terminal):**
 
+```bash
+cargo install --locked stellar-cli
+```
+
+- **Windows (PowerShell):**
+
+```powershell
+cargo install --locked stellar-cli
 ```
 
 - [Freighter Wallet](https://freighter.app) (browser extension), set to **Testnet**
@@ -54,9 +69,18 @@ cargo install --locked stellar-cli
 
 Your facilitator will share the assigned smart contract during the session.
 
+- **macOS (Terminal):**
+
 ```bash
 git clone <facilitator-provided-repo-link>
 cd <contract-folder>
+```
+
+- **Windows (PowerShell):**
+
+```powershell
+git clone <facilitator-provided-repo-link>
+Set-Location <contract-folder>
 ```
 
 ### Step 3 - Complete the Contract
@@ -65,7 +89,15 @@ Open `src/lib.rs` and complete the contract logic as instructed.
 
 Make sure you have at least **3 passing unit tests** in `src/test.rs`.
 
+- **macOS (Terminal):**
+
 ```bash
+cargo test
+```
+
+- **Windows (PowerShell):**
+
+```powershell
 cargo test
 ```
 
@@ -73,14 +105,31 @@ cargo test
 
 **Create an identity (first time only):**
 
+- **macOS (Terminal):**
+
 ```bash
+stellar keys generate --global my-key --network testnet
+stellar keys address my-key
+```
+
+- **Windows (PowerShell):**
+
+```powershell
 stellar keys generate --global my-key --network testnet
 stellar keys address my-key
 ```
 
 **Fund your testnet account:**
 
+- **macOS (Terminal):**
+
 ```bash
+stellar keys fund my-key --network testnet
+```
+
+- **Windows (PowerShell):**
+
+```powershell
 stellar keys fund my-key --network testnet
 ```
 
@@ -127,10 +176,21 @@ If you do not see a `.wasm` file, confirm your contract crate name and retry the
 
 **Deploy to testnet:**
 
+- **macOS (Terminal):**
+
 ```bash
 stellar contract deploy \
   --wasm target/wasm32-unknown-unknown/release/soroban_community_treasury.wasm \
   --source my-key \
+  --network testnet
+```
+
+- **Windows (PowerShell):**
+
+```powershell
+stellar contract deploy `
+  --wasm target/wasm32-unknown-unknown/release/soroban_community_treasury.wasm `
+  --source my-key `
   --network testnet
 ```
 
