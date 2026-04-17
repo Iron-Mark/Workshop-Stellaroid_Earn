@@ -1,6 +1,6 @@
 # Stellar & Freighter Frontend Integration Guide
 
-A comprehensive step-by-step guide for integrating Stellar (Soroban smart contracts) and the Freighter browser wallet into a Next.js frontend. This guide is derived from the Talambag project as a concrete, working reference.
+A comprehensive step-by-step guide for integrating Stellar (Soroban smart contracts) and the Freighter browser wallet into a Next.js frontend.
 
 ---
 
@@ -70,15 +70,15 @@ NEXT_PUBLIC_STELLAR_NETWORK=TESTNET
 NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
 
 # Your deployed Soroban contract ID
-NEXT_PUBLIC_TALAMBAG_CONTRACT_ID=
+NEXT_PUBLIC_SOROBAN_CONTRACT_ID=
 
 # A funded Stellar account used only for simulating read-only contract calls
 NEXT_PUBLIC_STELLAR_READ_ADDRESS=
 
 # Token/asset details
-NEXT_PUBLIC_TALAMBAG_ASSET_ADDRESS=
-NEXT_PUBLIC_TALAMBAG_ASSET_CODE=XLM
-NEXT_PUBLIC_TALAMBAG_ASSET_DECIMALS=7
+NEXT_PUBLIC_SOROBAN_ASSET_ADDRESS=
+NEXT_PUBLIC_SOROBAN_ASSET_CODE=XLM
+NEXT_PUBLIC_SOROBAN_ASSET_DECIMALS=7
 
 # Block explorer base URL
 NEXT_PUBLIC_STELLAR_EXPLORER_URL=https://stellar.expert/explorer/testnet
@@ -106,10 +106,10 @@ export const appConfig = {
     process.env.NEXT_PUBLIC_STELLAR_RPC_URL ?? "https://soroban-testnet.stellar.org",
   network: process.env.NEXT_PUBLIC_STELLAR_NETWORK ?? "TESTNET",
   networkPassphrase: configuredPassphrase,
-  contractId: process.env.NEXT_PUBLIC_TALAMBAG_CONTRACT_ID ?? "",
-  assetAddress: process.env.NEXT_PUBLIC_TALAMBAG_ASSET_ADDRESS ?? "",
-  assetCode: process.env.NEXT_PUBLIC_TALAMBAG_ASSET_CODE ?? "XLM",
-  assetDecimals: Number(process.env.NEXT_PUBLIC_TALAMBAG_ASSET_DECIMALS ?? "7"),
+  contractId: process.env.NEXT_PUBLIC_SOROBAN_CONTRACT_ID ?? "",
+  assetAddress: process.env.NEXT_PUBLIC_SOROBAN_ASSET_ADDRESS ?? "",
+  assetCode: process.env.NEXT_PUBLIC_SOROBAN_ASSET_CODE ?? "XLM",
+  assetDecimals: Number(process.env.NEXT_PUBLIC_SOROBAN_ASSET_DECIMALS ?? "7"),
   explorerUrl:
     process.env.NEXT_PUBLIC_STELLAR_EXPLORER_URL ??
     "https://stellar.expert/explorer/testnet",
@@ -372,7 +372,7 @@ This is the core module that bridges the frontend to the Soroban smart contract.
 ### 8a. Server Setup and Config Guards
 
 ```typescript
-// src/lib/talambag-client.ts
+// src/lib/contract-client.ts
 "use client";
 
 import {
@@ -615,11 +615,11 @@ function normalizeError(error: unknown): string {
   if (message.includes("#1") || /Unauthorized/i.test(message)) {
     return "Only the allowed wallet can perform this action.";
   }
-  if (message.includes("#2") || /AmountMustBePositive/i.test(message)) {
-    return "Amount must be greater than zero.";
+  if (message.includes("#2") || /InvalidInput/i.test(message)) {
+    return "Invalid input provided.";
   }
-  if (message.includes("#3") || /GroupNotFound/i.test(message)) {
-    return "The selected group does not exist on-chain.";
+  if (message.includes("#3") || /NotFound/i.test(message)) {
+    return "The requested resource does not exist on-chain.";
   }
   // ... add one entry per error variant in your Rust contract
 
@@ -627,19 +627,15 @@ function normalizeError(error: unknown): string {
 }
 ```
 
-The corresponding Rust contract errors for reference:
+The corresponding Rust contract error structure for reference:
 
 ```rust
 #[contracterror]
 pub enum Error {
     Unauthorized = 1,
-    AmountMustBePositive = 2,
-    GroupNotFound = 3,
-    PoolNotFound = 4,
-    AlreadyGroupMember = 5,
-    NotGroupMember = 6,
-    InsufficientPoolBalance = 7,
-    NameRequired = 8,
+    InvalidInput = 2,
+    NotFound = 3,
+    // ... add your own variants here
 }
 ```
 
@@ -650,21 +646,21 @@ Each exported function maps 1-to-1 to a contract method. Read functions use `sim
 ```typescript
 // --- Read functions ---
 
-export async function getGroup(groupId: number) {
+export async function getRecord(recordId: number) {
   return simulateRead(
     getReadAddress(),
-    "group",
-    buildArgs([{ value: groupId, type: "u32" }]),
-    normalizeGroup,
+    "get_record",
+    buildArgs([{ value: recordId, type: "u32" }]),
+    normalizeRecord, // your custom normalizer for the return type
   );
 }
 
-export async function isMember(groupId: number, walletAddress: string) {
+export async function checkMembership(recordId: number, walletAddress: string) {
   return simulateRead(
     getReadAddress(),
     "is_member",
     buildArgs([
-      { value: groupId, type: "u32" },
+      { value: recordId, type: "u32" },
       { value: walletAddress, type: "address" },
     ]),
     normalizeBoolean,
@@ -673,34 +669,31 @@ export async function isMember(groupId: number, walletAddress: string) {
 
 // --- Write functions ---
 
-export async function createGroup(owner: string, name: string, assetAddress: string) {
+export async function createRecord(owner: string, name: string) {
   const response = await signAndSubmit(
     owner,
-    "create_group",
+    "create_record",
     buildArgs([
       { value: owner, type: "address" },
       { value: name, type: "string" },
-      { value: assetAddress, type: "address" },
     ]),
     normalizeNumber,
   );
 
-  return { hash: response.hash, groupId: response.result ?? null };
+  return { hash: response.hash, recordId: response.result ?? null };
 }
 
-export async function depositToPool(
+export async function transferAmount(
   from: string,
-  groupId: number,
-  poolId: number,
+  recordId: number,
   amount: bigint,
 ) {
   return signAndSubmit(
     from,
-    "deposit",
+    "transfer",
     buildArgs([
       { value: from, type: "address" },
-      { value: groupId, type: "u32" },
-      { value: poolId, type: "u32" },
+      { value: recordId, type: "u32" },
       { value: amount, type: "i128" },
     ]),
   );
@@ -788,17 +781,17 @@ export function shortenAddress(address: string | null, size = 6): string {
 In your dashboard component, consume the hook and client functions together:
 
 ```typescript
-// src/components/talambag-dashboard.tsx
+// src/components/contract-dashboard.tsx
 "use client";
 
 import { useState } from "react";
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
-import { createGroup, depositToPool } from "@/lib/talambag-client";
-import { parseAmountToInt, formatAmount } from "@/lib/format";
+import { transferAmount } from "@/lib/contract-client";
+import { parseAmountToInt } from "@/lib/format";
 import { appConfig } from "@/lib/config";
 import type { TxFeedback } from "@/lib/types";
 
-export function TalambagDashboard() {
+export function ContractDashboard() {
   const { wallet, connectWallet, disconnectWallet } = useFreighterWallet();
   const [txFeedback, setTxFeedback] = useState<TxFeedback>({ state: "idle", title: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -810,7 +803,7 @@ export function TalambagDashboard() {
     !wallet.address ||
     !wallet.isExpectedNetwork;
 
-  async function handleDeposit(groupId: number, poolId: number, amountInput: string) {
+  async function handleTransfer(recordId: number, amountInput: string) {
     if (!wallet.address) return;
 
     setIsSubmitting(true);
@@ -818,17 +811,17 @@ export function TalambagDashboard() {
 
     try {
       const amount = parseAmountToInt(amountInput, appConfig.assetDecimals);
-      const result = await depositToPool(wallet.address, groupId, poolId, amount);
+      const result = await transferAmount(wallet.address, recordId, amount);
 
       setTxFeedback({
         state: "success",
-        title: "Deposit confirmed",
-        hash: result.hash,
+        title: "Transaction confirmed",
+        hash: result?.hash,
       });
     } catch (error) {
       setTxFeedback({
         state: "error",
-        title: "Deposit failed",
+        title: "Transaction failed",
         detail: error instanceof Error ? error.message : "Unknown error",
       });
     } finally {
@@ -863,9 +856,9 @@ export function TalambagDashboard() {
 Every file that uses Freighter, React hooks, or browser APIs **must** have the `"use client"` directive as its first line. This applies to:
 
 - `src/lib/freighter.ts` — calls browser extension APIs
-- `src/lib/talambag-client.ts` — calls Freighter for signing
+- `src/lib/contract-client.ts` — calls Freighter for signing
 - `src/hooks/use-freighter-wallet.ts` — uses `useState` and `useEffect`
-- `src/components/talambag-dashboard.tsx` — uses React state
+- `src/components/contract-dashboard.tsx` — uses React state
 
 Server Components in Next.js App Router cannot access the browser extension or React state hooks.
 
@@ -888,22 +881,22 @@ User clicks "Connect Freighter"
 ### Read-Only Contract Query
 
 ```
-Component calls getGroup(groupId)
-  → simulateRead(readAddress, "group", args, normalizeGroup)
-    → buildTransaction(readAddress, "group", args)
+Component calls getRecord(recordId)
+  → simulateRead(readAddress, "get_record", args, normalizeRecord)
+    → buildTransaction(readAddress, "get_record", args)
       → server.getAccount(readAddress) [fetch sequence number]
       → TransactionBuilder.build()
     → server.simulateTransaction(tx) [no broadcast, no signature]
-    → scValToNative(retval) → normalizeGroup(raw) → GroupSummary
+    → scValToNative(retval) → normalizeRecord(raw) → RecordData
 ```
 
-### Write Contract Call (e.g., deposit)
+### Write Contract Call (e.g., transfer)
 
 ```
-User submits deposit form
-  → depositToPool(wallet.address, groupId, poolId, amount)
+User submits transfer form
+  → transferAmount(wallet.address, recordId, amount)
     → signAndSubmit(...)
-      → buildTransaction(wallet.address, "deposit", args)
+      → buildTransaction(wallet.address, "transfer", args)
       → server.prepareTransaction(tx) [RPC adds footprint + fees]
       → signWithFreighter(xdr, address) [Freighter popup shown]
       → TransactionBuilder.fromXDR(signedXdr)
@@ -921,7 +914,7 @@ User submits deposit form
 |---|---|---|
 | `isConnected` returns false in dev | Freighter not installed | Install the browser extension; test in a Chromium-based browser |
 | `simulateTransaction` fails | `readAddress` not funded on testnet | Fund the account at [friendbot.stellar.org](https://friendbot.stellar.org/) |
-| `#1 Unauthorized` error | Wallet address doesn't match the required signer | The connected wallet must be the group owner or pool organizer |
+| `#1 Unauthorized` error | Wallet address doesn't match the required signer | Ensure the connected wallet has the required permissions for this operation |
 | Wrong network passphrase | `NEXT_PUBLIC_STELLAR_NETWORK` mismatch | Ensure `.env` network name matches Freighter's active network |
 | `scValToNative` returns a `Map` | SDK version behavior | Write normalizers that check `instanceof Map` before object access |
 | Amount precision errors | Passing display amounts directly | Always convert with `parseAmountToInt()` before calling contract functions |
