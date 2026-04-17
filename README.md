@@ -345,13 +345,22 @@ git branch -vv
 
 ## 📁 Required Repo Structure
 
+For **EC Contract Certificate**:
+
 ```text
-my-soroban-contract/
+<contract-name>/
 ├── src/
 │   ├── lib.rs
 │   └── test.rs
-├── Cargo.toml
-└── README.md
+```
+
+For **Prize Pool Joiner Submission**:
+
+```text
+<project-root>/
+├── contract-folder/
+├── frontend/
+└── backend/
 ```
 
 ---
