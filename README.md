@@ -348,17 +348,17 @@ git branch -vv
 For **EC Contract Certificate**:
 
 ```text
-<contract-name>/
-├── src/
-│   ├── lib.rs
-│   └── test.rs
+contract/
+└── src/
+    ├── lib.rs
+    └── test.rs
 ```
 
 For **Prize Pool Joiner Submission**:
 
 ```text
 <project-root>/
-├── contract-folder/
+├── contract/
 ├── frontend/
 └── backend/
 ```
