@@ -15,6 +15,7 @@ Most tools pick one. We collapse all three into one flow, one contract, one shar
 | **Credential** | PDF certificate, LinkedIn badge, registry entry | SHA-256 hash anchored on Stellar, portable forever |
 | **Payment** | Invoice, escrow, net-30 payout, platform take rate | Atomic pay-on-verify in the same transaction flow |
 | **Artifact** | Dashboard row, email attachment, screenshot | Public `/proof/[hash]` URL — a social object |
+| **Lookup** | Account login, platform-gated dashboard, support ticket | Walletless `/proof` hash-lookup — anyone, any device |
 
 The novelty is **the collapse itself**. Each piece exists elsewhere. Fusing them into a single artifact an employer, recruiter, or grant committee can open from a link is new.
 
@@ -141,8 +142,9 @@ Defensibility is **UX + distribution**, not cryptography. The contract is intent
 
 1. **Proof Blocks as social objects** — each one is a dormant growth channel, permanently on-chain
 2. **Compressed two-sided UX** — issuer and verifier share one surface, not two apps
-3. **Polish trust** — non-crypto users feel safe enough to try it
-4. **Stellar ecosystem alignment** — PYUSD, MoneyGram, regulated stablecoins already live on the rails we use
+3. **Walletless verification surface** — `/proof` hash-lookup lets recruiters and committees validate a claim with zero install, zero account
+4. **Polish trust** — non-crypto users feel safe enough to try it
+5. **Stellar ecosystem alignment** — PYUSD, MoneyGram, regulated stablecoins already live on the rails we use
 
 ---
 

@@ -15,11 +15,11 @@ export default function NotFound() {
         }}
       >
         <img
-          src="/logo.svg"
+          src="/illust-404.svg"
           alt=""
-          width={72}
-          height={72}
-          style={{ opacity: 0.6, marginBottom: 24 }}
+          width={256}
+          height={128}
+          style={{ marginBottom: 24, imageRendering: "pixelated" }}
         />
         <h1
           style={{
