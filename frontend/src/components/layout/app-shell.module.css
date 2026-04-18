@@ -31,6 +31,26 @@
   flex-shrink: 0;
 }
 
+.nav {
+  display: flex;
+  gap: 18px;
+  margin-left: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.nav a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.nav a:hover { color: var(--color-text); }
+
+@media (max-width: 640px) {
+  .nav { display: none; }
+}
+
 .headerRight {
   display: flex;
   align-items: center;

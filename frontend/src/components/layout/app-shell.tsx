@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Link from "next/link";
 import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
 import { CopyButton } from "@/components/ui";
@@ -22,7 +23,14 @@ export function AppShell({ children, rpcPill, walletButton }: AppShellProps) {
     <div className={styles.root}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <div className={styles.brand}>Stellaroid Earn</div>
+          <Link href="/" className={styles.brand} style={{ textDecoration: "none" }}>
+            Stellaroid Earn
+          </Link>
+          <nav className={styles.nav}>
+            <Link href="/">Home</Link>
+            <Link href="/app">Demo</Link>
+            <Link href="/about">About</Link>
+          </nav>
           <div className={styles.headerRight}>
             {rpcPill}
             {walletButton}

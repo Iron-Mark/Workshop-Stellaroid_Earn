@@ -1,5 +1,216 @@
-.stack {
+.page {
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+.nav {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.2px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 22px;
+  font-size: 14px;
+}
+
+.navLinks a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.navLinks a:hover { color: var(--color-text); }
+
+.hero {
+  padding: 96px 24px 64px;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.08);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+
+.h1 {
+  font-size: 56px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lede {
+  font-size: 18px;
+  color: var(--color-text-muted);
+  max-width: 640px;
+  margin: 0 auto 32px;
+  line-height: 1.55;
+}
+
+.ctaRow {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ctaPrimary,
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  transition: transform 150ms ease, background 150ms ease;
+}
+
+.ctaPrimary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: 1px solid var(--color-primary);
+}
+
+.ctaPrimary:hover { background: var(--color-primary-hover); }
+
+.ctaGhost {
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  background: transparent;
+}
+
+.ctaGhost:hover { background: var(--color-surface); color: var(--color-text); }
+
+.section {
+  max-width: 1040px;
+  margin: 64px auto;
+  padding: 0 24px;
+}
+
+.sectionHead {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.sectionHead h2 {
+  font-size: 32px;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+
+.sectionHead p {
+  color: var(--color-text-muted);
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.step {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+.stepNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.14);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.step h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.step p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.proofBanner {
+  margin: 64px auto;
+  max-width: 1040px;
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(139, 92, 246, 0.06));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  display: grid;
+  gap: 20px;
+}
+
+.proofRow {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 18px;
+  font-size: 14px;
+  align-items: center;
+}
+
+.proofRow dt { color: var(--color-text-muted); }
+.proofRow dd { margin: 0; font-family: var(--font-mono); font-size: 13px; }
+
+.footer {
+  border-top: 1px solid var(--color-border);
+  margin-top: 80px;
+  padding: 32px 24px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.footer a { color: var(--color-text-muted); text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .h1 { font-size: 40px; }
+  .hero { padding: 64px 20px 40px; }
 }
