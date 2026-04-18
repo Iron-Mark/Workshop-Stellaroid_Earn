@@ -13,6 +13,22 @@ const stack = [
   { title: "Vercel", desc: "Auto-deployed from main" },
 ];
 
+const stats = [
+  { value: "5/5", label: "Unit tests passing" },
+  { value: "6", label: "Public contract functions" },
+  { value: "5", label: "Event types on-chain" },
+  { value: "<5s", label: "Testnet settlement" },
+];
+
+const errors = [
+  { code: "1", name: "AlreadyInitialized", copy: "Init called twice." },
+  { code: "2", name: "NotInitialized", copy: "Admin/token not set yet." },
+  { code: "3", name: "Unauthorized", copy: "Caller isn't allowed." },
+  { code: "4", name: "AlreadyExists", copy: "Duplicate cert hash." },
+  { code: "5", name: "NotFound", copy: "Hash isn't registered." },
+  { code: "6", name: "InvalidAmount", copy: "Amount must be > 0." },
+];
+
 const fns = [
   {
     sig: "init(admin, token)",
@@ -62,6 +78,15 @@ export default function About() {
       </section>
 
       <div className={styles.container}>
+        <dl className={styles.stats} aria-label="By the numbers">
+          {stats.map((s) => (
+            <div key={s.label} className={styles.statCell}>
+              <dt className={styles.statValue}>{s.value}</dt>
+              <dd className={styles.statLabel}>{s.label}</dd>
+            </div>
+          ))}
+        </dl>
+
         <div className={styles.twoUp}>
           <article className={styles.card}>
             <div className={styles.cardEyebrow}>The problem</div>
@@ -118,6 +143,27 @@ export default function About() {
               <div key={fn.sig} className={styles.fnRow}>
                 <div className={styles.fnSig}>{fn.sig}</div>
                 <p className={styles.fnDesc}>{fn.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.sectionWide}>
+          <div className={styles.sectionHead}>
+            <h2>Errors are human</h2>
+            <p>
+              No raw <code>ScVal</code> or <code>HostError</code> reaches the UI — every
+              contract error maps to a sentence a reviewer can read.
+            </p>
+          </div>
+          <div className={styles.errGrid}>
+            {errors.map((e) => (
+              <div key={e.code} className={styles.errCell}>
+                <span className={styles.errCode}>#{e.code}</span>
+                <div>
+                  <p className={styles.errName}>{e.name}</p>
+                  <p className={styles.errCopy}>{e.copy}</p>
+                </div>
               </div>
             ))}
           </div>
