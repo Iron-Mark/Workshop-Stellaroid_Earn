@@ -34,6 +34,13 @@ export default function ProofIndex() {
           color: "var(--color-text)",
         }}
       >
+        <img
+          src="/illust-lookup.svg"
+          alt=""
+          width={192}
+          height={128}
+          style={{ marginBottom: 20, imageRendering: "pixelated" }}
+        />
         <span
           style={{
             display: "inline-block",

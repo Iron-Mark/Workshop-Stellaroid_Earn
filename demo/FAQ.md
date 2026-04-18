@@ -17,6 +17,9 @@ No. The contract rejects duplicates — `AlreadyExists` is surfaced as a human-r
 **Q: Can a proof be revoked?**
 Not in the current MVP. Adding revocation is a v2 scope decision (VeracityLink-style `revoke` with historical preservation).
 
+**Q: How does a third party verify a claim without a wallet?**
+Anyone can open `/proof`, paste the 64-character SHA-256 hash (the input validates format before routing), and the Proof Block resolves read-only. No Freighter, no signing, no account. Employers, recruiters, and grant committees can verify a receipt from a phone browser.
+
 ## Business
 
 **Q: What's the revenue model?**
@@ -40,7 +43,7 @@ Next.js 15 (App Router) + React 19, `@stellar/stellar-sdk`, `@stellar/freighter-
 No. Testnet-only for the MVP. Mainnet readiness is a dedicated work item: contract audit, gas/fee review, error budget, rate limits on the RPC.
 
 **Q: What happens when Soroban RPC goes down?**
-The health pill turns red within 60 seconds. `withTimeout` (15s) prevents UI hangs. Humanized error messages ship to the user — never raw ScVal or HostError.
+The health pill turns red within 60 seconds. `withTimeout` (15s) prevents UI hangs. Humanized error messages ship to the user — never raw ScVal or HostError. Route-level errors hit a branded error boundary (`app/error.tsx`) with a retry action; unknown URLs and malformed proof hashes hit a branded 404 (`app/not-found.tsx`) that links back to the `/proof` lookup.
 
 **Q: Accessibility?**
 WCAG AA contrast on all tokens. `:focus-visible` rings everywhere. `prefers-reduced-motion` respected globally. 44×44 minimum touch targets. Inline SVG icons (no emoji).

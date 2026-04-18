@@ -19,7 +19,7 @@
 
 > Stellaroid Earn closes the loop between work and payment. Most credentialing dApps stop at *"verified."* We don't.
 >
-> Issuers register a SHA-256 hash of a deliverable on the Stellar blockchain via Freighter. Employers verify the same hash against their own copy and settle payment in the same flow — on the same ledger, in the same app. The output is a **Proof Block**: a public URL that anyone can open to see the issuer, the student, the amount, the timestamp, and direct links to the on-chain transactions on stellar.expert.
+> Issuers register a SHA-256 hash of a deliverable on the Stellar blockchain via Freighter. Employers verify the same hash against their own copy and settle payment in the same flow — on the same ledger, in the same app. The output is a **Proof Block**: a public URL that anyone can open to see the issuer, the student, the amount, the timestamp, and direct links to the on-chain transactions on stellar.expert. Third parties can resolve any Proof Block from its hash at `/proof` — no wallet required.
 >
 > No backend. No database. No middleman. Sub-cent fees. Five-second finality.
 >
