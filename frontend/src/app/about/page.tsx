@@ -5,12 +5,65 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import styles from "./page.module.css";
 
 const stack = [
-  { title: "Rust + soroban-sdk 22", desc: "Contract crate, 5 unit tests" },
-  { title: "Stellar testnet", desc: "Deployed + initialised with native SAC" },
-  { title: "Next.js 15 + React 19", desc: "App Router, server + client" },
-  { title: "Freighter wallet", desc: "@stellar/freighter-api signing" },
-  { title: "@stellar/stellar-sdk", desc: "Build, simulate, submit via Soroban RPC" },
-  { title: "Vercel", desc: "Auto-deployed from main" },
+  {
+    title: "Rust + soroban-sdk 22",
+    desc: "Contract crate, 5 unit tests",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M7 7l10 10M17 7L7 17" opacity="0.35" />
+        <circle cx="12" cy="12" r="3" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    title: "Stellar testnet",
+    desc: "Deployed + initialised with native SAC",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L14.09 9.26L21.5 9.27L15.45 13.77L17.77 21.02L12 16.5L6.23 21.02L8.55 13.77L2.5 9.27L9.91 9.26L12 2Z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Next.js 15 + React 19",
+    desc: "App Router, server + client",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M8 6v12M16 6l-8 12" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    title: "Freighter wallet",
+    desc: "@stellar/freighter-api signing",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 7h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" />
+        <path d="M4 7V5a2 2 0 0 1 2-2h10" />
+        <circle cx="16" cy="13" r="1.3" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    title: "@stellar/stellar-sdk",
+    desc: "Build, simulate, submit via Soroban RPC",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M8 6L2 12l6 6M16 6l6 6-6 6M14 4l-4 16" />
+      </svg>
+    ),
+  },
+  {
+    title: "Vercel",
+    desc: "Auto-deployed from main",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3L22 20H2L12 3Z" />
+      </svg>
+    ),
+  },
 ];
 
 const stats = [
@@ -127,6 +180,18 @@ export default function About() {
           </article>
         </div>
 
+        <article className={styles.card} style={{ marginTop: 24 }}>
+          <div className={styles.cardEyebrow}>What changes for Maria</div>
+          <h2>Concrete wins, not abstract outcomes</h2>
+          <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.7, color: "var(--color-text)" }}>
+            <li>Gets paid the same day her work is verified &mdash; no 30-day invoice.</li>
+            <li>Keeps 100% of the XLM &mdash; no 20% platform take rate.</li>
+            <li>Has a public Proof Block URL she can drop into her next offer email.</li>
+            <li>Can share verified work on LinkedIn with a pre-filled post and thumbnail.</li>
+            <li>Owns her credential forever &mdash; no platform lock-in, no migration pain.</li>
+          </ul>
+        </article>
+
         <section className={styles.sectionWide}>
           <div className={styles.sectionHead}>
             <h2>Tech stack</h2>
@@ -135,8 +200,13 @@ export default function About() {
           <div className={styles.stack}>
             {stack.map((s) => (
               <div key={s.title} className={styles.stackChip}>
-                <p className={styles.stackChipTitle}>{s.title}</p>
-                <p className={styles.stackChipDesc}>{s.desc}</p>
+                <div className={styles.stackIcon} aria-hidden="true">
+                  {s.icon}
+                </div>
+                <div>
+                  <p className={styles.stackChipTitle}>{s.title}</p>
+                  <p className={styles.stackChipDesc}>{s.desc}</p>
+                </div>
               </div>
             ))}
           </div>

@@ -2,6 +2,9 @@
 
 ## Product
 
+**Q: Who's Maria?**
+Maria is the composite protagonist we use across the pitch — a graduating Philippine bootcamp student applying to a Singapore fintech. She stands in for the 1.5M+ Filipinos doing remote/freelance work today. She's not a specific person, but every friction she hits (14–21 day verification delays, 32% resume-fraud skepticism, $30–$75 background check fees) is real and cited in `NOVELTY.md`. If you remember Maria, you remember the product.
+
 **Q: What does "proof-of-work" mean here? Mining?**
 No. We mean *evidence that a unit of work was completed, verified, and paid for.* Zero compute, zero mining. Just a SHA-256 hash anchored on Stellar.
 
@@ -15,7 +18,7 @@ The hash remains on-chain forever, but the hash alone cannot reconstruct the fil
 No. The contract rejects duplicates — `AlreadyExists` is surfaced as a human-readable toast.
 
 **Q: Can a proof be revoked?**
-Not in the current MVP. Adding revocation is a v2 scope decision (VeracityLink-style `revoke` with historical preservation).
+Not in the current MVP. Adding `revoke_certificate(hash, reason)` with historical preservation is a v2 scope decision.
 
 **Q: How does a third party verify a claim without a wallet?**
 Anyone can open `/proof`, paste the 64-character SHA-256 hash (the input validates format before routing), and the Proof Block resolves read-only. No Freighter, no signing, no account. Employers, recruiters, and grant committees can verify a receipt from a phone browser.

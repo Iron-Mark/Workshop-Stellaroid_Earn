@@ -115,12 +115,46 @@
 
 /* ── Not-found note ─────────────────────────────────── */
 .notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   font-size: 0.875rem;
   color: var(--color-text-muted);
   border: 1px dashed var(--color-border);
   border-radius: var(--radius-md);
-  padding: var(--space-4);
+  padding: var(--space-5);
   text-align: center;
+}
+
+.notFoundTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.notFoundBody {
+  margin: 0;
+  max-width: 42ch;
+  line-height: 1.55;
+}
+
+.notFoundCta {
+  margin-top: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.notFoundCta:hover {
+  background: var(--color-primary-hover);
 }
 
 /* ── Rubric ─────────────────────────────────────────── */

@@ -42,7 +42,7 @@ export function ProofCard({ hash, cert }: ProofCardProps) {
   const shortContract = shortenAddress(contractId, 8);
   const shortHash = shortenAddress(hash, 8);
 
-  const verifiedTone = cert?.verified ? "success" : cert ? "warning" : "neutral";
+  const verifiedTone = cert?.verified ? "verified" : cert ? "warning" : "neutral";
   const verifiedLabel = cert?.verified ? "Verified" : cert ? "Registered" : "Not found";
 
   return (
@@ -116,15 +116,29 @@ export function ProofCard({ hash, cert }: ProofCardProps) {
             </div>
             <div className={styles.certRow}>
               <span className={styles.metaLabel}>Verified</span>
-              <Badge tone={cert.verified ? "success" : "warning"} dot>
+              <Badge tone={cert.verified ? "verified" : "warning"} dot>
                 {cert.verified ? "Yes" : "Pending"}
               </Badge>
             </div>
           </section>
         ) : (
-          <p className={styles.notFound}>
-            No certificate registered for this hash yet.
-          </p>
+          <div className={styles.notFound}>
+            <img
+              src="/illust-lookup.svg"
+              alt=""
+              width={160}
+              height={107}
+              style={{ imageRendering: "pixelated", marginBottom: 12 }}
+            />
+            <p className={styles.notFoundTitle}>No record for this hash yet.</p>
+            <p className={styles.notFoundBody}>
+              The hash may be mistyped, or the certificate hasn&rsquo;t been registered
+              on-chain. Double-check the 64 hex characters, or look up a different one.
+            </p>
+            <a href="/proof" className={styles.notFoundCta}>
+              Look up another hash →
+            </a>
+          </div>
         )}
 
         {/* 6. Rubric self-check */}

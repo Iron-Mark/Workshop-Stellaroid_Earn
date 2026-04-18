@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s — Stellaroid Earn",
   },
   description:
-    "On-chain credential registry on Stellar testnet. Issuer registers a cert hash, employer verifies and pays the grad in XLM — all via Freighter.",
+    "Maria graduated top of her cohort in Quezon City. Her diploma is real; proving it to a Singapore employer takes 3 weeks. Stellaroid Earn binds the hash on Stellar, verifies in 5 seconds, and pays her wallet directly — no invoice, no platform, no wait.",
   icons: {
     icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
     apple: [{ url: "/logo.svg", type: "image/svg+xml" }],
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     url: "/",
     title: "Stellaroid Earn",
     description:
-      "On-chain credential registry on Stellar testnet — verify a cert, pay the grad in XLM in one click.",
+      "Bind the hash. Pay the wallet. Prove the work. On-chain proof-of-work on Stellar — verify a credential and pay in one click.",
     images: [{ url: "/og.svg", width: 1200, height: 630, alt: "Stellaroid Earn" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Stellaroid Earn",
     description:
-      "On-chain credential registry on Stellar testnet — verify a cert, pay the grad in XLM in one click.",
+      "Bind the hash. Pay the wallet. Prove the work. On-chain proof-of-work on Stellar — verify a credential and pay in one click.",
     images: ["/og.svg"],
   },
 };
