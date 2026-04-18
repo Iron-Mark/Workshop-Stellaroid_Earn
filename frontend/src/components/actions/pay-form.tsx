@@ -139,7 +139,11 @@ export function PayForm({ onPaid }: PayFormProps) {
           onChange={(e) => setPayAmount(e.target.value)}
           onBlur={() => setAmountTouched(true)}
           error={amountError}
-          helper={amountTouched || payAmount ? undefined : `Amount in ${appConfig.assetCode} to pay the student`}
+          helper={
+            amountTouched || payAmount
+              ? undefined
+              : `Testnet pays in ${appConfig.assetCode}. USDC-on-Stellar lands in v2 — same flow, stable value.`
+          }
           placeholder="10"
           autoComplete="off"
         />

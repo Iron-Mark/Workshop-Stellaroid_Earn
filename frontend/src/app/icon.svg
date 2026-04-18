@@ -41,11 +41,11 @@
   <rect class="hi" x="44" y="12" width="4" height="4"/>
   <rect class="md" x="48" y="12" width="4" height="4"/>
   <rect class="sh" x="52" y="12" width="4" height="4"/>
-  <!-- Row 4 -->
+  <!-- Row 4 (y=16) - S top bar -->
   <rect class="sh" x="8" y="16" width="4" height="4"/>
   <rect class="md" x="12" y="16" width="4" height="4"/>
   <rect class="hi" x="16" y="16" width="4" height="4"/>
-  <rect class="hi" x="20" y="16" width="4" height="4"/>
+  <rect class="sh" x="20" y="16" width="4" height="4"/>
   <rect class="sh" x="24" y="16" width="4" height="4"/>
   <rect class="sh" x="28" y="16" width="4" height="4"/>
   <rect class="sh" x="32" y="16" width="4" height="4"/>
@@ -54,7 +54,7 @@
   <rect class="hi" x="44" y="16" width="4" height="4"/>
   <rect class="md" x="48" y="16" width="4" height="4"/>
   <rect class="sh" x="52" y="16" width="4" height="4"/>
-  <!-- Row 5 -->
+  <!-- Row 5 (y=20) - S left stem -->
   <rect class="sh" x="4" y="20" width="4" height="4"/>
   <rect class="md" x="8" y="20" width="4" height="4"/>
   <rect class="hi" x="12" y="20" width="4" height="4"/>
@@ -63,13 +63,13 @@
   <rect class="hi" x="24" y="20" width="4" height="4"/>
   <rect class="hi" x="28" y="20" width="4" height="4"/>
   <rect class="hi" x="32" y="20" width="4" height="4"/>
-  <rect class="sh" x="36" y="20" width="4" height="4"/>
+  <rect class="hi" x="36" y="20" width="4" height="4"/>
   <rect class="hi" x="40" y="20" width="4" height="4"/>
   <rect class="hi" x="44" y="20" width="4" height="4"/>
   <rect class="md" x="48" y="20" width="4" height="4"/>
   <rect class="md" x="52" y="20" width="4" height="4"/>
   <rect class="sh" x="56" y="20" width="4" height="4"/>
-  <!-- Row 6 -->
+  <!-- Row 6 (y=24) - S left stem -->
   <rect class="sh" x="4" y="24" width="4" height="4"/>
   <rect class="md" x="8" y="24" width="4" height="4"/>
   <rect class="hi" x="12" y="24" width="4" height="4"/>
@@ -78,13 +78,13 @@
   <rect class="hi" x="24" y="24" width="4" height="4"/>
   <rect class="hi" x="28" y="24" width="4" height="4"/>
   <rect class="hi" x="32" y="24" width="4" height="4"/>
-  <rect class="sh" x="36" y="24" width="4" height="4"/>
-  <rect class="sh" x="40" y="24" width="4" height="4"/>
+  <rect class="hi" x="36" y="24" width="4" height="4"/>
+  <rect class="hi" x="40" y="24" width="4" height="4"/>
   <rect class="hi" x="44" y="24" width="4" height="4"/>
   <rect class="md" x="48" y="24" width="4" height="4"/>
   <rect class="md" x="52" y="24" width="4" height="4"/>
   <rect class="sh" x="56" y="24" width="4" height="4"/>
-  <!-- Row 7 -->
+  <!-- Row 7 (y=28) - S middle bar -->
   <rect class="sh" x="4" y="28" width="4" height="4"/>
   <rect class="md" x="8" y="28" width="4" height="4"/>
   <rect class="hi" x="12" y="28" width="4" height="4"/>
@@ -99,12 +99,12 @@
   <rect class="md" x="48" y="28" width="4" height="4"/>
   <rect class="md" x="52" y="28" width="4" height="4"/>
   <rect class="sh" x="56" y="28" width="4" height="4"/>
-  <!-- Row 8 -->
+  <!-- Row 8 (y=32) - S right stem -->
   <rect class="sh" x="4" y="32" width="4" height="4"/>
   <rect class="md" x="8" y="32" width="4" height="4"/>
   <rect class="hi" x="12" y="32" width="4" height="4"/>
   <rect class="hi" x="16" y="32" width="4" height="4"/>
-  <rect class="sh" x="20" y="32" width="4" height="4"/>
+  <rect class="hi" x="20" y="32" width="4" height="4"/>
   <rect class="hi" x="24" y="32" width="4" height="4"/>
   <rect class="hi" x="28" y="32" width="4" height="4"/>
   <rect class="hi" x="32" y="32" width="4" height="4"/>
@@ -114,36 +114,36 @@
   <rect class="md" x="48" y="32" width="4" height="4"/>
   <rect class="md" x="52" y="32" width="4" height="4"/>
   <rect class="sh" x="56" y="32" width="4" height="4"/>
-  <!-- Row 9 -->
+  <!-- Row 9 (y=36) - S right stem -->
   <rect class="sh" x="4" y="36" width="4" height="4"/>
   <rect class="md" x="8" y="36" width="4" height="4"/>
   <rect class="hi" x="12" y="36" width="4" height="4"/>
   <rect class="hi" x="16" y="36" width="4" height="4"/>
-  <rect class="sh" x="20" y="36" width="4" height="4"/>
-  <rect class="sh" x="24" y="36" width="4" height="4"/>
-  <rect class="sh" x="28" y="36" width="4" height="4"/>
+  <rect class="hi" x="20" y="36" width="4" height="4"/>
+  <rect class="hi" x="24" y="36" width="4" height="4"/>
+  <rect class="hi" x="28" y="36" width="4" height="4"/>
   <rect class="hi" x="32" y="36" width="4" height="4"/>
-  <rect class="hi" x="36" y="36" width="4" height="4"/>
-  <rect class="sh" x="40" y="36" width="4" height="4"/>
+  <rect class="sh" x="36" y="36" width="4" height="4"/>
+  <rect class="hi" x="40" y="36" width="4" height="4"/>
   <rect class="hi" x="44" y="36" width="4" height="4"/>
   <rect class="md" x="48" y="36" width="4" height="4"/>
   <rect class="md" x="52" y="36" width="4" height="4"/>
   <rect class="sh" x="56" y="36" width="4" height="4"/>
-  <!-- Row 10 -->
+  <!-- Row 10 (y=40) - S bottom bar -->
   <rect class="sh" x="8" y="40" width="4" height="4"/>
   <rect class="md" x="12" y="40" width="4" height="4"/>
   <rect class="hi" x="16" y="40" width="4" height="4"/>
-  <rect class="hi" x="20" y="40" width="4" height="4"/>
+  <rect class="sh" x="20" y="40" width="4" height="4"/>
   <rect class="sh" x="24" y="40" width="4" height="4"/>
-  <rect class="hi" x="28" y="40" width="4" height="4"/>
-  <rect class="hi" x="32" y="40" width="4" height="4"/>
-  <rect class="hi" x="36" y="40" width="4" height="4"/>
-  <rect class="sh" x="40" y="40" width="4" height="4"/>
+  <rect class="sh" x="28" y="40" width="4" height="4"/>
+  <rect class="sh" x="32" y="40" width="4" height="4"/>
+  <rect class="sh" x="36" y="40" width="4" height="4"/>
+  <rect class="hi" x="40" y="40" width="4" height="4"/>
   <rect class="hi" x="44" y="40" width="4" height="4"/>
   <rect class="md" x="48" y="40" width="4" height="4"/>
   <rect class="md" x="52" y="40" width="4" height="4"/>
   <rect class="sh" x="56" y="40" width="4" height="4"/>
-  <!-- Row 11 -->
+  <!-- Row 11 (y=44) -->
   <rect class="sh" x="8" y="44" width="4" height="4"/>
   <rect class="md" x="12" y="44" width="4" height="4"/>
   <rect class="hi" x="16" y="44" width="4" height="4"/>
