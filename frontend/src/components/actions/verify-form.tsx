@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DEMO_AUTOFILL_EVENT, DemoAutofillDetail } from "@/components/demo/demo-autofill-button";
 import { Button, Input, Badge, Skeleton, useToast } from "@/components/ui";
 import { humanizeError } from "@/lib/errors";
 import { withTimeout } from "@/lib/with-timeout";
@@ -32,6 +33,18 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
   const [hashTouched, setHashTouched] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [lookup, setLookup] = useState<LookupState>({ status: "idle" });
+
+  useEffect(() => {
+    function onAutofill(e: Event) {
+      const detail = (e as CustomEvent<DemoAutofillDetail>).detail;
+      if (!detail) return;
+      setCertHash(detail.certHash);
+      setHashTouched(false);
+      setLookup({ status: "idle" });
+    }
+    window.addEventListener(DEMO_AUTOFILL_EVENT, onAutofill);
+    return () => window.removeEventListener(DEMO_AUTOFILL_EVENT, onAutofill);
+  }, []);
 
   const hashError =
     hashTouched && certHash.trim() !== "" && !isValidHash(certHash)
