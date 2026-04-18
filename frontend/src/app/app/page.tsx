@@ -10,6 +10,7 @@ import { RegisterForm } from "@/components/actions/register-form";
 import { VerifyForm } from "@/components/actions/verify-form";
 import { PayForm } from "@/components/actions/pay-form";
 import { ProofBlockPreview } from "@/components/proof/proof-block-preview";
+import { FreighterWelcome } from "@/components/onboarding/freighter-welcome";
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
 import styles from "./page.module.css";
 
@@ -29,6 +30,7 @@ export default function Home() {
 
   return (
     <AppShell rpcPill={<RpcStatusPill />} walletButton={<WalletConnectButton />}>
+      <FreighterWelcome />
       <div className={styles.stack}>
         <NextActionCard
           role={role}
