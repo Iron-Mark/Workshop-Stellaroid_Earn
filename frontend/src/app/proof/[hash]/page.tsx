@@ -8,7 +8,10 @@ import type { Metadata } from "next";
 import {
   getCertificateServer,
   CertificateRecord,
+  getIssuerServer,
 } from "@/lib/contract-read-server";
+import { getProofMetadataForCertificate } from "@/lib/proof-metadata";
+import type { IssuerRecord } from "@/lib/types";
 import { ProofCard } from "@/components/proof/proof-card";
 import { SiteNav } from "@/components/layout/site-nav";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -60,9 +63,10 @@ export default async function ProofPage({ params }: PageProps) {
 
   const short =
     hash.length > 16 ? `${hash.slice(0, 10)}…${hash.slice(-10)}` : hash;
-
   let cert: CertificateRecord | null = null;
+  let issuer: IssuerRecord | null = null;
   let lookupFailed = false;
+  let issuerLookupFailed = false;
   try {
     cert = await getCertificateServer(hash);
   } catch {
@@ -71,17 +75,30 @@ export default async function ProofPage({ params }: PageProps) {
     cert = null;
   }
 
+  if (cert) {
+    try {
+      issuer = await getIssuerServer(cert.issuer);
+    } catch {
+      issuerLookupFailed = true;
+      issuer = null;
+    }
+  }
+
+  const proofMetadata = getProofMetadataForCertificate(hash, cert);
+
   return (
     <>
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "DigitalDocument",
-          name: `Proof of Work · ${short}`,
+          name: proofMetadata?.title ?? `Proof of Work · ${short}`,
           description:
+            proofMetadata?.description ??
             "Verified, on-chain proof of completed work. Anchored on Stellar with SHA-256. Paid atomically on verification.",
           identifier: hash,
           url: `${BASE_URL}/proof/${hash}`,
+          keywords: proofMetadata?.skills,
         }}
       />
       <SiteNav />
@@ -89,7 +106,14 @@ export default async function ProofPage({ params }: PageProps) {
         id="main"
         style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}
       >
-        <ProofCard hash={hash} cert={cert} lookupFailed={lookupFailed} />
+        <ProofCard
+          hash={hash}
+          cert={cert}
+          issuer={issuer}
+          proofMetadata={proofMetadata}
+          lookupFailed={lookupFailed}
+          issuerLookupFailed={issuerLookupFailed}
+        />
       </main>
       <SiteFooter />
     </>

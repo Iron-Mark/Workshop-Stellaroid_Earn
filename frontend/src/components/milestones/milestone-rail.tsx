@@ -1,5 +1,3 @@
-import styles from "./milestone-rail.module.css";
-
 export interface MilestoneState {
   registered: boolean;
   verified: boolean;
@@ -89,26 +87,31 @@ interface StepProps {
 }
 
 function Step({ label, status }: StepProps) {
-  const iconClass =
+  const iconColorClass =
     status === "done"
-      ? styles.iconDone
+      ? "text-verified [animation:pixelPop_280ms_cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:animate-none"
       : status === "active"
-        ? styles.iconActive
-        : styles.iconPending;
+        ? "text-primary [animation:pulseRing_1.6s_ease-in-out_infinite] motion-reduce:animate-none"
+        : "text-text-muted";
 
-  const labelClass =
+  const labelColorClass =
     status === "done"
-      ? styles.labelDone
+      ? "text-verified"
       : status === "active"
-        ? styles.labelActive
-        : styles.labelPending;
+        ? "text-primary"
+        : "text-text-muted";
 
   const srStatus =
     status === "done" ? " (complete)" : status === "active" ? " (in progress)" : " (pending)";
 
   return (
-    <div className={styles.step}>
-      <div className={`${styles.icon} ${iconClass}`}>
+    <div className="flex flex-col items-center gap-2 shrink-0 max-sm:flex-row max-sm:gap-3">
+      <div
+        className={[
+          "w-11 h-11 flex items-center justify-center rounded-full",
+          iconColorClass,
+        ].join(" ")}
+      >
         {status === "done" ? (
           <CheckIcon />
         ) : status === "active" ? (
@@ -117,9 +120,14 @@ function Step({ label, status }: StepProps) {
           <EmptyCircleIcon />
         )}
       </div>
-      <span className={`${styles.label} ${labelClass}`}>
+      <span
+        className={[
+          "font-mono text-[13px] font-medium text-center",
+          labelColorClass,
+        ].join(" ")}
+      >
         {label}
-        <span className={styles.srOnly}>{srStatus}</span>
+        <span className="sr-only">{srStatus}</span>
       </span>
     </div>
   );
@@ -132,7 +140,13 @@ interface ConnectorProps {
 function Connector({ filled }: ConnectorProps) {
   return (
     <div
-      className={`${styles.connector} ${filled ? styles.connectorFilled : styles.connectorEmpty}`}
+      className={[
+        "flex-1 h-0.5 min-w-6 mb-5",
+        "max-sm:w-0.5 max-sm:h-6 max-sm:min-w-0 max-sm:mb-0 max-sm:ml-[21px]",
+        filled
+          ? "bg-linear-to-r from-verified to-verified-strong max-sm:bg-linear-to-b"
+          : "bg-border",
+      ].join(" ")}
       aria-hidden="true"
     />
   );
@@ -146,7 +160,10 @@ export function MilestoneRail({ state }: MilestoneRailProps) {
   const paidStatus = getStepStatus(2, stepDone);
 
   return (
-    <nav className={styles.rail} aria-label="Progress">
+    <nav
+      className="flex flex-row items-center gap-0 py-4 max-sm:flex-col max-sm:items-start"
+      aria-label="Progress"
+    >
       <Step label="Registered" status={registeredStatus} />
       <Connector filled={state.registered} />
       <Step label="Verified" status={verifiedStatus} />

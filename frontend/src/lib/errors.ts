@@ -104,6 +104,24 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
+    if (message.includes("issuer is not approved") || message.includes("#8")) {
+      return {
+        title: "Issuer pending approval",
+        detail:
+          "This issuer has not been approved yet, so it cannot publish or verify credentials.",
+        recoverable: false,
+      };
+    }
+
+    if (message.includes("issuer has been suspended") || message.includes("#9")) {
+      return {
+        title: "Issuer suspended",
+        detail:
+          "This issuer is suspended and cannot publish or verify credentials right now.",
+        recoverable: false,
+      };
+    }
+
     // Not found / #5
     if (message.includes("not found") || message.includes("#5")) {
       return {
@@ -123,6 +141,43 @@ export function humanizeError(err: unknown): HumanError {
         title: "Already registered",
         detail: "This certificate hash is already on-chain.",
         recoverable: false,
+      };
+    }
+
+    if (
+      message.includes("credential has been revoked") ||
+      message.includes("#11")
+    ) {
+      return {
+        title: "Credential revoked",
+        detail:
+          "This credential has been revoked and can no longer be used for verification or payment.",
+        recoverable: false,
+      };
+    }
+
+    if (
+      message.includes("credential has expired") ||
+      message.includes("#12")
+    ) {
+      return {
+        title: "Credential expired",
+        detail:
+          "This credential has expired and is no longer eligible for verification-based actions.",
+        recoverable: false,
+      };
+    }
+
+    if (
+      message.includes("current status") ||
+      message.includes("invalidstatus") ||
+      message.includes("#10")
+    ) {
+      return {
+        title: "Invalid credential state",
+        detail:
+          "That action is blocked by the credential's current status. Refresh the proof and try again.",
+        recoverable: true,
       };
     }
 

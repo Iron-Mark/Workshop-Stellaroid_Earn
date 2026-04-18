@@ -8,7 +8,6 @@ import { withTimeout } from "@/lib/with-timeout";
 import { registerCertificate } from "@/lib/contract-client";
 import { appConfig, hasRequiredConfig } from "@/lib/config";
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
-import styles from "./actions.module.css";
 
 export interface RegisterFormProps {
   onSuccess?: (hash: string, studentAddr: string, txHash?: string) => void;
@@ -30,6 +29,9 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
   const [studentAddr, setStudentAddr] = useState("");
   const [certHash, setCertHash] = useState("");
+  const [credentialTitle, setCredentialTitle] = useState("");
+  const [cohort, setCohort] = useState("");
+  const [metadataUri, setMetadataUri] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const [studentTouched, setStudentTouched] = useState(false);
@@ -41,6 +43,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       if (!detail) return;
       setStudentAddr(detail.studentAddr);
       setCertHash(detail.certHash);
+      setCredentialTitle("Stellar Smart Contract Bootcamp Completion");
+      setCohort("Stellar Philippines UniTour 2026");
       setStudentTouched(false);
       setHashTouched(false);
     }
@@ -88,7 +92,11 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     setSubmitting(true);
     try {
       const result = await withTimeout(
-        registerCertificate(wallet.address, studentAddr.trim(), certHash.trim()),
+        registerCertificate(wallet.address, studentAddr.trim(), certHash.trim(), {
+          title: credentialTitle.trim(),
+          cohort: cohort.trim(),
+          metadataUri: metadataUri.trim(),
+        }),
         15000,
         "register",
       );
@@ -113,8 +121,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      <div className={styles.fieldRow}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+      <div className="flex flex-col gap-4">
         <Input
           mono
           label="Student wallet (G...)"
@@ -128,25 +136,27 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           spellCheck={false}
         />
 
-        <div className={styles.hashRow}>
-          <div className={styles.hashRowActions}>
-            <Input
-              mono
-              label="Certificate hash (64 hex)"
-              value={certHash}
-              onChange={(e) => setCertHash(e.target.value)}
-              onBlur={() => setHashTouched(true)}
-              error={hashError}
-              helper={hashTouched || certHash ? undefined : "SHA-256 hash of the certificate file"}
-              placeholder="0a1b2c..."
-              autoComplete="off"
-              spellCheck={false}
-            />
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2 items-start max-sm:flex-col max-sm:items-stretch">
+            <div className="flex-1">
+              <Input
+                mono
+                label="Certificate hash (64 hex)"
+                value={certHash}
+                onChange={(e) => setCertHash(e.target.value)}
+                onBlur={() => setHashTouched(true)}
+                error={hashError}
+                helper={hashTouched || certHash ? undefined : "SHA-256 hash of the certificate file"}
+                placeholder="0a1b2c..."
+                autoComplete="off"
+                spellCheck={false}
+              />
+            </div>
             <Button
               type="button"
               variant="ghost"
               size="sm"
-              className={styles.hashComputeBtn}
+              className="shrink-0 self-end max-sm:self-stretch"
               onClick={() => fileInputRef.current?.click()}
               aria-label="Compute SHA-256 from file"
             >
@@ -156,16 +166,46 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           <input
             type="file"
             ref={fileInputRef}
-            className={styles.hiddenInput}
+            className="hidden"
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) void handleHashFromFile(f);
             }}
           />
         </div>
+
+        <Input
+          label="Credential title (optional)"
+          value={credentialTitle}
+          onChange={(e) => setCredentialTitle(e.target.value)}
+          helper="Stored on-chain and shown on the proof page"
+          placeholder="Stellar Smart Contract Bootcamp Completion"
+          autoComplete="off"
+          spellCheck={false}
+        />
+
+        <Input
+          label="Cohort or batch (optional)"
+          value={cohort}
+          onChange={(e) => setCohort(e.target.value)}
+          helper="Example: Stellar Philippines UniTour 2026"
+          placeholder="Stellar Philippines UniTour 2026"
+          autoComplete="off"
+          spellCheck={false}
+        />
+
+        <Input
+          label="Metadata URL (optional)"
+          value={metadataUri}
+          onChange={(e) => setMetadataUri(e.target.value)}
+          helper="Use this later for hosted JSON evidence or richer proof details"
+          placeholder="https://example.com/proofs/maria.json"
+          autoComplete="off"
+          spellCheck={false}
+        />
       </div>
 
-      <div className={styles.submitRow}>
+      <div className="flex gap-2 pt-1 max-sm:flex-col [&>*]:max-sm:w-full">
         <Button
           type="submit"
           variant="primary"
