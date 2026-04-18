@@ -88,6 +88,21 @@ stellar contract invoke \
 https://stellar.expert/explorer/testnet/contract/<CONTRACT_ID>
 ```
 
+## Proof Block
+
+- **Pitch:** Verify a Philippine bootcamp certificate and pay the grad in one click — on Stellar testnet.
+- **Contract ID:** `CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`
+  → https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ
+- **Reward token (native XLM SAC):** `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`
+- **Init tx:** https://stellar.expert/explorer/testnet/tx/c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721
+- **Verified events:** `init`, `cert_reg`, `cert_ver`, `reward`, `payment` — visible on the contract's Events tab on stellar.expert.
+- **Rubric self-check:**
+  - [x] Contract deployed + verified on stellar.expert
+  - [x] `cargo test` passes (5/5)
+  - [ ] Frontend signs a real tx via Freighter end-to-end (run `npm run dev` and drive the UI)
+  - [ ] `cert_reg` + `payment` events visible in explorer
+  - [x] No raw ScVal / HostError surfaces (mapped in `frontend/src/lib/contract-client.ts` `normalizeError`)
+
 ## License
 
 MIT

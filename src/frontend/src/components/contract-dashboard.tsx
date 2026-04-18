@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
 import {
   CertificateRecord,
@@ -22,8 +22,40 @@ export function ContractDashboard() {
   const [certHash, setCertHash] = useState("");
   const [lookupCert, setLookupCert] = useState<CertificateRecord | null | "missing">(null);
   const [payAmount, setPayAmount] = useState("10");
+  const [rpcHealth, setRpcHealth] = useState<"checking" | "healthy" | "slow">("checking");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const configured = hasRequiredConfig();
+
+  useEffect(() => {
+    if (!configured) return;
+    let cancelled = false;
+    const probe = async () => {
+      const sentinel = "0".repeat(64);
+      const started = Date.now();
+      try {
+        await getCertificate(sentinel);
+        if (!cancelled) {
+          setRpcHealth(Date.now() - started > 4000 ? "slow" : "healthy");
+        }
+      } catch {
+        if (!cancelled) setRpcHealth("slow");
+      }
+    };
+    probe();
+    return () => {
+      cancelled = true;
+    };
+  }, [configured]);
+
+  async function handleHashFromFile(file: File) {
+    const buf = await file.arrayBuffer();
+    const digest = await crypto.subtle.digest("SHA-256", buf);
+    const hex = Array.from(new Uint8Array(digest))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    setCertHash(hex);
+  }
 
   const actionsBlocked =
     !configured ||
@@ -115,6 +147,17 @@ export function ContractDashboard() {
             <code>{shortenAddress(appConfig.contractId)}</code>
           </a>
         </p>
+        <p
+          style={{
+            ...styles.subtle,
+            color: rpcHealth === "slow" ? "#B45309" : "#16A34A",
+          }}
+        >
+          {rpcHealth === "checking" && "• Checking RPC…"}
+          {rpcHealth === "healthy" && "● RPC healthy"}
+          {rpcHealth === "slow" &&
+            "● Testnet latency is spiking — signed txs may take up to 15s to settle."}
+        </p>
       </header>
 
       <section style={styles.card}>
@@ -170,6 +213,27 @@ export function ContractDashboard() {
             style={styles.inputMono}
           />
         </label>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) handleHashFromFile(f);
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            style={styles.buttonSecondary}
+          >
+            Compute SHA-256 from file
+          </button>
+          <span style={styles.subtle}>
+            Drops a PDF/certificate and auto-fills the hash above.
+          </span>
+        </div>
       </section>
 
       <section style={styles.card}>
