@@ -21,7 +21,7 @@
 }
 
 .segBtn {
-  padding: 6px 14px;
+  padding: 0 14px;
   font-size: 13px;
   font-weight: 500;
   border: none;
@@ -30,7 +30,7 @@
   border-radius: calc(var(--radius-sm) - 2px);
   cursor: pointer;
   transition: background var(--transition), color var(--transition);
-  min-height: 32px;
+  min-height: 44px;
   line-height: 1;
 }
 

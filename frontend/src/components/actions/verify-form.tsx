@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Badge, useToast } from "@/components/ui";
+import { Button, Input, Badge, Skeleton, useToast } from "@/components/ui";
 import { humanizeError } from "@/lib/errors";
 import { withTimeout } from "@/lib/with-timeout";
 import { getCertificate, verifyCertificate, CertificateRecord } from "@/lib/contract-client";
@@ -138,6 +138,23 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
           Mark Verified (on-chain)
         </Button>
       </div>
+
+      {lookup.status === "loading" && (
+        <div className={styles.lookupPanel} aria-label="Loading certificate details" aria-busy="true">
+          <div className={styles.lookupRow}>
+            <span className={styles.lookupLabel}>Status</span>
+            <Skeleton width={72} height={22} radius={4} />
+          </div>
+          <div className={styles.lookupRow}>
+            <span className={styles.lookupLabel}>Owner</span>
+            <Skeleton width={160} height={18} radius={4} />
+          </div>
+          <div className={styles.lookupRow}>
+            <span className={styles.lookupLabel}>Issuer</span>
+            <Skeleton width={160} height={18} radius={4} />
+          </div>
+        </div>
+      )}
 
       {lookup.status === "found" && (
         <div className={styles.lookupPanel}>

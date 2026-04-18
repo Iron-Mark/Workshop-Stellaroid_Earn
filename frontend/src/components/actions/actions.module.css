@@ -71,3 +71,7 @@
   color: var(--color-text);
   word-break: break-all;
 }
+
+.hiddenInput {
+  display: none;
+}
