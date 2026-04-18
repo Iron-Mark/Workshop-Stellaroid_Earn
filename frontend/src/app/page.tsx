@@ -3,6 +3,7 @@ import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
 import { SiteNav } from "@/components/layout/site-nav";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { LocalizedHero } from "@/components/landing/localized-hero";
 import styles from "./page.module.css";
 
 const liveTxs = [
@@ -40,30 +41,7 @@ export default function Landing() {
     <div className={styles.page}>
       <SiteNav />
 
-      <section className={styles.hero}>
-        <span className={styles.eyebrow}>Stellar Testnet · Soroban · Freighter</span>
-        <h1 className={styles.h1}>
-          Prove your credentials.
-          <br />
-          <em>Get paid instantly.</em>
-        </h1>
-        <p className={styles.lede}>
-          A Philippine bootcamp graduate registers a certificate hash on Stellar; an
-          employer verifies it in seconds and pays the grad directly in XLM. Stellar&rsquo;s
-          sub-cent fees make per-cert settlement viable.
-        </p>
-        <div className={styles.ctaRow}>
-          <Link href="/app" className={styles.ctaPrimary}>
-            Try the demo →
-          </Link>
-          <Link
-            href="/proof/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22"
-            className={styles.ctaGhost}
-          >
-            See a sample Proof Block — no wallet needed
-          </Link>
-        </div>
-      </section>
+      <LocalizedHero />
 
       <section className={styles.section}>
         <div className={styles.sectionHead}>
