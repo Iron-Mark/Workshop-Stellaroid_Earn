@@ -1,22 +1,29 @@
 # Stellaroid Earn — One-Pager
 
-## The problem
+## The problem — the friction costs more than the fraud
 
-Work gets done. Payment gets stuck.
+**Maria graduated top of her bootcamp cohort in Quezon City.** She applies to a Singapore fintech on a Tuesday. The employer emails her school to confirm the certificate. Three weeks later, the role is filled — by a candidate who didn't need verifying.
 
-- Freelancers chase invoices. Interns chase stipends. Bounty hunters chase maintainers.
-- Credentials and receipts live in email threads, PDFs, and private dashboards — easy to forge, impossible to share cleanly.
-- Existing credential registries stop at *"verified."* They don't close the loop with money.
+- Verification takes **14–21 days**.
+- **32%** of candidates misrepresent their education.
+- Background checks cost **$30–$75** each.
+- So employers default to the candidate they *can* vet cheaply — and Maria loses a job she earned.
 
-## The solution
+The certificate is real. The problem is that proving it costs more than hiring around it.
 
-**Stellaroid Earn** turns completed work into a cryptographic, payable artifact on the Stellar blockchain.
+**Stellaroid Earn makes proof cheaper than skipping it.**
+
+## The approach — bind the hash, pay the wallet, prove the work
+
+Maria's school hashes her diploma and anchors it on Stellar. The Singapore employer verifies in 5 seconds, pays 500 XLM directly to her wallet — no invoice, no platform, no wait. The whole cycle takes less time than reading this paragraph.
 
 1. **Register** — Issuer anchors a SHA-256 hash of the deliverable on-chain.
 2. **Verify** — Employer confirms the hash matches their copy.
 3. **Pay** — Settlement happens in the same flow, in the same app, on the same ledger.
 4. **Share** — The result is a public **Proof Block** URL — a receipt anyone can open.
 5. **Lookup** — Anyone can paste a hash at `/proof` and resolve a Proof Block **without a wallet**.
+
+The canonical output isn't the UI — it's the **event stream on stellar.expert**. A reviewer with no frontend access still sees every issuance, verification, and payment. The proof is public by default.
 
 No backend. No database. No middleman. Just a contract, a wallet, and a link.
 

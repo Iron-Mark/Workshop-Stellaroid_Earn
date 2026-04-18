@@ -90,30 +90,39 @@ export default function About() {
         <div className={styles.twoUp}>
           <article className={styles.card}>
             <div className={styles.cardEyebrow}>The problem</div>
-            <h2>Verification is the bottleneck</h2>
+            <h2>The friction costs more than the fraud</h2>
             <p>
-              A graduating student from a Philippine bootcamp applies to a Singapore
-              fintech. The employer emails the school to confirm the certificate. Two to
-              three weeks later, the slot is filled by someone who didn&rsquo;t need
-              verification.
+              <strong>Maria graduated top of her bootcamp cohort in Quezon City.</strong>{" "}
+              She applies to a Singapore fintech on a Tuesday. The employer emails her
+              school to confirm the certificate. Three weeks later, the role is filled
+              — by a candidate who didn&rsquo;t need verifying.
             </p>
             <p>
-              Meanwhile, LinkedIn fraud makes employers cautious about remote hires
-              they can&rsquo;t vet cheaply. Both sides lose.
+              Verification takes 14&ndash;21 days. 32% of candidates misrepresent their
+              education. Background checks cost $30&ndash;$75 each. So employers default
+              to the candidate they <em>can</em> vet cheaply &mdash; and Maria loses a
+              job she earned.
+            </p>
+            <p>
+              The certificate is real. The problem is that proving it costs more than
+              hiring around it.
             </p>
           </article>
 
           <article className={styles.card}>
             <div className={styles.cardEyebrow}>The approach</div>
-            <h2>Bind the hash, pay the wallet</h2>
+            <h2>Bind the hash. Pay the wallet. Prove the work.</h2>
             <p>
-              Hash the certificate PDF, anchor the hash + student wallet on Soroban,
-              let any employer verify + pay in one session.
+              Maria&rsquo;s school hashes her diploma and anchors it on Stellar. The
+              Singapore employer verifies in 5 seconds, pays 500 XLM directly to her
+              wallet &mdash; no invoice, no platform, no wait. The whole cycle takes
+              less time than reading this paragraph.
             </p>
             <p>
               The canonical output isn&rsquo;t the UI — it&rsquo;s the{" "}
-              <em>event stream on stellar.expert</em>. A reviewer with no frontend access
-              can still see every issuance, verification, and payment, provably.
+              <em>event stream on stellar.expert</em>. A reviewer with no frontend
+              access still sees every issuance, verification, and payment. The proof is
+              public by default.
             </p>
           </article>
         </div>
