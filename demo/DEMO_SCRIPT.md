@@ -11,16 +11,16 @@
 
 ---
 
-## 00:00 — Hook (15s)
+## 00:00 — Hook (20s)
 
 **Say:**
-> "Work gets done every day. Payment gets stuck every day. Stellaroid Earn fixes that loop with one contract, one wallet, and one shareable link."
+> "Meet Maria. She graduated top of her bootcamp cohort in Quezon City and applied to a Singapore fintech on a Tuesday. The employer emailed her school to verify. Three weeks later, the role was filled — by someone who didn't need verifying. The certificate was real. Proving it cost more than hiring around it. Stellaroid Earn makes proof cheaper than skipping it."
 
 **Action:** Open the app. The **Next Action card** and **Milestone rail** are visible. Point at them.
 
 ---
 
-## 00:15 — Connect wallet (15s)
+## 00:20 — Connect wallet (15s)
 
 **Say:**
 > "I'm connecting Freighter on testnet. No email, no password, no KYC."
@@ -29,10 +29,10 @@
 
 ---
 
-## 00:30 — Register (30s)
+## 00:35 — Register Maria's diploma (30s)
 
 **Say:**
-> "I'm the issuer. I just finished a piece of work for a student. I drop the file in — the browser hashes it locally with SHA-256. The file never leaves my machine."
+> "I'm Maria's school. I just finalized her diploma. I drop the PDF in — the browser hashes it locally with SHA-256. The file never leaves my machine. What goes on-chain is just 64 characters."
 
 **Action:** In the **Register** form, drag `deliverable.txt` onto the file input. The hash auto-fills. Paste a student G-address. Click **Register on-chain**.
 
@@ -43,24 +43,24 @@
 
 ---
 
-## 01:00 — Switch role, Verify (30s)
+## 01:05 — Switch role, Verify (30s)
 
 **Say:**
-> "Now I flip to the employer side. Same app, same wallet, different role. No separate dashboard."
+> "Now I'm the Singapore employer. Same app, same wallet, different role. No separate dashboard."
 
 **Action:** Click the **Employer** segment in the role switcher. The Next Action copy changes.
 
 **Say:**
-> "The employer has their own copy of the deliverable. They hash it. If the hash on-chain matches, the work is real."
+> "I have Maria's diploma in my inbox. I hash it. If the hash on-chain matches — and if the issuer badge says it came from a trusted school — the credential is real. No three-week email thread."
 
 **Action:** Fill the Verify form with the same hash. Submit. Freighter pops, sign. Watch the **Milestone rail** tick from *Registered* to *Verified*.
 
 ---
 
-## 01:30 — Pay (30s)
+## 01:35 — Pay Maria (30s)
 
 **Say:**
-> "Here's the part every other credentialing app skips. Verification triggers payment in the same flow. No invoice. No 'net-30.' No bridge."
+> "Here's the part every other credentialing app skips. Verification triggers payment in the same flow. Maria gets paid the same session she was verified. No invoice. No 'net-30.' No 20% platform fee. No bridge."
 
 **Action:** Fill the Pay form. Amount: `10` XLM. Submit. Sign. Toast confirms settlement.
 
@@ -98,7 +98,7 @@
 ## 03:00 — Close (15s)
 
 **Say:**
-> "Stellaroid Earn. Proof-of-work as a public good. Built in a bootcamp, deployed on Stellar testnet, ready for design partners. Thank you."
+> "Three weeks compressed into one session. Maria gets paid, keeps 100% of it, and walks away with a public link her next employer can verify in five seconds. Stellaroid Earn. Proof-of-work as a public good. Built on Stellar, ready for design partners. Thank you."
 
 **Action:** Leave the Proof Block URL on screen. Open the floor for questions. Point judges at [`ONE_PAGER.md`](./ONE_PAGER.md) and [`FAQ.md`](./FAQ.md).
 

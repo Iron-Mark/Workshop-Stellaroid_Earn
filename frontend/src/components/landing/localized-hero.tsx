@@ -11,20 +11,20 @@ const STORAGE_KEY = "stellaroid:locale";
 const copy = {
   en: {
     eyebrow: "Stellar Testnet · Soroban · Freighter",
-    h1a: "Prove your credentials.",
-    h1b: "Get paid instantly.",
+    h1a: "Prove Maria\u2019s credentials.",
+    h1b: "Pay her in the same breath.",
     lede:
-      "A Philippine bootcamp graduate registers a certificate hash on Stellar; an employer verifies it in seconds and pays the grad directly in XLM. Stellar\u2019s sub-cent fees make per-cert settlement viable.",
+      "Maria graduated top of her bootcamp in Quezon City. A Singapore employer hashes her diploma, verifies it on Stellar in five seconds, and pays her directly in XLM \u2014 no invoice, no platform, no three-week email thread. Sub-cent fees make every cert worth settling on-chain.",
     ctaPrimary: "Try the demo \u2192",
     ctaGhost: "See a sample Proof Block \u2014 no wallet needed",
     toggleLabel: "Tagalog",
   },
   tl: {
     eyebrow: "Stellar Testnet · Soroban · Freighter",
-    h1a: "Patunayan ang iyong kredensyal.",
-    h1b: "Makatanggap ng bayad agad.",
+    h1a: "Patunayan ang kredensyal ni Maria.",
+    h1b: "Bayaran siya sa parehong sandali.",
     lede:
-      "Nagrerehistro ang isang Pilipinong bootcamp graduate ng certificate hash sa Stellar; bina-verify ito ng employer sa loob ng ilang segundo at direktang binabayaran ang graduate sa XLM. Sa sub-cent na bayad ng Stellar, sulit ang bawat sertipiko.",
+      "Nagtapos si Maria bilang nangunguna sa kanyang bootcamp sa Quezon City. Hina-hash ng isang employer sa Singapore ang kanyang diploma, bini-verify ito sa Stellar sa loob ng limang segundo, at direkta siyang binabayaran sa XLM \u2014 walang invoice, walang platform, walang tatlong linggong email thread. Sa sub-cent na bayad, sulit i-settle sa on-chain ang bawat sertipiko.",
     ctaPrimary: "Subukan ang demo \u2192",
     ctaGhost: "Tingnan ang sample Proof Block \u2014 walang wallet kailangan",
     toggleLabel: "English",
