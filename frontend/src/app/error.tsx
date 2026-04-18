@@ -25,11 +25,11 @@ export default function GlobalError({
       }}
     >
       <img
-        src="/logo.svg"
+        src="/illust-error.svg"
         alt=""
-        width={72}
-        height={72}
-        style={{ opacity: 0.6, marginBottom: 24 }}
+        width={224}
+        height={150}
+        style={{ marginBottom: 24, imageRendering: "pixelated" }}
       />
       <h1 style={{ fontSize: 40, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
         Something fell off the ledger.

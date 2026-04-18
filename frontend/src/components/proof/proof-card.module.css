@@ -14,6 +14,31 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Certificate header band */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+}
+
+/* Dashed tear line (decorative, bottom) */
+.card::after {
+  content: "";
+  position: absolute;
+  left: var(--space-5);
+  right: var(--space-5);
+  bottom: calc(var(--space-6) + 48px);
+  border-top: 1px dashed var(--color-border);
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 /* ── Header row ─────────────────────────────────────── */
@@ -151,11 +176,69 @@
   margin: 0 0 var(--space-3);
 }
 
-/* ── Footer ─────────────────────────────────────────── */
+/* ── Footer (signature row) ─────────────────────────── */
 .footer {
   font-size: 0.75rem;
   color: var(--color-text-muted);
   text-align: center;
   border-top: 1px solid var(--color-border);
   padding-top: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.footer::before,
+.footer::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-border) 0 6px,
+    transparent 6px 10px
+  );
+  max-width: 80px;
+}
+
+/* QR code block at footer */
+.qrBlock {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-4);
+}
+
+.qrImage {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-sm);
+  background: #F8FAFC;
+  padding: 6px;
+  flex-shrink: 0;
+}
+
+.qrCopy {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.qrCopy strong {
+  display: block;
+  color: var(--color-text);
+  font-size: 0.875rem;
+  margin-bottom: 2px;
+}
+
+@media print {
+  .card {
+    background: white;
+    color: black;
+    border: 1px solid #000;
+  }
 }

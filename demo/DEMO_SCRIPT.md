@@ -86,7 +86,16 @@
 
 ---
 
-## 02:45 — Close (15s)
+## 02:45 — Walletless verification (15s)
+
+**Say:**
+> "Anyone can verify a claim without installing a wallet. Navigate to `/proof`, paste the hash, and the Proof Block opens. Recruiters, grant committees, and clients don't need an account to trust the receipt."
+
+**Action:** Open `/proof` in a new tab. Paste the 64-char hash into the input. Submit. Proof Block loads.
+
+---
+
+## 03:00 — Close (15s)
 
 **Say:**
 > "Stellaroid Earn. Proof-of-work as a public good. Built in a bootcamp, deployed on Stellar testnet, ready for design partners. Thank you."
@@ -100,3 +109,5 @@
 - If Freighter hangs → show the 15s timeout kicking in and the humanized error toast. "That's exactly what a user would see. No raw error bleed."
 - If RPC is down → the health pill goes red. "The UI tells users the truth about the network. Fail loud, fail clearly."
 - If a tx fails → navigate directly to a pre-baked Proof Block URL (bookmark one) and walk the artifact section.
+- If an app route throws → the branded error boundary renders a recoverable screen, not a stack trace. If a hash is malformed → the branded 404 page offers a direct link to the `/proof` lookup.
+- If you're running short on time or fumble a paste → click the **Demo autofill** button (bottom-right on `/app`) to populate a valid student address, certificate hash, and amount in one click. The button is there for rehearsal, but it's also your in-demo escape hatch.
