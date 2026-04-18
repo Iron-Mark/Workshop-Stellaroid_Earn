@@ -6,6 +6,8 @@ import { lookupIssuer } from "@/lib/issuer-registry";
 import { Badge } from "@/components/ui/badge";
 import { CopyButton } from "@/components/ui/copy-button";
 import { ShareButtons } from "./share-buttons";
+import { ProofQrBlock } from "./proof-qr-block";
+import { HashReveal } from "@/components/ui/hash-reveal";
 import styles from "./proof-card.module.css";
 
 interface ProofCardProps {
@@ -78,7 +80,7 @@ export function ProofCard({ hash, cert }: ProofCardProps) {
         {/* 4. Hash row */}
         <div className={styles.metaRow}>
           <span className={styles.metaLabel}>Certificate hash</span>
-          <code className={styles.metaCode}>{shortHash}</code>
+          <HashReveal hash={shortHash} />
           <CopyButton value={hash} ariaLabel="Copy certificate hash" />
           <a
             href={`${explorerUrl}/contract/${contractId}#events`}
@@ -157,6 +159,9 @@ export function ProofCard({ hash, cert }: ProofCardProps) {
           <p className={styles.shareTitle}>Share</p>
           <ShareButtons hash={hash} />
         </section>
+
+        {/* 7b. QR block */}
+        <ProofQrBlock hash={hash} />
 
         {/* 8. Footer */}
         <footer className={styles.footer}>
