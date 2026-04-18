@@ -23,7 +23,8 @@ export function AppShell({ children, rpcPill, walletButton }: AppShellProps) {
     <div className={styles.root}>
       <header className={styles.header}>
         <div className={styles.headerInner}>
-          <Link href="/" className={styles.brand} style={{ textDecoration: "none" }}>
+          <Link href="/" className={styles.brand} style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <img src="/logo.svg" alt="" width={22} height={22} />
             Stellaroid Earn
           </Link>
           <nav className={styles.nav}>
