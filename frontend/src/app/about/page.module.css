@@ -5,16 +5,25 @@
 }
 
 .nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 28px;
   border-bottom: 1px solid var(--color-border);
   background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(6px);
   position: sticky;
   top: 0;
   z-index: 10;
+}
+
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 18px 28px;
+}
+
+@media (max-width: 640px) {
+  .navInner { padding: 14px 18px; }
 }
 
 .brand a { color: var(--color-text); text-decoration: none; font-weight: 700; font-size: 18px; }
