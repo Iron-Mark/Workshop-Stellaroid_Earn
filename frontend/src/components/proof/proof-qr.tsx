@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import QRCode from "qrcode";
+// @ts-expect-error — qrcode ships a browser build without types; the Node-facing main entry breaks in webpack.
+import * as QRCode from "qrcode/lib/browser";
 
 interface ProofQrProps {
   url: string;
