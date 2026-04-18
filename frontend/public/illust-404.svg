@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 64" shape-rendering="crispEdges" role="img" aria-label="Broken chain">
+  <defs>
+    <style>
+      .a{fill:#F59E0B}.b{fill:#B45309}.c{fill:#334155}.d{fill:#EF4444}
+    </style>
+  </defs>
+  <!-- Left chain link -->
+  <rect class="b" x="8" y="24" width="4" height="4"/><rect class="b" x="12" y="24" width="4" height="4"/><rect class="b" x="16" y="24" width="4" height="4"/><rect class="b" x="20" y="24" width="4" height="4"/>
+  <rect class="b" x="4" y="28" width="4" height="4"/><rect class="a" x="8" y="28" width="4" height="4"/><rect class="a" x="12" y="28" width="4" height="4"/><rect class="a" x="16" y="28" width="4" height="4"/><rect class="a" x="20" y="28" width="4" height="4"/><rect class="b" x="24" y="28" width="4" height="4"/>
+  <rect class="b" x="4" y="32" width="4" height="4"/><rect class="a" x="8" y="32" width="4" height="4"/><rect class="a" x="12" y="32" width="4" height="4"/><rect class="a" x="16" y="32" width="4" height="4"/><rect class="a" x="20" y="32" width="4" height="4"/><rect class="b" x="24" y="32" width="4" height="4"/>
+  <rect class="b" x="8" y="36" width="4" height="4"/><rect class="b" x="12" y="36" width="4" height="4"/><rect class="b" x="16" y="36" width="4" height="4"/><rect class="b" x="20" y="36" width="4" height="4"/>
+  <!-- Break gap (jagged) -->
+  <rect class="d" x="40" y="28" width="4" height="4"/><rect class="d" x="52" y="32" width="4" height="4"/><rect class="d" x="46" y="36" width="3" height="3"/>
+  <!-- Right chain link -->
+  <rect class="b" x="72" y="24" width="4" height="4"/><rect class="b" x="76" y="24" width="4" height="4"/><rect class="b" x="80" y="24" width="4" height="4"/><rect class="b" x="84" y="24" width="4" height="4"/>
+  <rect class="b" x="68" y="28" width="4" height="4"/><rect class="c" x="72" y="28" width="4" height="4"/><rect class="c" x="76" y="28" width="4" height="4"/><rect class="c" x="80" y="28" width="4" height="4"/><rect class="c" x="84" y="28" width="4" height="4"/><rect class="b" x="88" y="28" width="4" height="4"/>
+  <rect class="b" x="68" y="32" width="4" height="4"/><rect class="c" x="72" y="32" width="4" height="4"/><rect class="c" x="76" y="32" width="4" height="4"/><rect class="c" x="80" y="32" width="4" height="4"/><rect class="c" x="84" y="32" width="4" height="4"/><rect class="b" x="88" y="32" width="4" height="4"/>
+  <rect class="b" x="72" y="36" width="4" height="4"/><rect class="b" x="76" y="36" width="4" height="4"/><rect class="b" x="80" y="36" width="4" height="4"/><rect class="b" x="84" y="36" width="4" height="4"/>
+  <!-- Third faded link further right -->
+  <rect class="c" x="104" y="24" width="4" height="4"/><rect class="c" x="108" y="24" width="4" height="4"/><rect class="c" x="112" y="24" width="4" height="4"/>
+  <rect class="c" x="100" y="28" width="4" height="4"/><rect class="c" x="116" y="28" width="4" height="4"/>
+  <rect class="c" x="100" y="32" width="4" height="4"/><rect class="c" x="116" y="32" width="4" height="4"/>
+  <rect class="c" x="104" y="36" width="4" height="4"/><rect class="c" x="108" y="36" width="4" height="4"/><rect class="c" x="112" y="36" width="4" height="4"/>
+</svg>

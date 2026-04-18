@@ -24,15 +24,35 @@
 }
 
 .iconDone {
-  color: var(--color-success);
+  color: var(--color-verified);
+  animation: pixelPop 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .iconActive {
   color: var(--color-primary);
+  animation: pulseRing 1.6s ease-in-out infinite;
 }
 
 .iconPending {
   color: var(--color-text-muted);
+}
+
+@keyframes pixelPop {
+  0%   { transform: scale(0.7); opacity: 0.4; }
+  60%  { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulseRing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.35); }
+  50%      { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconDone,
+  .iconActive {
+    animation: none;
+  }
 }
 
 .label {
@@ -42,7 +62,7 @@
 }
 
 .labelDone {
-  color: var(--color-success);
+  color: var(--color-verified);
 }
 
 .labelActive {
@@ -61,7 +81,7 @@
 }
 
 .connectorFilled {
-  background: var(--color-success);
+  background: linear-gradient(90deg, var(--color-verified) 0%, var(--color-verified-strong) 100%);
 }
 
 .connectorEmpty {
