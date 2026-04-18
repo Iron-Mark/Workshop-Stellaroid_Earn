@@ -1,39 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" shape-rendering="crispEdges" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" role="img" aria-label="Stellaroid Earn">
+  <title>Stellaroid Earn</title>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0F172A"/>
-      <stop offset="100%" stop-color="#1E293B"/>
-    </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#F59E0B"/>
-      <stop offset="100%" stop-color="#8B5CF6"/>
-    </linearGradient>
     <style>
       .sh{fill:#78350F}.md{fill:#B45309}.hi{fill:#FBBF24}.gl{fill:#FEF3C7}
     </style>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-
-  <!-- dot grid accent -->
-  <g fill="#1E293B" opacity="0.6">
-    <circle cx="80" cy="80" r="2"/><circle cx="160" cy="80" r="2"/><circle cx="240" cy="80" r="2"/>
-    <circle cx="1040" cy="80" r="2"/><circle cx="1120" cy="80" r="2"/>
-    <circle cx="80" cy="550" r="2"/><circle cx="1120" cy="550" r="2"/>
-  </g>
-
-  <!-- Hash motif strip (top) -->
-  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" fill="#334155">
-    <text x="80" y="110" letter-spacing="4">sha256 · e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</text>
-  </g>
-  <!-- Hash motif strip (bottom, dimmer) -->
-  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#1E293B" opacity="0.7">
-    <text x="80" y="520" letter-spacing="3">0x1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22 · verified · paid</text>
-  </g>
-  <!-- Accent ribbon -->
-  <rect x="0" y="0" width="1200" height="4" fill="url(#accent)"/>
-
-  <!-- Coin logo (scaled from 64x64 source, positioned left) -->
-  <g transform="translate(80, 175) scale(4.5)">
+  <g transform="scale(0.9375)" shape-rendering="crispEdges">
     <rect class="sh" x="20" y="4" width="4" height="4"/><rect class="sh" x="24" y="4" width="4" height="4"/><rect class="sh" x="28" y="4" width="4" height="4"/><rect class="sh" x="32" y="4" width="4" height="4"/><rect class="sh" x="36" y="4" width="4" height="4"/><rect class="sh" x="40" y="4" width="4" height="4"/>
     <rect class="sh" x="12" y="8" width="4" height="4"/><rect class="sh" x="16" y="8" width="4" height="4"/><rect class="md" x="20" y="8" width="4" height="4"/><rect class="md" x="24" y="8" width="4" height="4"/><rect class="md" x="28" y="8" width="4" height="4"/><rect class="md" x="32" y="8" width="4" height="4"/><rect class="md" x="36" y="8" width="4" height="4"/><rect class="md" x="40" y="8" width="4" height="4"/><rect class="sh" x="44" y="8" width="4" height="4"/><rect class="sh" x="48" y="8" width="4" height="4"/>
     <rect class="sh" x="8" y="12" width="4" height="4"/><rect class="md" x="12" y="12" width="4" height="4"/><rect class="hi" x="16" y="12" width="4" height="4"/><rect class="hi" x="20" y="12" width="4" height="4"/><rect class="hi" x="24" y="12" width="4" height="4"/><rect class="gl" x="28" y="12" width="4" height="4"/><rect class="hi" x="32" y="12" width="4" height="4"/><rect class="hi" x="36" y="12" width="4" height="4"/><rect class="hi" x="40" y="12" width="4" height="4"/><rect class="hi" x="44" y="12" width="4" height="4"/><rect class="md" x="48" y="12" width="4" height="4"/><rect class="sh" x="52" y="12" width="4" height="4"/>
@@ -48,13 +20,8 @@
     <rect class="sh" x="8" y="48" width="4" height="4"/><rect class="sh" x="12" y="48" width="4" height="4"/><rect class="md" x="16" y="48" width="4" height="4"/><rect class="md" x="20" y="48" width="4" height="4"/><rect class="md" x="24" y="48" width="4" height="4"/><rect class="md" x="28" y="48" width="4" height="4"/><rect class="md" x="32" y="48" width="4" height="4"/><rect class="md" x="36" y="48" width="4" height="4"/><rect class="md" x="40" y="48" width="4" height="4"/><rect class="md" x="44" y="48" width="4" height="4"/><rect class="sh" x="48" y="48" width="4" height="4"/><rect class="sh" x="52" y="48" width="4" height="4"/>
     <rect class="sh" x="12" y="52" width="4" height="4"/><rect class="sh" x="16" y="52" width="4" height="4"/><rect class="sh" x="20" y="52" width="4" height="4"/><rect class="sh" x="24" y="52" width="4" height="4"/><rect class="sh" x="28" y="52" width="4" height="4"/><rect class="sh" x="32" y="52" width="4" height="4"/><rect class="sh" x="36" y="52" width="4" height="4"/><rect class="sh" x="40" y="52" width="4" height="4"/><rect class="sh" x="44" y="52" width="4" height="4"/><rect class="sh" x="48" y="52" width="4" height="4"/>
   </g>
-
-  <!-- Text block -->
   <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" fill="#F8FAFC">
-    <text x="480" y="250" font-size="72" font-weight="700" letter-spacing="-2">Stellaroid Earn</text>
-    <text x="480" y="330" font-size="32" fill="#94A3B8" font-weight="500">On-chain credential registry.</text>
-    <text x="480" y="375" font-size="32" fill="#94A3B8" font-weight="500">Employer verifies, grad gets paid in XLM.</text>
-    <rect x="480" y="430" width="12" height="12" fill="url(#accent)"/>
-    <text x="504" y="443" font-size="20" fill="#F59E0B" font-weight="600" letter-spacing="2">STELLAR TESTNET · SOROBAN · FREIGHTER</text>
+    <text x="72" y="34" font-size="22" font-weight="700" letter-spacing="-0.5">Stellaroid</text>
+    <text x="72" y="54" font-size="14" font-weight="500" fill="#F59E0B" letter-spacing="3">EARN</text>
   </g>
 </svg>

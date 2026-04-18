@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="Stellaroid Earn">
+  <title>Stellaroid Earn</title>
+  <defs>
+    <style>
+      .bg{fill:#FBBF24}
+      .fg{fill:#0F172A}
+    </style>
+  </defs>
+  <!-- Solid gold disc with dark S glyph; optimized for <=24px -->
+  <circle class="bg" cx="32" cy="32" r="28"/>
+  <!-- S glyph (4x4 pixels on 5-col x 7-row grid) -->
+  <!-- row 1 (top bar) -->
+  <rect class="fg" x="20" y="16" width="4" height="4"/><rect class="fg" x="24" y="16" width="4" height="4"/><rect class="fg" x="28" y="16" width="4" height="4"/><rect class="fg" x="32" y="16" width="4" height="4"/><rect class="fg" x="36" y="16" width="4" height="4"/>
+  <!-- row 2 (left stem) -->
+  <rect class="fg" x="20" y="20" width="4" height="4"/>
+  <!-- row 3 (left stem) -->
+  <rect class="fg" x="20" y="24" width="4" height="4"/>
+  <!-- row 4 (middle bar) -->
+  <rect class="fg" x="20" y="28" width="4" height="4"/><rect class="fg" x="24" y="28" width="4" height="4"/><rect class="fg" x="28" y="28" width="4" height="4"/><rect class="fg" x="32" y="28" width="4" height="4"/><rect class="fg" x="36" y="28" width="4" height="4"/>
+  <!-- row 5 (right stem) -->
+  <rect class="fg" x="36" y="32" width="4" height="4"/>
+  <!-- row 6 (right stem) -->
+  <rect class="fg" x="36" y="36" width="4" height="4"/>
+  <!-- row 7 (bottom bar) -->
+  <rect class="fg" x="20" y="40" width="4" height="4"/><rect class="fg" x="24" y="40" width="4" height="4"/><rect class="fg" x="28" y="40" width="4" height="4"/><rect class="fg" x="32" y="40" width="4" height="4"/><rect class="fg" x="36" y="40" width="4" height="4"/>
+</svg>
