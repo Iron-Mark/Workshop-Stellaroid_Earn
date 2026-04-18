@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DEMO_AUTOFILL_EVENT, DemoAutofillDetail } from "@/components/demo/demo-autofill-button";
 import { Button, Input, useToast } from "@/components/ui";
 import { humanizeError } from "@/lib/errors";
 import { withTimeout } from "@/lib/with-timeout";
@@ -40,6 +41,21 @@ export function PayForm({ onPaid }: PayFormProps) {
   const [studentTouched, setStudentTouched] = useState(false);
   const [hashTouched, setHashTouched] = useState(false);
   const [amountTouched, setAmountTouched] = useState(false);
+
+  useEffect(() => {
+    function onAutofill(e: Event) {
+      const detail = (e as CustomEvent<DemoAutofillDetail>).detail;
+      if (!detail) return;
+      setStudentAddr(detail.studentAddr);
+      setCertHash(detail.certHash);
+      setPayAmount(detail.amount);
+      setStudentTouched(false);
+      setHashTouched(false);
+      setAmountTouched(false);
+    }
+    window.addEventListener(DEMO_AUTOFILL_EVENT, onAutofill);
+    return () => window.removeEventListener(DEMO_AUTOFILL_EVENT, onAutofill);
+  }, []);
 
   const studentError =
     studentTouched && studentAddr.trim() !== "" && !isValidAddress(studentAddr)
