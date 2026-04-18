@@ -208,6 +208,68 @@
 .proofRow dt { color: var(--color-text-muted); }
 .proofRow dd { margin: 0; font-family: var(--font-mono); font-size: 13px; }
 
+.txList {
+  display: grid;
+  gap: 8px;
+}
+
+.txRow {
+  display: grid;
+  grid-template-columns: 110px 180px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+
+.txRow:hover {
+  border-color: var(--color-primary);
+  transform: translateX(2px);
+}
+
+.txLabel {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-primary);
+  background: rgba(245, 158, 11, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.txHash {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.txNote {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.txArrow { color: var(--color-text-muted); font-size: 14px; }
+
+@media (max-width: 720px) {
+  .txRow {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "label arrow"
+      "hash  arrow"
+      "note  note";
+  }
+  .txLabel { grid-area: label; justify-self: start; }
+  .txHash { grid-area: hash; }
+  .txNote { grid-area: note; }
+  .txArrow { grid-area: arrow; }
+}
+
 .footer {
   border-top: 1px solid var(--color-border);
   margin-top: 80px;
