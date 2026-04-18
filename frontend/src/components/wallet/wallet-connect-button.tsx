@@ -1,0 +1,63 @@
+"use client";
+
+import { useEffect } from "react";
+import { Button, Badge, useToast } from "@/components/ui";
+import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
+import { shortenAddress } from "@/lib/format";
+import styles from "./wallet-connect-button.module.css";
+
+export function WalletConnectButton() {
+  const { wallet, connectWallet, disconnectWallet } = useFreighterWallet();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (wallet.error) {
+      toast({
+        title: "Wallet error",
+        detail: wallet.error,
+        tone: "danger",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallet.error]);
+
+  if (wallet.status === "connecting") {
+    return (
+      <Button variant="primary" size="sm" loading>
+        Connect Freighter
+      </Button>
+    );
+  }
+
+  if (wallet.status === "connected" && wallet.address) {
+    return (
+      <div className={styles.container}>
+        {!wallet.isExpectedNetwork && (
+          <Badge tone="warning" dot>Wrong network</Badge>
+        )}
+        <Badge tone="accent" dot>
+          {shortenAddress(wallet.address)}
+        </Badge>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={disconnectWallet}
+        >
+          Disconnect
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <Button
+      variant="primary"
+      size="sm"
+      onClick={() => void connectWallet()}
+    >
+      Connect Freighter
+    </Button>
+  );
+}
+
+export default WalletConnectButton;

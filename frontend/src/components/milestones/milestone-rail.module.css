@@ -1,0 +1,104 @@
+.rail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  padding: 16px 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.iconDone {
+  color: var(--color-success);
+}
+
+.iconActive {
+  color: var(--color-primary);
+}
+
+.iconPending {
+  color: var(--color-text-muted);
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.labelDone {
+  color: var(--color-success);
+}
+
+.labelActive {
+  color: var(--color-primary);
+}
+
+.labelPending {
+  color: var(--color-text-muted);
+}
+
+.connector {
+  flex: 1;
+  height: 2px;
+  min-width: 24px;
+  margin-bottom: 20px; /* offset to align with icon center */
+}
+
+.connectorFilled {
+  background: var(--color-success);
+}
+
+.connectorEmpty {
+  background: var(--color-border);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Vertical layout on small screens */
+@media (max-width: 639px) {
+  .rail {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .step {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .connector {
+    width: 2px;
+    height: 24px;
+    min-width: unset;
+    margin-bottom: 0;
+    margin-left: 21px; /* align with icon center (44px / 2 - 1px) */
+  }
+}
