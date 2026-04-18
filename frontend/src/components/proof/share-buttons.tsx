@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import styles from "./share-buttons.module.css";
 
 interface ShareButtonsProps {
   hash: string;
@@ -37,7 +38,7 @@ export function ShareButtons({ hash: _hash }: ShareButtonsProps) {
   }
 
   return (
-    <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
+    <div className={styles.row}>
       {/* Share on X */}
       <Button
         variant="secondary"
@@ -52,7 +53,7 @@ export function ShareButtons({ hash: _hash }: ShareButtonsProps) {
           viewBox="0 0 16 16"
           fill="none"
           aria-hidden="true"
-          style={{ marginRight: "var(--space-1)" }}
+          className={styles.btnIcon}
         >
           <path
             d="M12.5 2.5L3.5 13.5M3.5 2.5L12.5 13.5"
@@ -78,7 +79,7 @@ export function ShareButtons({ hash: _hash }: ShareButtonsProps) {
           viewBox="0 0 16 16"
           fill="none"
           aria-hidden="true"
-          style={{ marginRight: "var(--space-1)" }}
+          className={styles.btnIcon}
         >
           <rect x="2" y="2" width="4" height="12" rx="0.5" fill="currentColor" />
           <circle cx="4" cy="2" r="1.5" fill="currentColor" />
@@ -108,7 +109,7 @@ export function ShareButtons({ hash: _hash }: ShareButtonsProps) {
             viewBox="0 0 16 16"
             fill="none"
             aria-hidden="true"
-            style={{ marginRight: "var(--space-1)" }}
+            className={styles.btnIcon}
           >
             <path
               d="M2.5 8.5L6.5 12.5L13.5 5"
@@ -126,7 +127,7 @@ export function ShareButtons({ hash: _hash }: ShareButtonsProps) {
             viewBox="0 0 16 16"
             fill="none"
             aria-hidden="true"
-            style={{ marginRight: "var(--space-1)" }}
+            className={styles.btnIcon}
           >
             <rect x="5" y="5" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
             <path

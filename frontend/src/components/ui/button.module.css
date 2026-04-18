@@ -62,7 +62,7 @@
 
 .danger {
   background: var(--color-danger);
-  color: #fff;
+  color: var(--color-text);
   border-color: var(--color-danger);
 }
 

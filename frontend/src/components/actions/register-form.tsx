@@ -142,7 +142,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           <input
             type="file"
             ref={fileInputRef}
-            style={{ display: "none" }}
+            className={styles.hiddenInput}
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) void handleHashFromFile(f);
