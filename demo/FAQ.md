@@ -1,0 +1,64 @@
+# FAQ — for judges, sponsors, and pilot partners
+
+## Product
+
+**Q: What does "proof-of-work" mean here? Mining?**
+No. We mean *evidence that a unit of work was completed, verified, and paid for.* Zero compute, zero mining. Just a SHA-256 hash anchored on Stellar.
+
+**Q: Does the deliverable file leave the user's machine?**
+No. Hashing is done client-side in the browser via Web Crypto API. Only the hash touches the network.
+
+**Q: What happens if a user loses the original file?**
+The hash remains on-chain forever, but the hash alone cannot reconstruct the file. Users must keep their own copies. Stellaroid Earn is a proof registry, not storage.
+
+**Q: Can the same hash be registered twice?**
+No. The contract rejects duplicates — `AlreadyExists` is surfaced as a human-readable toast.
+
+**Q: Can a proof be revoked?**
+Not in the current MVP. Adding revocation is a v2 scope decision (VeracityLink-style `revoke` with historical preservation).
+
+## Business
+
+**Q: What's the revenue model?**
+Today: none. Future: small platform fee on the pay step (opt-in), SaaS tier for organizations that want white-labeled Proof Blocks, or stablecoin rails with spread.
+
+**Q: Who pays the transaction fees?**
+The signing wallet. Stellar fees are sub-cent, so it's a non-issue for demos and realistic use.
+
+**Q: Why Stellar and not Ethereum or Solana?**
+Sub-cent fees + 5-second finality + Freighter's smooth onboarding + native payment primitives (no wrapped assets). Ethereum fees kill micro-payments. Solana has better fees but Freighter's UX + Soroban's Rust DX won for this vertical.
+
+## Technical
+
+**Q: What's on-chain vs. off-chain?**
+On-chain: SHA-256 hash, issuer address, student address, amount, status flags, timestamps. Off-chain: the deliverable file itself (user-held).
+
+**Q: What's the stack?**
+Next.js 15 (App Router) + React 19, `@stellar/stellar-sdk`, `@stellar/freighter-api`, Rust + Soroban SDK for the contract. No Tailwind, no component library — pure CSS modules + design tokens.
+
+**Q: Is it mainnet-ready?**
+No. Testnet-only for the MVP. Mainnet readiness is a dedicated work item: contract audit, gas/fee review, error budget, rate limits on the RPC.
+
+**Q: What happens when Soroban RPC goes down?**
+The health pill turns red within 60 seconds. `withTimeout` (15s) prevents UI hangs. Humanized error messages ship to the user — never raw ScVal or HostError.
+
+**Q: Accessibility?**
+WCAG AA contrast on all tokens. `:focus-visible` rings everywhere. `prefers-reduced-motion` respected globally. 44×44 minimum touch targets. Inline SVG icons (no emoji).
+
+## Security
+
+**Q: What stops someone from anchoring a fake hash?**
+Nothing at the cryptographic layer — the contract just stores what's submitted. Trust in *who* issued comes from the issuer's address. This is a **provable audit trail**, not a KYC system. Pair with DID / verifiable credentials for strong identity.
+
+**Q: What if Freighter is phished?**
+Same answer as any wallet app. We never touch seed phrases. We only request signatures on scoped transactions. Users approve each action explicitly.
+
+**Q: Error handling?**
+All contract errors flow through `humanizeError()` — 10 mapping rules covering user-rejected, network mismatch, timeout, simulation failed, unauthorized, duplicate, invalid, not-found, fetch-failed, insufficient-balance, and a safe fallback. Raw errors never reach JSX.
+
+## Roadmap
+
+**v1 (today):** register → verify → pay → share, testnet.
+**v1.1:** demo-mode fallback when RPC is cold, verified-events history feed.
+**v2:** mainnet, USDC-on-Stellar payment option, revocation, multi-signer issuers.
+**v3:** org dashboards, API for external verification, embeddable Proof Block widget.
