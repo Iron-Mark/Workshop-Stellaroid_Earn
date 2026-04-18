@@ -10,13 +10,24 @@ export default function About() {
   return (
     <div className={styles.page}>
       <nav className={styles.nav}>
-        <div className={styles.brand}>
-          <Link href="/">Stellaroid Earn</Link>
-        </div>
-        <div className={styles.navLinks}>
-          <Link href="/">Home</Link>
-          <Link href="/app">Demo</Link>
-          <Link href="/about">About</Link>
+        <div className={styles.navInner}>
+          <div className={styles.brand}>
+            <Link href="/">
+              <img
+                src="/logo.svg"
+                alt=""
+                width={24}
+                height={24}
+                style={{ verticalAlign: "middle", marginRight: 8 }}
+              />
+              Stellaroid Earn
+            </Link>
+          </div>
+          <div className={styles.navLinks}>
+            <Link href="/">Home</Link>
+            <Link href="/app">Demo</Link>
+            <Link href="/about">About</Link>
+          </div>
         </div>
       </nav>
 

@@ -14,18 +14,30 @@ export default function Landing() {
   return (
     <div className={styles.page}>
       <nav className={styles.nav}>
-        <div className={styles.brand}>Stellaroid Earn</div>
-        <div className={styles.navLinks}>
-          <Link href="/">Home</Link>
-          <Link href="/app">Demo</Link>
-          <Link href="/about">About</Link>
-          <a href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" target="_blank" rel="noreferrer">
-            GitHub ↗
-          </a>
+        <div className={styles.navInner}>
+          <div className={styles.brand}>
+            <img src="/logo.svg" alt="" width={28} height={28} style={{ verticalAlign: "middle", marginRight: 10 }} />
+            Stellaroid Earn
+          </div>
+          <div className={styles.navLinks}>
+            <Link href="/">Home</Link>
+            <Link href="/app">Demo</Link>
+            <Link href="/about">About</Link>
+            <a href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" target="_blank" rel="noreferrer">
+              GitHub ↗
+            </a>
+          </div>
         </div>
       </nav>
 
       <section className={styles.hero}>
+        <img
+          src="/logo.svg"
+          alt=""
+          width={96}
+          height={96}
+          style={{ marginBottom: 20, imageRendering: "pixelated" }}
+        />
         <span className={styles.eyebrow}>Stellar Testnet · Soroban · Freighter</span>
         <h1 className={styles.h1}>
           Prove your credentials.
