@@ -17,7 +17,11 @@ This folder is the **marketing + demo hub** for Stellaroid Earn. It is aimed at 
 
 ## The 10-second pitch
 
-> **Stellaroid Earn is proof-of-work as a public good.** Issuers anchor a SHA-256 hash of completed work on Stellar. Employers verify it and pay in the same flow. The result is a shareable **Proof Block** URL — a cryptographic receipt anyone can open.
+> **Maria graduated top of her cohort in Quezon City.** Verifying her credential takes her next employer three weeks — so the role goes to someone who didn't need verifying. Stellaroid Earn binds the hash on Stellar, verifies it in five seconds, and pays Maria directly — no invoice, no platform, no wait. Every completed cycle produces a public **Proof Block** URL she can drop into her next offer email.
+
+## The one-line reframe
+
+> We didn't pick a vertical. We picked a **shape of transaction** — prove → get paid → share — and encoded it in 32 bytes on Stellar. Which vertical it runs in is a GTM decision, not a technical one.
 
 ## Live demo
 

@@ -6,42 +6,49 @@
 
 ## Taglines (pick by context)
 
-- **Primary:** Prove the work. Settle the payout. Share the proof.
+- **Primary:** Bind the hash. Pay the wallet. Prove the work.
 - **Short:** Proof-of-work as a public good.
 - **Technical:** SHA-256 anchored work receipts with atomic pay-on-verify on Stellar.
-- **Casual:** The receipt that follows you, not the platform.
+- **Casual:** The receipt that follows the worker, not the platform.
+- **Reframe:** We didn't pick a vertical. We picked a shape of transaction.
 
 ## Boilerplate (~50 words)
 
-> Stellaroid Earn is a Soroban-powered proof-of-work registry on Stellar. Issuers anchor a SHA-256 hash of completed work on-chain. Employers verify the hash and pay in the same flow. The result is a public, shareable Proof Block — a cryptographic receipt anyone can open. Built for freelancers, bootcamps, bounties, and grant DAOs.
+> Maria graduated top of her bootcamp cohort in Quezon City — and lost a Singapore fintech role because verifying her diploma took three weeks. Stellaroid Earn binds the credential hash on Stellar, verifies it in five seconds, and pays her wallet directly. Every completed cycle produces a public Proof Block URL.
 
 ## Boilerplate (~150 words)
 
-> Stellaroid Earn closes the loop between work and payment. Most credentialing dApps stop at *"verified."* We don't.
+> Stellaroid Earn closes the loop between work and payment on Stellar.
 >
-> Issuers register a SHA-256 hash of a deliverable on the Stellar blockchain via Freighter. Employers verify the same hash against their own copy and settle payment in the same flow — on the same ledger, in the same app. The output is a **Proof Block**: a public URL that anyone can open to see the issuer, the student, the amount, the timestamp, and direct links to the on-chain transactions on stellar.expert. Third parties can resolve any Proof Block from its hash at `/proof` — no wallet required.
+> Verification takes 14–21 days. 32% of candidates misrepresent their education. Background checks cost $30–$75. So employers default to the candidate they *can* vet cheaply — and workers like Maria, a Quezon City bootcamp graduate, lose roles they've earned. The certificate is real. Proving it costs more than hiring around it.
 >
-> No backend. No database. No middleman. Sub-cent fees. Five-second finality.
+> Stellaroid Earn makes proof cheaper than skipping it. Maria's school anchors a SHA-256 hash of her diploma on Soroban. A Singapore employer verifies the hash in five seconds and pays her directly in XLM — no invoice, no platform fee, no three-week email thread. Every completed cycle produces a public **Proof Block** URL anyone can open.
 >
-> Built during the Stellar Philippines UniTour 2026 bootcamp. Deployed on Stellar testnet. Looking for design partners across freelance platforms, bootcamps, bounty programs, and grant DAOs.
+> We didn't pick a vertical. We picked a shape of transaction — *prove → get paid → share* — and encoded it in 32 bytes. Which vertical it runs in (freelance, bootcamps, bounties, grant DAOs) is a GTM decision, not a technical one.
+>
+> No backend. No database. No middleman. Sub-cent fees. Five-second finality. Built during the Stellar Philippines UniTour 2026 bootcamp.
 
 ## Elevator pitch (spoken, 20 seconds)
 
-> "Stellaroid Earn is proof-of-work as a public good. An issuer anchors a SHA-256 hash of completed work on Stellar. An employer verifies it and pays in the same flow. The result is a shareable Proof Block URL — a cryptographic receipt anyone can open. One contract, one wallet, one link."
+> "Meet Maria. She graduated top of her bootcamp in Quezon City and lost a Singapore role because verifying her diploma took three weeks. Stellaroid Earn binds the hash on Stellar, verifies in five seconds, and pays her directly. Every completed cycle produces a public Proof Block link. One contract, one wallet, one URL — across every vertical where someone proves, verifies, and pays."
 
 ## Social blurbs
 
 **X (280 chars):**
-> We built Stellaroid Earn on @StellarOrg — a proof-of-work registry that closes the loop between verification and payment. SHA-256 hashes on Soroban. Freighter signing. Public shareable Proof Blocks. Sub-cent fees, 5-sec finality. Testnet live now.
+> Maria graduated top of her cohort. Verifying her diploma took 3 weeks — the role went to someone who didn't need verifying.
+>
+> We built Stellaroid Earn on @StellarOrg so proof is cheaper than skipping it. SHA-256 on Soroban. Freighter signing. Public Proof Blocks. Sub-cent fees. 5-sec finality.
 
 **LinkedIn (opener):**
-> Work gets done every day. Payment gets stuck every day.
+> Maria graduated top of her bootcamp cohort in Quezon City. She applied to a Singapore fintech on a Tuesday. The employer emailed her school to confirm her diploma. Three weeks later, the role was filled — by a candidate who didn't need verifying.
 >
-> We built Stellaroid Earn during the Stellar Philippines UniTour 2026 bootcamp to fix that loop. Issuers anchor SHA-256 hashes of completed work on Stellar. Employers verify and pay in the same flow. Every completed cycle produces a shareable Proof Block URL — a cryptographic receipt anyone can open.
+> The certificate was real. Proving it cost more than hiring around it.
 >
-> No backend. No database. No middleman. Just a contract, a wallet, and a link.
+> We built Stellaroid Earn during the Stellar Philippines UniTour 2026 to fix that. Issuers anchor a SHA-256 hash on Stellar, employers verify in five seconds, and payment settles in the same flow — directly to Maria's wallet. Every completed cycle produces a public Proof Block URL anyone can open.
 >
-> Built on @Stellar Development Foundation + Soroban. Looking for design partners.
+> We didn't pick a vertical. We picked a shape of transaction — prove, verify, pay, share — and encoded it in 32 bytes. Freelance, bootcamps, bounties, grant DAOs all use the same four fields.
+>
+> Built on Stellar + Soroban. Looking for design partners.
 
 ## Hashtags
 
@@ -49,9 +56,9 @@
 
 ## Audio/video callouts (if recording a demo reel)
 
-- **Open:** "What if your receipts followed you, not the platform?"
-- **Middle:** "Sub-cent fees. Five-second finality."
-- **Close:** "One contract. One wallet. One link."
+- **Open:** "Maria lost a job she earned. Not to a better candidate — to a 3-week email thread."
+- **Middle:** "Sub-cent fees. Five-second finality. No platform fee."
+- **Close:** "Prove the work. Pay the wallet. Share the proof."
 
 ## Credits
 
