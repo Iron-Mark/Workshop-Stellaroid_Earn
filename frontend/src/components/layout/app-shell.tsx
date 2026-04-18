@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
-import Link from "next/link";
 import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
 import { CopyButton } from "@/components/ui";
+import { SiteNav } from "./site-nav";
+import { SiteFooter } from "./site-footer";
 import styles from "./app-shell.module.css";
 
 interface AppShellProps {
@@ -14,30 +15,25 @@ interface AppShellProps {
 export function AppShell({ children, rpcPill, walletButton }: AppShellProps) {
   const contractId = appConfig.contractId;
   const explorerUrl = appConfig.explorerUrl;
-  const shortenedContractId = contractId ? shortenAddress(contractId, 8) : "Not configured";
+  const shortenedContractId = contractId
+    ? shortenAddress(contractId, 8)
+    : "Not configured";
   const contractExplorerUrl = contractId
     ? `${explorerUrl}/contract/${contractId}`
     : explorerUrl;
 
   return (
     <div className={styles.root}>
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <Link href="/" className={styles.brand} style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-            <img src="/logo.svg" alt="" width={22} height={22} />
-            Stellaroid Earn
-          </Link>
-          <nav className={styles.nav}>
-            <Link href="/">Home</Link>
-            <Link href="/app">Demo</Link>
-            <Link href="/about">About</Link>
-          </nav>
-          <div className={styles.headerRight}>
+      <SiteNav
+        right={
+          <>
             {rpcPill}
             {walletButton}
-          </div>
-        </div>
-        <div className={styles.subheader}>
+          </>
+        }
+      />
+      <div className={styles.subheader}>
+        <div className={styles.subheaderInner}>
           <span className={styles.subheaderLabel}>Contract</span>
           <code>{shortenedContractId}</code>
           {contractId && (
@@ -52,8 +48,9 @@ export function AppShell({ children, rpcPill, walletButton }: AppShellProps) {
             stellar.expert ↗
           </a>
         </div>
-      </header>
+      </div>
       <main className={styles.main}>{children}</main>
+      <SiteFooter />
     </div>
   );
 }
