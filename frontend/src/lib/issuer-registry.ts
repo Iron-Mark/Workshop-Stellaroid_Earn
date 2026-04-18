@@ -9,8 +9,14 @@ export interface IssuerInfo {
 }
 
 const REGISTRY: Record<string, IssuerInfo> = {
-  // Stellaroid Earn demo issuer (the account that deployed/ran the sample certs)
+  // Stellaroid Earn demo issuer — admin account that deployed the contract
+  // and registered the sample certificates showcased on the landing page.
   // Keyed by uppercase G-address for exact match.
+  GAWIOVGFSPJDEIJJZUSVRFPVP3D5VNO2LGCU47KEHJD6MV277QKNR34D: {
+    name: "Stellaroid Academy",
+    category: "bootcamp",
+    url: "https://stellaroid-earn-demo.vercel.app",
+  },
   // Add production issuers here as partnerships land.
 };
 
