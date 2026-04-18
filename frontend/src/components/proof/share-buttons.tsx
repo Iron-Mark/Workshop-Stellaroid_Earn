@@ -18,9 +18,19 @@ export function ShareButtons({ hash: _hash }: ShareButtonsProps) {
     }
   }, []);
 
-  const tweetText = `Built Stellaroid Earn on Stellar testnet — on-chain credentials + instant employer payouts. Verified demo: ${url}`;
+  const tweetText = `I just got verified proof of work — on-chain, instantly settled on @StellarOrg. Sub-cent fees. 5-second finality. No platform take rate.
+
+Proof: ${url}
+
+#Stellar #Soroban #ProofOfWork`;
   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
-  const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+
+  const linkedInText = `I just got verified proof of work — anchored on-chain with SHA-256 and settled atomically on Stellar. No 30-day invoice wait. No 20% platform fee. Just a link anyone can verify.
+
+${url}
+
+Built on Stellar + Soroban. #Stellar #Soroban #ProofOfWork #FreelanceEconomy`;
+  const linkedInUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(linkedInText)}`;
 
   function openInNewTab(href: string) {
     window.open(href, "_blank", "noopener,noreferrer");
