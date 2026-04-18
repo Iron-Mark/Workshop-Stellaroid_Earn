@@ -269,6 +269,19 @@
   margin-bottom: 2px;
 }
 
+@media (max-width: 480px) {
+  .shell { padding: var(--space-3); }
+  .card { padding: var(--space-4); gap: var(--space-4); border-radius: var(--radius-md); }
+  .pitch { font-size: 1.0625rem; }
+  .metaRow, .certRow { gap: 6px; }
+  .metaCode { font-size: 0.75rem; word-break: break-all; }
+  .metaLink { white-space: normal; }
+  .qrBlock { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .footer::before, .footer::after { display: none; }
+  /* Hide decorative tear line on mobile — reflow makes its position drift */
+  .card::after { display: none; }
+}
+
 @media print {
   .card {
     background: white;
