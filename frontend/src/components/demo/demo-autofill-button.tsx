@@ -1,5 +1,7 @@
 "use client";
 
+import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
+import { useToast } from "@/components/ui";
 import styles from "./demo-autofill-button.module.css";
 
 export const DEMO_AUTOFILL_EVENT = "demo:autofill";
@@ -10,17 +12,40 @@ export interface DemoAutofillDetail {
   amount: string;
 }
 
-export const DEMO_AUTOFILL_SAMPLE: DemoAutofillDetail = {
-  studentAddr: "GDQOE23CFSUMSVQK4Y5JHPPYK73VYCNHZHA7ENKCV37P6SUEO6XQBKPP",
-  certHash: "a1b2c3d4e5f6078899aabbccddeeff00112233445566778899aabbccddeeff00",
-  amount: "10",
-};
+/**
+ * Fresh 64-hex cert hash per click. Avoids `AlreadyExists` collisions
+ * if the user clicks autofill multiple times or another demo ran before.
+ */
+function generateCertHash(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
 
 export function DemoAutofillButton() {
+  const { wallet } = useFreighterWallet();
+  const { toast } = useToast();
+
   function handleClick() {
+    if (!wallet.address || wallet.status !== "connected") {
+      toast({
+        title: "Connect Freighter first",
+        detail:
+          "The demo autofill uses your connected wallet as both issuer and student (single-wallet flow).",
+        tone: "warning",
+      });
+      return;
+    }
+
     window.dispatchEvent(
       new CustomEvent<DemoAutofillDetail>(DEMO_AUTOFILL_EVENT, {
-        detail: DEMO_AUTOFILL_SAMPLE,
+        detail: {
+          studentAddr: wallet.address,
+          certHash: generateCertHash(),
+          amount: "10",
+        },
       }),
     );
   }
