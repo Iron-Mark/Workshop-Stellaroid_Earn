@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "stellar-dev@stellar-dev": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
+    "superpowers@claude-plugins-official": true
+  }
+}

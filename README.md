@@ -30,7 +30,7 @@ No prior Web3 experience needed—follow the steps below.
 
 For full installation instructions and troubleshooting, use the local guide:
 
-- `[ENG] Pre-Workshop Setup Guide.pdf`
+- `setup/[ENG] Pre-Workshop Setup Guide.pdf`
 
 Install the following before or at the start of the session:
 
@@ -390,6 +390,15 @@ For **Prize Pool Joiner Submission**:
 | Freighter Wallet | [freighter.app](https://freighter.app) |
 | Stellar Expert (Testnet) | [stellar.expert/explorer/testnet](https://stellar.expert/explorer/testnet) |
 | Stellar Lab | [lab.stellar.org](https://lab.stellar.org) |
+
+## 🔗 Extra Resources
+
+| Resource | Link |
+|----------|------|
+| Stellar CLI (GitHub) | https://github.com/stellar/stellar-cli |
+| Building with AI | https://developers.stellar.org/docs/tools/developer-tools/building-with-ai |
+| Bootcamp Repo (Iron-Mark fork) | https://github.com/Iron-Mark/Stellar-Bootcamp-2026 |
+| Bootcamp Repo (upstream) | https://github.com/armlynobinguar/Stellar-Bootcamp-2026 |
 
 ---
 
