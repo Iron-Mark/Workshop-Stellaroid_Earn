@@ -2,6 +2,7 @@
 import { CertificateRecord } from "@/lib/contract-client";
 import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
+import { lookupIssuer } from "@/lib/issuer-registry";
 import { Badge } from "@/components/ui/badge";
 import { CopyButton } from "@/components/ui/copy-button";
 import { ShareButtons } from "./share-buttons";
@@ -102,6 +103,14 @@ export function ProofCard({ hash, cert }: ProofCardProps) {
               <span className={styles.metaLabel}>Issuer</span>
               <code className={styles.metaCode}>{shortenAddress(cert.issuer, 8)}</code>
               <CopyButton value={cert.issuer} ariaLabel="Copy issuer address" />
+              {(() => {
+                const info = lookupIssuer(cert.issuer);
+                return info ? (
+                  <Badge tone="success" dot>
+                    ✓ {info.name}
+                  </Badge>
+                ) : null;
+              })()}
             </div>
             <div className={styles.certRow}>
               <span className={styles.metaLabel}>Verified</span>

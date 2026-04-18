@@ -4,6 +4,42 @@ import { SiteNav } from "@/components/layout/site-nav";
 import { SiteFooter } from "@/components/layout/site-footer";
 import styles from "./page.module.css";
 
+const stack = [
+  { title: "Rust + soroban-sdk 22", desc: "Contract crate, 5 unit tests" },
+  { title: "Stellar testnet", desc: "Deployed + initialised with native SAC" },
+  { title: "Next.js 15 + React 19", desc: "App Router, server + client" },
+  { title: "Freighter wallet", desc: "@stellar/freighter-api signing" },
+  { title: "@stellar/stellar-sdk", desc: "Build, simulate, submit via Soroban RPC" },
+  { title: "Vercel", desc: "Auto-deployed from main" },
+];
+
+const fns = [
+  {
+    sig: "init(admin, token)",
+    desc: "One-shot bootstrap. Stores admin + reward token in instance storage.",
+  },
+  {
+    sig: "register_certificate(issuer, student, cert_hash)",
+    desc: "Binds hash to student wallet; rejects duplicates; emits cert_reg.",
+  },
+  {
+    sig: "verify_certificate(cert_hash) → bool",
+    desc: "Flips record to verified; emits cert_ver.",
+  },
+  {
+    sig: "reward_student(student, cert_hash, amount)",
+    desc: "Admin-triggered XLM reward via the configured SAC.",
+  },
+  {
+    sig: "link_payment(employer, student, cert_hash, amount)",
+    desc: "Employer pays a verified student directly; emits payment.",
+  },
+  {
+    sig: "get_certificate(cert_hash)",
+    desc: "Read-only lookup of the certificate record.",
+  },
+];
+
 export default function About() {
   const contractUrl = appConfig.contractId
     ? `${appConfig.explorerUrl}/contract/${appConfig.contractId}`
@@ -13,94 +49,115 @@ export default function About() {
     <div className={styles.page}>
       <SiteNav />
 
-      <article className={styles.article}>
-        <header>
-          <span className={styles.eyebrow}>About</span>
-          <h1>Why Stellaroid Earn</h1>
-        </header>
+      <section className={styles.hero}>
+        <span className={styles.eyebrow}>About</span>
+        <h1>
+          Why <em>Stellaroid Earn</em>
+        </h1>
+        <p className={styles.lede}>
+          A thin piece of software around one idea: certificates should be
+          verifiable in seconds, not emails. And if they&rsquo;re verifiable, the grad
+          should get paid on the same tap.
+        </p>
+      </section>
 
-        <section>
-          <h2>The problem</h2>
-          <p>
-            A graduating student from a Philippine bootcamp applying to a Singapore fintech
-            waits two to three weeks for manual certificate verification by email. By then,
-            ₱40,000 – ₱80,000 of contract work has gone to another candidate. Certificate
-            fraud on LinkedIn makes remote hiring risky for employers too.
-          </p>
+      <div className={styles.container}>
+        <div className={styles.twoUp}>
+          <article className={styles.card}>
+            <div className={styles.cardEyebrow}>The problem</div>
+            <h2>Verification is the bottleneck</h2>
+            <p>
+              A graduating student from a Philippine bootcamp applies to a Singapore
+              fintech. The employer emails the school to confirm the certificate. Two to
+              three weeks later, the slot is filled by someone who didn&rsquo;t need
+              verification.
+            </p>
+            <p>
+              Meanwhile, LinkedIn fraud makes employers cautious about remote hires
+              they can&rsquo;t vet cheaply. Both sides lose.
+            </p>
+          </article>
+
+          <article className={styles.card}>
+            <div className={styles.cardEyebrow}>The approach</div>
+            <h2>Bind the hash, pay the wallet</h2>
+            <p>
+              Hash the certificate PDF, anchor the hash + student wallet on Soroban,
+              let any employer verify + pay in one session.
+            </p>
+            <p>
+              The canonical output isn&rsquo;t the UI — it&rsquo;s the{" "}
+              <em>event stream on stellar.expert</em>. A reviewer with no frontend access
+              can still see every issuance, verification, and payment, provably.
+            </p>
+          </article>
+        </div>
+
+        <section className={styles.sectionWide}>
+          <div className={styles.sectionHead}>
+            <h2>Tech stack</h2>
+            <p>Boring, proven, fast to demo.</p>
+          </div>
+          <div className={styles.stack}>
+            {stack.map((s) => (
+              <div key={s.title} className={styles.stackChip}>
+                <p className={styles.stackChipTitle}>{s.title}</p>
+                <p className={styles.stackChipDesc}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
-        <section>
-          <h2>The approach</h2>
-          <p>
-            Bind a SHA-256 hash of the certificate PDF to the student&rsquo;s wallet on a
-            Soroban smart contract. Any employer can verify the hash on-chain and trigger
-            payment directly to the verified wallet — all in a single browser session.
-          </p>
-          <p>
-            The canonical output isn&rsquo;t the UI — it&rsquo;s the <em>event stream on stellar.expert</em>.
-            A reviewer without access to the frontend can still see every issuance,
-            verification, and payment, provably.
-          </p>
+        <section className={styles.sectionWide}>
+          <div className={styles.sectionHead}>
+            <h2>Contract surface</h2>
+            <p>Six public functions; storage explicit; errors human.</p>
+          </div>
+          <div className={styles.fnList}>
+            {fns.map((fn) => (
+              <div key={fn.sig} className={styles.fnRow}>
+                <div className={styles.fnSig}>{fn.sig}</div>
+                <p className={styles.fnDesc}>{fn.desc}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
-        <section>
-          <h2>Tech stack</h2>
-          <ul>
-            <li><strong>Contract:</strong> Rust + <code>soroban-sdk 22</code>, 5 passing unit tests</li>
-            <li><strong>Deployment:</strong> Stellar testnet, initialized with native XLM SAC as reward token</li>
-            <li><strong>Frontend:</strong> Next.js 15 App Router + React 19</li>
-            <li><strong>Wallet:</strong> Freighter via <code>@stellar/freighter-api</code></li>
-            <li><strong>Sign &amp; submit:</strong> <code>@stellar/stellar-sdk</code> with Soroban RPC</li>
-            <li><strong>Hosting:</strong> Vercel (auto-deployed from <code>main</code>)</li>
-          </ul>
-        </section>
+        <aside className={styles.credits}>
+          <img src="/logo.svg" alt="" width={64} height={64} />
+          <div>
+            <h3>Built for the Stellar Philippines UniTour</h3>
+            <p>
+              In partnership with{" "}
+              <a href="https://risein.com" target="_blank" rel="noreferrer">
+                Rise In
+              </a>
+              . Source, contract, and Proof Block live on{" "}
+              <a
+                href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026"
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub
+              </a>
+              . The deployed contract is verifiable on{" "}
+              <a href={contractUrl} target="_blank" rel="noreferrer">
+                Stellar Expert
+              </a>
+              .
+            </p>
+          </div>
+        </aside>
 
-        <section>
-          <h2>Contract surface</h2>
-          <dl className={styles.dl}>
-            <dt><code>init(admin, token)</code></dt>
-            <dd>One-shot bootstrap. Stores admin + reward token in instance storage.</dd>
-
-            <dt><code>register_certificate(issuer, student, cert_hash)</code></dt>
-            <dd>Binds hash to student wallet; rejects duplicates; emits <code>cert_reg</code>.</dd>
-
-            <dt><code>verify_certificate(cert_hash) → bool</code></dt>
-            <dd>Flips record to verified; emits <code>cert_ver</code>.</dd>
-
-            <dt><code>reward_student(student, cert_hash, amount)</code></dt>
-            <dd>Admin-triggered XLM reward via the configured SAC.</dd>
-
-            <dt><code>link_payment(employer, student, cert_hash, amount)</code></dt>
-            <dd>Employer pays a verified student directly; emits <code>payment</code>.</dd>
-
-            <dt><code>get_certificate(cert_hash)</code></dt>
-            <dd>Read-only lookup of the certificate record.</dd>
-          </dl>
-        </section>
-
-        <section>
-          <h2>Credits</h2>
-          <p>
-            Built for the <a href="https://www.risein.com/programs" target="_blank" rel="noreferrer">Stellar Philippines UniTour</a>{" "}
-            bootcamp in partnership with{" "}
-            <a href="https://risein.com" target="_blank" rel="noreferrer">Rise In</a>.
-            Source, contract, and Proof Block live at{" "}
-            <a href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" target="_blank" rel="noreferrer">
-              github.com/Iron-Mark/Stellar-Bootcamp-2026
-            </a>.
-          </p>
-          <p>
-            Verify the deployed contract on{" "}
-            <a href={contractUrl} target="_blank" rel="noreferrer">Stellar Expert</a>.
-          </p>
-        </section>
-
-        <div className={styles.cta}>
+        <div className={styles.ctaRow}>
           <Link href="/app" className={styles.ctaPrimary}>
             Try the demo →
           </Link>
+          <Link href="/proof" className={styles.ctaGhost}>
+            Look up a certificate
+          </Link>
         </div>
-      </article>
+      </div>
 
       <SiteFooter />
     </div>
