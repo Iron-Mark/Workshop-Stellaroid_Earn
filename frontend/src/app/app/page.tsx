@@ -18,7 +18,7 @@ import {
   FreighterWalletProvider,
   useFreighterWallet,
 } from "@/hooks/use-freighter-wallet";
-import styles from "./page.module.css";
+import type { CertificateStatus } from "@/lib/types";
 
 function AppExperience() {
   const { wallet, isMobileBrowser } = useFreighterWallet();
@@ -27,6 +27,7 @@ function AppExperience() {
     registered: false,
     verified: false,
     paid: false,
+    credentialStatus: undefined as CertificateStatus | undefined,
     lastHash: undefined as string | undefined,
     lastStudent: undefined as string | undefined,
   });
@@ -40,10 +41,10 @@ function AppExperience() {
   return (
     <AppShell rpcPill={<RpcStatusPill />} walletButton={<WalletConnectButton />}>
       {!showWalletEmptyState ? <FreighterWelcome /> : null}
-      <div className={styles.stack}>
+      <div className="flex flex-col gap-6">
         <NetworkBanner wallet={wallet} />
-        <div className={styles.grid}>
-          <div className={styles.actionColumn}>
+        <div className="grid [grid-template-columns:minmax(0,1.5fr)_minmax(280px,0.95fr)] gap-6 items-start max-[920px]:grid-cols-1">
+          <div className="flex flex-col gap-6 min-w-0">
             {showWalletEmptyState ? (
               <WalletEmptyState
                 mode={showDesktopOnlyFallback ? "desktop-only" : "install-extension"}
@@ -59,34 +60,72 @@ function AppExperience() {
                 <MilestoneRail state={milestones} />
                 <section>
                   {role === "issuer" && (
-                    <RegisterForm
-                      onSuccess={(hash, student) =>
-                        setMilestones((m) => ({
-                          ...m,
-                          registered: true,
-                          lastHash: hash,
-                          lastStudent: student,
-                        }))
-                      }
-                    />
+                    <div className="flex flex-col gap-6">
+                      <RegisterForm
+                        onSuccess={(hash, student) =>
+                          setMilestones((m) => ({
+                            ...m,
+                            registered: true,
+                            verified: false,
+                            paid: false,
+                            credentialStatus: "issued",
+                            lastHash: hash,
+                            lastStudent: student,
+                          }))
+                        }
+                      />
+                      <VerifyForm
+                        initialHash={milestones.lastHash}
+                        allowTrustedActions
+                        onVerified={(hash) =>
+                          setMilestones((m) => ({
+                            ...m,
+                            verified: true,
+                            credentialStatus: "verified",
+                            lastHash: hash,
+                          }))
+                        }
+                        onStatusChange={(hash, status, _txHash, record) =>
+                          setMilestones((m) => ({
+                            ...m,
+                            verified: status === "verified",
+                            credentialStatus: status,
+                            lastHash: hash,
+                            lastStudent: record?.owner ?? m.lastStudent,
+                          }))
+                        }
+                      />
+                    </div>
                   )}
-                  {role === "employer" && !milestones.verified && (
-                    <VerifyForm
-                      onVerified={(hash) =>
-                        setMilestones((m) => ({ ...m, verified: true, lastHash: hash }))
-                      }
-                    />
-                  )}
-                  {role === "employer" && milestones.verified && !milestones.paid && (
-                    <PayForm
-                      onPaid={() => setMilestones((m) => ({ ...m, paid: true }))}
-                    />
+                  {role === "employer" && (
+                    <div className="flex flex-col gap-6">
+                      <VerifyForm
+                        initialHash={milestones.lastHash}
+                        allowTrustedActions={false}
+                        onStatusChange={(hash, status, _txHash, record) =>
+                          setMilestones((m) => ({
+                            ...m,
+                            verified: status === "verified",
+                            credentialStatus: status,
+                            lastHash: hash,
+                            lastStudent: record?.owner ?? m.lastStudent,
+                          }))
+                        }
+                      />
+                      {milestones.verified && !milestones.paid ? (
+                        <PayForm
+                          initialHash={milestones.lastHash}
+                          initialStudent={milestones.lastStudent}
+                          onPaid={() => setMilestones((m) => ({ ...m, paid: true }))}
+                        />
+                      ) : null}
+                    </div>
                   )}
                 </section>
               </>
             )}
           </div>
-          <aside className={styles.previewColumn}>
+          <aside className="sticky top-24 max-[920px]:static">
             <ProofBlockPreview hash={milestones.lastHash} />
           </aside>
         </div>

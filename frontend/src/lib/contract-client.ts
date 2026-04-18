@@ -19,6 +19,11 @@ import {
 } from "@/lib/config";
 import { DEFAULT_SAMPLE_PROOF_HASH } from "@/lib/demo-data";
 import { signWithFreighter } from "@/lib/freighter";
+import type {
+  CertificateStatus,
+  IssuerRecord,
+  IssuerStatus,
+} from "@/lib/types";
 
 const FALLBACK_SIMULATION_SOURCE =
   "GBAKLRUJEOZGWKSHJFFWJ4DINXQZEJBT7JQTR5T4GATQU2SNO4ZFHZQ4";
@@ -224,7 +229,6 @@ function buildSimulationTransaction(
 
 async function prepareTransactionWithFallback(
   transaction: Awaited<ReturnType<typeof buildTransaction>>,
-  method: string,
 ) {
   const server = getServer();
 
@@ -256,32 +260,28 @@ async function prepareTransactionWithFallback(
       networkPassphrase: transaction.networkPassphrase,
     });
 
-    // verify_certificate has no require_auth path in contract; keep this branch
-    // narrow and avoid parsing auth entries that may contain unsupported unions.
-    if (method !== "verify_certificate") {
-      const invokeOp = transaction.operations[0];
-      const existingAuth =
-        invokeOp.type === "invokeHostFunction" && invokeOp.auth
-          ? invokeOp.auth
-          : [];
-      const rawAuth = rawSimulation.results?.[0]?.auth ?? [];
+    const invokeOp = transaction.operations[0];
+    const existingAuth =
+      invokeOp.type === "invokeHostFunction" && invokeOp.auth
+        ? invokeOp.auth
+        : [];
+    const rawAuth = rawSimulation.results?.[0]?.auth ?? [];
 
-      if (
-        invokeOp.type === "invokeHostFunction" &&
-        existingAuth.length === 0 &&
-        rawAuth.length > 0
-      ) {
-        builder.clearOperations();
-        builder.addOperation(
-          Operation.invokeHostFunction({
-            source: invokeOp.source,
-            func: invokeOp.func,
-            auth: rawAuth.map((entry) =>
-              xdr.SorobanAuthorizationEntry.fromXDR(entry, "base64"),
-            ),
-          }),
-        );
-      }
+    if (
+      invokeOp.type === "invokeHostFunction" &&
+      existingAuth.length === 0 &&
+      rawAuth.length > 0
+    ) {
+      builder.clearOperations();
+      builder.addOperation(
+        Operation.invokeHostFunction({
+          source: invokeOp.source,
+          func: invokeOp.func,
+          auth: rawAuth.map((entry) =>
+            xdr.SorobanAuthorizationEntry.fromXDR(entry, "base64"),
+          ),
+        }),
+      );
     }
 
     return builder.build();
@@ -298,7 +298,10 @@ async function simulateRead<T>(
     return transform({
       owner: "GAWIOVGF3N7G3K4J4Y6MGSQYPN4K53Q3VHWL5V66B5Y4BBJH3M6AJYLD",
       issuer: "GAWIOVGF3N7G3K4J4Y6MGSQYPN4K53Q3VHWL5V66B5Y4BBJH3M6AJYLD",
-      verified: true,
+      status: "Verified",
+      issued_at: 0,
+      verified_at: 0,
+      expires_at: 0,
     });
   }
 
@@ -347,14 +350,9 @@ async function signAndSubmit<T>(
   transformReturn?: (value: unknown) => T,
 ) {
   if (appConfig.e2eMode) {
-    const fakeReturnValue =
-      method === "verify_certificate" && transformReturn
-        ? transformReturn(true)
-        : undefined;
-
     return {
       hash: `e2e-${method}-${sourceAddress.slice(0, 6)}`,
-      result: fakeReturnValue,
+      result: undefined,
     };
   }
 
@@ -364,7 +362,6 @@ async function signAndSubmit<T>(
   const transaction = await buildTransaction(sourceAddress, method, args);
   const preparedTransaction = await prepareTransactionWithFallback(
     transaction,
-    method,
   );
 
   const signedXdr = await signWithFreighter(
@@ -475,9 +472,70 @@ function normalizeBigInt(value: unknown): bigint {
   throw new Error("Unable to parse integer value returned by the contract.");
 }
 
-function normalizeBoolean(value: unknown): boolean {
-  if (typeof value === "boolean") return value;
-  throw new Error("Unable to parse boolean value returned by the contract.");
+function normalizeStatusKey(value: unknown): string {
+  if (typeof value === "string") return value.toLowerCase();
+  if (typeof value === "number") return String(value);
+  if (value && typeof value === "object") {
+    const record = value as Record<string, unknown>;
+    if (typeof record.tag === "string") return record.tag.toLowerCase();
+    if (typeof record.name === "string") return record.name.toLowerCase();
+    if (typeof record.value === "string") return record.value.toLowerCase();
+  }
+  return "";
+}
+
+function normalizeIssuerStatus(value: unknown): IssuerStatus {
+  const key = normalizeStatusKey(value);
+  switch (key) {
+    case "approved":
+    case "1":
+      return "approved";
+    case "suspended":
+    case "2":
+      return "suspended";
+    case "pending":
+    case "0":
+    default:
+      return "pending";
+  }
+}
+
+function normalizeCertificateStatus(value: unknown): CertificateStatus {
+  const key = normalizeStatusKey(value);
+  switch (key) {
+    case "verified":
+    case "1":
+      return "verified";
+    case "revoked":
+    case "2":
+      return "revoked";
+    case "suspended":
+    case "3":
+      return "suspended";
+    case "expired":
+    case "4":
+      return "expired";
+    case "issued":
+    case "0":
+      return "issued";
+    default:
+      return "unknown";
+  }
+}
+
+function normalizeTimestamp(value: unknown): number {
+  if (typeof value === "number") return value;
+  if (typeof value === "bigint") return Number(value);
+  if (typeof value === "string") return Number(value);
+  return 0;
+}
+
+function normalizeString(value: unknown): string {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object" && "toString" in value) {
+    return value.toString();
+  }
+  return "";
 }
 
 // Maps Stellaroid Earn contracterror discriminants (1..6) to human copy.
@@ -496,6 +554,18 @@ function normalizeError(error: unknown): string {
     return "No certificate found for that hash.";
   if (/#6\b|InvalidAmount/i.test(message))
     return "Amount must be greater than zero.";
+  if (/#7\b|IssuerNotFound/i.test(message))
+    return "No issuer registry record exists for that wallet.";
+  if (/#8\b|IssuerNotApproved/i.test(message))
+    return "Issuer is not approved yet.";
+  if (/#9\b|IssuerSuspended/i.test(message))
+    return "Issuer has been suspended.";
+  if (/#10\b|InvalidStatus/i.test(message))
+    return "This action is not allowed in the credential's current status.";
+  if (/#11\b|CredentialRevoked/i.test(message))
+    return "This credential has been revoked.";
+  if (/#12\b|CredentialExpired/i.test(message))
+    return "This credential has expired.";
   return message;
 }
 
@@ -504,23 +574,114 @@ function normalizeError(error: unknown): string {
 export type CertificateRecord = {
   owner: string;
   issuer: string;
+  title: string;
+  cohort: string;
+  metadataUri: string;
+  status: CertificateStatus;
+  issuedAt: number;
+  verifiedAt: number;
+  expiresAt: number;
   verified: boolean;
 };
+
+function normalizeIssuer(value: unknown): IssuerRecord | null {
+  if (value == null) return null;
+  const record = value as Record<string, unknown>;
+  return {
+    address: normalizeAddress(record.address),
+    name: normalizeString(record.name),
+    website: normalizeString(record.website),
+    category: normalizeString(record.category),
+    status: normalizeIssuerStatus(record.status),
+  };
+}
 
 function normalizeCertificate(value: unknown): CertificateRecord | null {
   if (value == null) return null;
   const record = value as Record<string, unknown>;
+  const status = normalizeCertificateStatus(record.status);
   return {
     owner: normalizeAddress(record.owner),
     issuer: normalizeAddress(record.issuer),
-    verified: Boolean(record.verified),
+    title: normalizeString(record.title),
+    cohort: normalizeString(record.cohort),
+    metadataUri: normalizeString(record.metadata_uri),
+    status,
+    issuedAt: normalizeTimestamp(record.issued_at),
+    verifiedAt: normalizeTimestamp(record.verified_at),
+    expiresAt: normalizeTimestamp(record.expires_at),
+    verified: status === "verified",
   };
+}
+
+export async function registerIssuer(
+  issuer: string,
+  name: string,
+  website: string,
+  category: string,
+) {
+  return signAndSubmit(
+    issuer,
+    "register_issuer",
+    buildArgs([
+      { value: issuer, type: "address" },
+      { value: name, type: "string" },
+      { value: website, type: "string" },
+      { value: category, type: "string" },
+    ]),
+  );
+}
+
+export async function approveIssuer(admin: string, issuer: string) {
+  return signAndSubmit(
+    admin,
+    "approve_issuer",
+    buildArgs([
+      { value: admin, type: "address" },
+      { value: issuer, type: "address" },
+    ]),
+  );
+}
+
+export async function suspendIssuer(admin: string, issuer: string) {
+  return signAndSubmit(
+    admin,
+    "suspend_issuer",
+    buildArgs([
+      { value: admin, type: "address" },
+      { value: issuer, type: "address" },
+    ]),
+  );
+}
+
+export async function getIssuer(issuer: string) {
+  if (appConfig.e2eMode) {
+    return {
+      address: issuer,
+      name: "Stellaroid Academy",
+      website: "https://stellaroid-earn-demo.vercel.app",
+      category: "bootcamp",
+      status: "approved" as const,
+    };
+  }
+
+  return simulateRead(
+    getReadAddress(),
+    "get_issuer",
+    buildArgs([{ value: issuer, type: "address" }]),
+    normalizeIssuer,
+  );
 }
 
 export async function registerCertificate(
   issuer: string,
   student: string,
   certHashHex: string,
+  metadata?: {
+    title?: string;
+    cohort?: string;
+    metadataUri?: string;
+  },
 ) {
   return signAndSubmit(
     issuer,
@@ -529,6 +690,9 @@ export async function registerCertificate(
       { value: issuer, type: "address" },
       { value: student, type: "address" },
       { value: hexToBytes32(certHashHex), type: "bytes32" },
+      { value: metadata?.title ?? "", type: "string" },
+      { value: metadata?.cohort ?? "", type: "string" },
+      { value: metadata?.metadataUri ?? "", type: "string" },
     ]),
   );
 }
@@ -537,8 +701,10 @@ export async function verifyCertificate(caller: string, certHashHex: string) {
   return signAndSubmit(
     caller,
     "verify_certificate",
-    buildArgs([{ value: hexToBytes32(certHashHex), type: "bytes32" }]),
-    normalizeBoolean,
+    buildArgs([
+      { value: caller, type: "address" },
+      { value: hexToBytes32(certHashHex), type: "bytes32" },
+    ]),
   );
 }
 
@@ -547,8 +713,14 @@ export async function getCertificate(certHashHex: string) {
     return {
       owner: "GAWIOVGF3N7G3K4J4Y6MGSQYPN4K53Q3VHWL5V66B5Y4BBJH3M6AJYLD",
       issuer: "GAWIOVGF3N7G3K4J4Y6MGSQYPN4K53Q3VHWL5V66B5Y4BBJH3M6AJYLD",
-      verified:
-        certHashHex.trim().replace(/^0x/i, "").toLowerCase().length === 64,
+      title: "Stellar Smart Contract Bootcamp Completion",
+      cohort: "Stellar Philippines UniTour 2026",
+      metadataUri: "",
+      status: "verified" as const,
+      issuedAt: 0,
+      verifiedAt: 0,
+      expiresAt: 0,
+      verified: true,
     };
   }
 
@@ -557,6 +729,28 @@ export async function getCertificate(certHashHex: string) {
     "get_certificate",
     buildArgs([{ value: hexToBytes32(certHashHex), type: "bytes32" }]),
     normalizeCertificate,
+  );
+}
+
+export async function revokeCertificate(actor: string, certHashHex: string) {
+  return signAndSubmit(
+    actor,
+    "revoke_certificate",
+    buildArgs([
+      { value: actor, type: "address" },
+      { value: hexToBytes32(certHashHex), type: "bytes32" },
+    ]),
+  );
+}
+
+export async function suspendCertificate(actor: string, certHashHex: string) {
+  return signAndSubmit(
+    actor,
+    "suspend_certificate",
+    buildArgs([
+      { value: actor, type: "address" },
+      { value: hexToBytes32(certHashHex), type: "bytes32" },
+    ]),
   );
 }
 

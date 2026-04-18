@@ -13,6 +13,11 @@ import {
   getExpectedNetworkPassphrase,
   hasRequiredConfig,
 } from "@/lib/config";
+import type {
+  CertificateStatus,
+  IssuerRecord,
+  IssuerStatus,
+} from "@/lib/types";
 
 const FALLBACK_SIMULATION_SOURCE =
   "GBAKLRUJEOZGWKSHJFFWJ4DINXQZEJBT7JQTR5T4GATQU2SNO4ZFHZQ4";
@@ -20,8 +25,81 @@ const FALLBACK_SIMULATION_SOURCE =
 export type CertificateRecord = {
   owner: string;
   issuer: string;
+  title: string;
+  cohort: string;
+  metadataUri: string;
+  status: CertificateStatus;
+  issuedAt: number;
+  verifiedAt: number;
+  expiresAt: number;
   verified: boolean;
 };
+
+function normalizeStatusKey(value: unknown): string {
+  if (typeof value === "string") return value.toLowerCase();
+  if (typeof value === "number") return String(value);
+  if (value && typeof value === "object") {
+    const record = value as Record<string, unknown>;
+    if (typeof record.tag === "string") return record.tag.toLowerCase();
+    if (typeof record.name === "string") return record.name.toLowerCase();
+    if (typeof record.value === "string") return record.value.toLowerCase();
+  }
+  return "";
+}
+
+function normalizeIssuerStatus(value: unknown): IssuerStatus {
+  const key = normalizeStatusKey(value);
+  switch (key) {
+    case "approved":
+    case "1":
+      return "approved";
+    case "suspended":
+    case "2":
+      return "suspended";
+    case "pending":
+    case "0":
+    default:
+      return "pending";
+  }
+}
+
+function normalizeCertificateStatus(value: unknown): CertificateStatus {
+  const key = normalizeStatusKey(value);
+  switch (key) {
+    case "verified":
+    case "1":
+      return "verified";
+    case "revoked":
+    case "2":
+      return "revoked";
+    case "suspended":
+    case "3":
+      return "suspended";
+    case "expired":
+    case "4":
+      return "expired";
+    case "issued":
+    case "0":
+      return "issued";
+    default:
+      return "unknown";
+  }
+}
+
+function normalizeString(value: unknown): string {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object" && "toString" in value) {
+    return value.toString();
+  }
+  return "";
+}
+
+function normalizeTimestamp(value: unknown): number {
+  if (typeof value === "number") return value;
+  if (typeof value === "bigint") return Number(value);
+  if (typeof value === "string") return Number(value);
+  return 0;
+}
 
 function getServer() {
   return new rpc.Server(appConfig.rpcUrl, {
@@ -68,10 +146,30 @@ function normalizeAddress(value: unknown): string {
 function normalizeCertificate(value: unknown): CertificateRecord | null {
   if (value == null) return null;
   const record = value as Record<string, unknown>;
+  const status = normalizeCertificateStatus(record.status);
   return {
     owner: normalizeAddress(record.owner),
     issuer: normalizeAddress(record.issuer),
-    verified: Boolean(record.verified),
+    title: normalizeString(record.title),
+    cohort: normalizeString(record.cohort),
+    metadataUri: normalizeString(record.metadata_uri),
+    status,
+    issuedAt: normalizeTimestamp(record.issued_at),
+    verifiedAt: normalizeTimestamp(record.verified_at),
+    expiresAt: normalizeTimestamp(record.expires_at),
+    verified: status === "verified",
+  };
+}
+
+function normalizeIssuer(value: unknown): IssuerRecord | null {
+  if (value == null) return null;
+  const record = value as Record<string, unknown>;
+  return {
+    address: normalizeAddress(record.address),
+    name: normalizeString(record.name),
+    website: normalizeString(record.website),
+    category: normalizeString(record.category),
+    status: normalizeIssuerStatus(record.status),
   };
 }
 
@@ -134,5 +232,57 @@ export async function getCertificateServer(certHashHex: string) {
 
     const rawScVal = xdr.ScVal.fromXDR(rawResultXdr, "base64");
     return normalizeCertificate(scValToNative(rawScVal));
+  }
+}
+
+export async function getIssuerServer(issuer: string) {
+  ensureConfigured();
+  const server = getServer();
+  const sourceAccount = new Account(getSimulationSourceAddress(), "0");
+  const args = [nativeToScVal(issuer, { type: "address" })];
+
+  const transaction = new TransactionBuilder(sourceAccount, {
+    fee: BASE_FEE,
+    networkPassphrase: getExpectedNetworkPassphrase(),
+  })
+    .addOperation(
+      Operation.invokeContractFunction({
+        contract: appConfig.contractId,
+        function: "get_issuer",
+        args,
+      }),
+    )
+    .setTimeout(30)
+    .build();
+
+  try {
+    const simulation = await server.simulateTransaction(transaction);
+
+    if (rpc.Api.isSimulationError(simulation)) {
+      throw new Error(simulation.error);
+    }
+    if (!simulation.result?.retval) {
+      throw new Error("Simulation for get_issuer returned no value.");
+    }
+
+    return normalizeIssuer(scValToNative(simulation.result.retval));
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    if (!/Bad union switch/i.test(message)) {
+      throw e;
+    }
+
+    const rawSimulation = await server._simulateTransaction(transaction);
+    if (rawSimulation.error) {
+      throw new Error(rawSimulation.error);
+    }
+
+    const rawResultXdr = rawSimulation.results?.[0]?.xdr;
+    if (!rawResultXdr) {
+      throw new Error("Simulation for get_issuer returned no value.");
+    }
+
+    const rawScVal = xdr.ScVal.fromXDR(rawResultXdr, "base64");
+    return normalizeIssuer(scValToNative(rawScVal));
   }
 }

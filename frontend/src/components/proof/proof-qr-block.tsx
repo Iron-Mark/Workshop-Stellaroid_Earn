@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { ProofQr } from "./proof-qr";
-import styles from "./proof-card.module.css";
 
 interface ProofQrBlockProps {
   hash: string;
@@ -16,14 +15,17 @@ export function ProofQrBlock({ hash }: ProofQrBlockProps) {
   }, [hash]);
 
   return (
-    <div className={styles.qrBlock}>
+    <div className="flex items-center gap-4 border-t border-border pt-4">
       {url ? (
         <ProofQr url={url} size={96} />
       ) : (
-        <div className={styles.qrImage} aria-hidden="true" />
+        <div
+          className="w-24 h-24 rounded shrink-0 bg-[#F8FAFC] p-1.5"
+          aria-hidden="true"
+        />
       )}
-      <div className={styles.qrCopy}>
-        <strong>Scan to verify</strong>
+      <div className="text-[0.8125rem] text-text-muted leading-relaxed">
+        <strong className="block text-text text-sm mb-0.5">Scan to verify</strong>
         Point a phone camera at the QR to open this Proof Block without a wallet.
       </div>
     </div>

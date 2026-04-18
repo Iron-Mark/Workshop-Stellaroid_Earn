@@ -9,12 +9,11 @@ import { CopyButton } from "@/components/ui/copy-button";
 import { Badge } from "@/components/ui/badge";
 import { JsonLd } from "@/components/ui/json-ld";
 import { LocalizedAboutCopy } from "@/components/about/localized-about-copy";
-import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Why Stellaroid Earn exists — certificates should be verifiable in seconds, not emails, and payment should follow on the same tap.",
+    "Why Stellaroid Earn exists — certificates should be verifiable in seconds, not emails, and trusted verification should unlock payment in the same flow.",
 };
 
 const BASE_URL = "https://stellaroid-earn-demo.vercel.app";
@@ -25,14 +24,14 @@ const aboutJsonLd = {
   name: "About — Stellaroid Earn",
   url: `${BASE_URL}/about`,
   description:
-    "A thin piece of software around one idea: certificates should be verifiable in seconds, not emails. And if they're verifiable, the grad should get paid on the same tap.",
+    "A thin piece of software around one idea: certificates should be verifiable in seconds, not emails. Once a trusted issuer verifies them, the grad should get paid in the same flow.",
   isPartOf: { "@type": "WebApplication", name: "Stellaroid Earn", url: BASE_URL },
 };
 
 const stack = [
   {
     title: "Rust + soroban-sdk 22",
-    desc: "Contract crate, 5 unit tests",
+    desc: "Contract crate, trust-layer tests included",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="9" />
@@ -93,8 +92,8 @@ const stack = [
 
 const stats = [
   {
-    value: "5/5",
-    label: "Unit tests passing",
+    value: "6",
+    label: "Contract tests in repo",
     category: "Tests",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -103,7 +102,7 @@ const stats = [
     ),
   },
   {
-    value: "6",
+    value: "12",
     label: "Public functions",
     category: "Surface",
     icon: (
@@ -114,7 +113,7 @@ const stats = [
     ),
   },
   {
-    value: "5",
+    value: "10",
     label: "Event types",
     category: "On-chain",
     icon: (
@@ -204,12 +203,32 @@ const fnGroups = [
     tone: "primary" as const,
     fns: [
       {
-        sig: "register_certificate(issuer, student, cert_hash)",
-        desc: "Binds hash to student wallet; rejects duplicates; emits cert_reg.",
+        sig: "register_issuer(issuer, name, website, category)",
+        desc: "Issuer self-registers on-chain and enters the pending trust queue.",
       },
       {
-        sig: "verify_certificate(cert_hash) → bool",
-        desc: "Flips record to verified; emits cert_ver.",
+        sig: "approve_issuer(admin, issuer)",
+        desc: "Admin approves a pending issuer so it can issue and verify credentials.",
+      },
+      {
+        sig: "suspend_issuer(admin, issuer)",
+        desc: "Admin suspends an issuer from future issue / verify operations.",
+      },
+      {
+        sig: "register_certificate(issuer, student, cert_hash, title, cohort, metadata_uri)",
+        desc: "Binds hash plus minimal proof metadata to a student wallet; rejects duplicates; emits cert_reg.",
+      },
+      {
+        sig: "verify_certificate(verifier, cert_hash)",
+        desc: "Trusted verification by the approved issuer or admin; emits cert_ver.",
+      },
+      {
+        sig: "revoke_certificate(actor, cert_hash)",
+        desc: "Marks a credential revoked so payment-linked actions are blocked.",
+      },
+      {
+        sig: "suspend_certificate(actor, cert_hash)",
+        desc: "Temporarily suspends a credential without deleting its audit trail.",
       },
       {
         sig: "reward_student(student, cert_hash, amount)",
@@ -229,6 +248,10 @@ const fnGroups = [
         sig: "get_certificate(cert_hash)",
         desc: "Read-only lookup of the certificate record.",
       },
+      {
+        sig: "get_issuer(issuer)",
+        desc: "Read-only lookup of issuer trust status and profile metadata.",
+      },
     ],
   },
 ];
@@ -240,7 +263,28 @@ const errors = [
   { code: "4", name: "AlreadyExists", copy: "Duplicate cert hash.", tone: "input" },
   { code: "5", name: "NotFound", copy: "Hash isn't registered.", tone: "input" },
   { code: "6", name: "InvalidAmount", copy: "Amount must be > 0.", tone: "input" },
+  { code: "7", name: "IssuerNotFound", copy: "Issuer hasn't registered on-chain.", tone: "input" },
+  { code: "8", name: "IssuerNotApproved", copy: "Issuer still needs admin approval.", tone: "state" },
+  { code: "9", name: "IssuerSuspended", copy: "Issuer has been suspended.", tone: "state" },
+  { code: "10", name: "InvalidStatus", copy: "Credential is in the wrong lifecycle state for this action.", tone: "state" },
+  { code: "11", name: "CredentialRevoked", copy: "Credential was revoked and can no longer unlock payment.", tone: "state" },
+  { code: "12", name: "CredentialExpired", copy: "Credential expired and must be reissued or renewed.", tone: "state" },
 ];
+
+const fnBadgeClasses: Record<string, string> = {
+  primary: "text-primary bg-[rgba(245,158,11,0.1)] border-[rgba(245,158,11,0.3)]",
+  accent: "text-accent bg-[rgba(139,92,246,0.1)] border-[rgba(139,92,246,0.3)]",
+  neutral: "text-text-muted bg-surface border-border",
+};
+
+const errCategoryClasses: Record<string, string> = {
+  state: "text-text-muted bg-[rgba(148,163,184,0.12)] border-[rgba(148,163,184,0.25)]",
+  auth: "text-accent bg-[rgba(139,92,246,0.12)] border-[rgba(139,92,246,0.25)]",
+  input: "text-primary bg-[rgba(245,158,11,0.12)] border-[rgba(245,158,11,0.3)]",
+};
+
+const problemBeatIconClass = "text-[#dc2626] bg-[rgba(220,38,38,0.08)] border-[rgba(220,38,38,0.25)]";
+const approachBeatIconClass = "text-primary bg-[rgba(245,158,11,0.1)] border-[rgba(245,158,11,0.3)]";
 
 export default function About() {
   const contractUrl = appConfig.contractId
@@ -250,186 +294,186 @@ export default function About() {
   return (
     <>
     <JsonLd data={aboutJsonLd} />
-    <div className={styles.page}>
+    <div className="min-h-dvh">
       <SiteNav />
       <main id="main">
-        <section className={styles.hero}>
-          <span className={styles.eyebrow}>About</span>
-          <h1>
-            Why <em>Stellaroid Earn</em>
+        <section className="max-w-[960px] mx-auto px-7 pt-[72px] pb-12 text-center">
+          <span className="inline-block font-pixel text-xs font-semibold tracking-[0.12em] uppercase text-primary border border-[rgba(245,158,11,0.3)] bg-[rgba(245,158,11,0.08)] px-3 py-1 rounded-full mb-4">About</span>
+          <h1 className="text-[2.75rem] tracking-tight leading-[1.1] mb-4 max-sm:text-[2.125rem]">
+            Why <em className="not-italic bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Stellaroid Earn</em>
           </h1>
-          <LocalizedAboutCopy id="lede" className={styles.lede} />
+          <LocalizedAboutCopy id="lede" className="text-text-muted text-[1.0625rem] leading-relaxed mx-auto max-w-[620px]" />
         </section>
 
-        <div className={styles.container}>
-          <RecentActivity className={styles.activityStrip} compact />
+        <div className="max-w-[1040px] mx-auto px-7">
+          <RecentActivity className="mb-8" compact />
         </div>
 
-        <div className={styles.container}>
-        <dl className={styles.stats} aria-label="By the numbers">
+        <div className="max-w-[1040px] mx-auto px-7">
+        <dl className="grid grid-cols-4 max-sm:grid-cols-2 bg-surface border border-border rounded-lg overflow-hidden mb-12" aria-label="By the numbers">
           {stats.map((s) => (
-            <div key={s.label} className={styles.statCell}>
-              <div className={styles.statHead}>
-                <span className={styles.statIcon} aria-hidden="true">{s.icon}</span>
-                <span className={styles.statCategory}>{s.category}</span>
+            <div key={s.label} className="flex flex-col gap-1.5 px-5 py-[22px] border-r border-border last:border-r-0 max-sm:[&:nth-child(odd)]:border-r max-sm:border-b max-sm:[&:nth-child(n+3)]:border-b-0">
+              <div className="inline-flex items-center gap-2 text-text-muted">
+                <span className="w-[22px] h-[22px] inline-flex items-center justify-center text-primary [&_svg]:w-4 [&_svg]:h-4" aria-hidden="true">{s.icon}</span>
+                <span className="font-pixel text-[10.5px] font-semibold tracking-[0.12em] uppercase">{s.category}</span>
               </div>
-              <dt className={styles.statValue}>{s.value}</dt>
-              <dd className={styles.statLabel}>{s.label}</dd>
+              <dt className="font-mono text-[1.75rem] font-semibold text-primary tracking-tight m-0">{s.value}</dt>
+              <dd className="text-xs text-text-muted m-0">{s.label}</dd>
             </div>
           ))}
         </dl>
 
-        <div className={styles.twoUp}>
-          <article className={`${styles.card} ${styles.storyCard}`}>
-            <div className={styles.cardEyebrow}>The problem</div>
-            <h2>The friction costs more than the fraud</h2>
-            <p className={styles.storyIntro}>
+        <div className="grid grid-cols-2 gap-5 mb-12 max-[720px]:grid-cols-1">
+          <article className="bg-surface border border-border rounded-lg px-[26px] py-6 flex flex-col">
+            <div className="flex items-center gap-2 font-pixel text-[11px] tracking-[0.12em] uppercase text-text-muted mb-[10px] before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary">The problem</div>
+            <h2 className="text-[1.375rem] mb-3 text-text tracking-tight">The friction costs more than the fraud</h2>
+            <p className="text-text-muted text-[0.9375rem] leading-relaxed mb-[18px] [&_strong]:text-text [&_strong]:font-semibold">
               <strong>Maria graduated top of her bootcamp cohort in Quezon City.</strong>{" "}
               She applies to a Singapore fintech — and then the clock starts.
             </p>
-            <ol className={`${styles.beatList} ${styles.beatListProblem}`}>
-              <li className={styles.beat}>
-                <span className={styles.beatIcon} aria-hidden="true">
+            <ol className="list-none m-0 mb-[18px] p-0 flex flex-col gap-3.5 relative before:absolute before:left-[17px] before:top-3.5 before:bottom-3.5 before:w-0.5 before:bg-border before:rounded">
+              <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
+                <span className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-[18px] [&_svg]:h-[18px] ${problemBeatIconClass}`} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="5" width="18" height="16" rx="2" />
                     <path d="M3 9h18M8 3v4M16 3v4" />
                   </svg>
                 </span>
                 <div>
-                  <p className={styles.beatLabel}>Tuesday</p>
-                  <p className={styles.beatBody}>Maria applies. Employer emails the school to confirm the certificate.</p>
+                  <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">Tuesday</p>
+                  <p className="text-text-muted text-sm leading-[1.55] m-0">Maria applies. Employer emails the school to confirm the certificate.</p>
                 </div>
               </li>
-              <li className={styles.beat}>
-                <span className={styles.beatIcon} aria-hidden="true">
+              <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
+                <span className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-[18px] [&_svg]:h-[18px] ${problemBeatIconClass}`} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="9" />
                     <path d="M12 7v5l3 2" />
                   </svg>
                 </span>
                 <div>
-                  <p className={styles.beatLabel}>14–21 days</p>
-                  <p className={styles.beatBody}>Verification drags. 32% of candidates misrepresent. Background checks cost $30–$75 each.</p>
+                  <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">14–21 days</p>
+                  <p className="text-text-muted text-sm leading-[1.55] m-0">Verification drags. 32% of candidates misrepresent. Background checks cost $30–$75 each.</p>
                 </div>
               </li>
-              <li className={styles.beat}>
-                <span className={styles.beatIcon} aria-hidden="true">
+              <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
+                <span className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-[18px] [&_svg]:h-[18px] ${problemBeatIconClass}`} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="9" />
                     <path d="M8 8l8 8M16 8l-8 8" />
                   </svg>
                 </span>
                 <div>
-                  <p className={styles.beatLabel}>Three weeks later</p>
-                  <p className={styles.beatBody}>Role filled — by a candidate who didn&rsquo;t need verifying. Maria loses a job she earned.</p>
+                  <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">Three weeks later</p>
+                  <p className="text-text-muted text-sm leading-[1.55] m-0">Role filled — by a candidate who didn&rsquo;t need verifying. Maria loses a job she earned.</p>
                 </div>
               </li>
             </ol>
-            <LocalizedAboutCopy id="problemKicker" className={styles.storyKicker} />
+            <LocalizedAboutCopy id="problemKicker" className="mt-auto pt-3.5 border-t border-dashed border-border text-text text-sm leading-[1.55] font-medium [&_em]:not-italic [&_em]:text-primary [&_em]:font-semibold" />
           </article>
 
-          <article className={`${styles.card} ${styles.storyCard}`}>
-            <div className={styles.cardEyebrow}>The approach</div>
-            <h2>Bind the hash. Pay the wallet. Prove the work.</h2>
-            <p className={styles.storyIntro}>
+          <article className="bg-surface border border-border rounded-lg px-[26px] py-6 flex flex-col">
+            <div className="flex items-center gap-2 font-pixel text-[11px] tracking-[0.12em] uppercase text-text-muted mb-[10px] before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary">The approach</div>
+            <h2 className="text-[1.375rem] mb-3 text-text tracking-tight">Bind the hash. Trust the issuer. Pay the wallet.</h2>
+            <p className="text-text-muted text-[0.9375rem] leading-relaxed mb-[18px] [&_strong]:text-text [&_strong]:font-semibold">
               Same Maria, same Tuesday — on Stellar. The whole cycle takes less time than reading this paragraph.
             </p>
-            <ol className={`${styles.beatList} ${styles.beatListApproach}`}>
-              <li className={styles.beat}>
-                <span className={styles.beatIcon} aria-hidden="true">
+            <ol className="list-none m-0 mb-[18px] p-0 flex flex-col gap-3.5 relative before:absolute before:left-[17px] before:top-3.5 before:bottom-3.5 before:w-0.5 before:bg-border before:rounded">
+              <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
+                <span className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-[18px] [&_svg]:h-[18px] ${approachBeatIconClass}`} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M4 7h16M4 12h16M4 17h10" />
                     <circle cx="19" cy="17" r="2" />
                   </svg>
                 </span>
                 <div>
-                  <p className={styles.beatLabel}>Step 1 · Anchor</p>
-                  <p className={styles.beatBody}>School hashes Maria&rsquo;s diploma and anchors it on Stellar testnet.</p>
+                  <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">Step 1 · Anchor</p>
+                  <p className="text-text-muted text-sm leading-[1.55] m-0">School hashes Maria&rsquo;s diploma and anchors it on Stellar testnet.</p>
                 </div>
               </li>
-              <li className={styles.beat}>
-                <span className={styles.beatIcon} aria-hidden="true">
+              <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
+                <span className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-[18px] [&_svg]:h-[18px] ${approachBeatIconClass}`} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 6L9 17l-5-5" />
                   </svg>
                 </span>
                 <div>
-                  <p className={styles.beatLabel}>Step 2 · Verify in 5s</p>
-                  <p className={styles.beatBody}>Singapore employer queries the contract, gets an on-chain yes — no email thread.</p>
+                  <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">Step 2 · Verify in 5s</p>
+                  <p className="text-text-muted text-sm leading-[1.55] m-0">An approved issuer or admin verifies on-chain, so the employer can trust the proof without an email thread.</p>
                 </div>
               </li>
-              <li className={styles.beat}>
-                <span className={styles.beatIcon} aria-hidden="true">
+              <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
+                <span className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-[18px] [&_svg]:h-[18px] ${approachBeatIconClass}`} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 3v14M6 11l6 6 6-6" />
                     <path d="M4 21h16" />
                   </svg>
                 </span>
                 <div>
-                  <p className={styles.beatLabel}>Step 3 · Pay</p>
-                  <p className={styles.beatBody}>500 XLM lands in Maria&rsquo;s wallet — no invoice, no platform, no 30-day wait.</p>
+                  <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">Step 3 · Pay</p>
+                  <p className="text-text-muted text-sm leading-[1.55] m-0">500 XLM lands in Maria&rsquo;s wallet — no invoice, no platform, no 30-day wait.</p>
                 </div>
               </li>
             </ol>
-            <LocalizedAboutCopy id="approachKicker" className={styles.storyKicker} />
+            <LocalizedAboutCopy id="approachKicker" className="mt-auto pt-3.5 border-t border-dashed border-border text-text text-sm leading-[1.55] font-medium [&_em]:not-italic [&_em]:text-primary [&_em]:font-semibold" />
           </article>
         </div>
 
-        <article className={styles.card} style={{ marginTop: 24 }}>
-          <div className={styles.cardEyebrow}>What changes for Maria</div>
-          <h2>Concrete wins, not abstract outcomes</h2>
-          <ul className={styles.winGrid} role="list">
+        <article className="bg-surface border border-border rounded-lg px-[26px] py-6 mt-6">
+          <div className="flex items-center gap-2 font-pixel text-[11px] tracking-[0.12em] uppercase text-text-muted mb-[10px] before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary">What changes for Maria</div>
+          <h2 className="text-[1.375rem] mb-3 text-text tracking-tight">Concrete wins, not abstract outcomes</h2>
+          <ul className="list-none m-0 p-0 grid grid-cols-2 max-sm:grid-cols-1 gap-3.5" role="list">
             {mariaWins.map((w) => (
-              <li key={w.title} className={styles.winItem}>
-                <span className={styles.winIcon} aria-hidden="true">{w.icon}</span>
+              <li key={w.title} className="grid grid-cols-[auto_1fr] gap-3 items-start p-3.5 px-4 bg-surface-2 border border-border rounded-lg">
+                <span className="w-8 h-8 rounded-lg inline-flex items-center justify-center text-primary bg-[rgba(245,158,11,0.12)] shrink-0 [&_svg]:w-4 [&_svg]:h-4" aria-hidden="true">{w.icon}</span>
                 <div>
-                  <p className={styles.winTitle}>{w.title}</p>
-                  <p className={styles.winBody}>{w.body}</p>
+                  <p className="text-text text-sm font-semibold mt-0.5 mb-1">{w.title}</p>
+                  <p className="text-text-muted text-[13px] leading-relaxed m-0">{w.body}</p>
                 </div>
               </li>
             ))}
           </ul>
         </article>
 
-        <section className={styles.sectionWide}>
-          <div className={styles.sectionHead}>
-            <h2>Tech stack</h2>
-            <p>Boring, proven, fast to demo.</p>
+        <section className="my-14">
+          <div className="text-center mb-7">
+            <h2 className="text-[1.75rem] tracking-tight mb-2">Tech stack</h2>
+            <p className="text-text-muted m-0 text-[0.9375rem]">Boring, proven, fast to demo.</p>
           </div>
-          <div className={styles.stack}>
+          <div className="grid grid-cols-3 max-[860px]:grid-cols-2 max-[520px]:grid-cols-1 gap-4">
             {stack.map((s) => (
-              <div key={s.title} className={styles.stackChip}>
-                <div className={styles.stackIcon} aria-hidden="true">
+              <div key={s.title} className="flex flex-col gap-3.5 items-start p-[22px] bg-surface border border-border rounded-lg transition-[border-color,transform,box-shadow] duration-150 relative overflow-hidden min-h-[140px] hover:border-primary hover:-translate-y-0.5 hover:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.25)] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:from-primary before:to-accent before:opacity-0 hover:before:opacity-100 motion-reduce:hover:translate-y-0">
+                <div className="w-11 h-11 rounded-[10px] bg-[rgba(245,158,11,0.12)] text-primary inline-flex items-center justify-center shrink-0 [&_svg]:w-[22px] [&_svg]:h-[22px]" aria-hidden="true">
                   {s.icon}
                 </div>
                 <div>
-                  <p className={styles.stackChipTitle}>{s.title}</p>
-                  <p className={styles.stackChipDesc}>{s.desc}</p>
+                  <p className="text-text font-semibold m-0 mb-1 text-sm leading-tight">{s.title}</p>
+                  <p className="text-text-muted m-0 text-[13px] leading-relaxed">{s.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className={styles.sectionWide}>
-          <div className={styles.sectionHead}>
-            <h2>Contract surface</h2>
-            <p>Six public functions; storage explicit; errors human.</p>
+        <section className="my-14">
+          <div className="text-center mb-7">
+            <h2 className="text-[1.75rem] tracking-tight mb-2">Contract surface</h2>
+            <p className="text-text-muted m-0 text-[0.9375rem]">Twelve public functions; issuer trust explicit; errors human.</p>
           </div>
-          <div className={styles.fnGroups}>
+          <div className="flex flex-col gap-5">
             {fnGroups.map((g) => (
-              <div key={g.label} className={styles.fnGroup}>
-                <div className={`${styles.fnGroupHead} ${styles[`fnTone_${g.tone}`]}`}>
-                  <span className={styles.fnGroupBadge}>{g.label}</span>
-                  <span className={styles.fnGroupCount}>
+              <div key={g.label} className="flex flex-col gap-2.5">
+                <div className="inline-flex items-center gap-3 py-1.5 border-b border-dashed border-border mb-0.5">
+                  <span className={`font-pixel text-[11px] font-bold tracking-[0.12em] uppercase px-2.5 py-[3px] rounded-full border ${fnBadgeClasses[g.tone]}`}>{g.label}</span>
+                  <span className="text-xs text-text-muted tracking-[0.02em]">
                     {g.fns.length} {g.fns.length === 1 ? "function" : "functions"}
                   </span>
                 </div>
-                <div className={styles.fnList}>
+                <div className="grid gap-2.5">
                   {g.fns.map((fn) => (
-                    <div key={fn.sig} className={styles.fnRow}>
-                      <div className={styles.fnSig}>{fn.sig}</div>
-                      <p className={styles.fnDesc}>{fn.desc}</p>
+                    <div key={fn.sig} className="bg-surface border border-border rounded-lg px-5 py-4 grid gap-1">
+                      <div className="font-mono text-primary text-sm font-medium">{fn.sig}</div>
+                      <p className="text-text-muted text-sm m-0">{fn.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -438,78 +482,78 @@ export default function About() {
           </div>
         </section>
 
-        <section className={styles.sectionWide}>
-          <div className={styles.sectionHead}>
-            <h2>Errors are human</h2>
-            <p>
+        <section className="my-14">
+          <div className="text-center mb-7">
+            <h2 className="text-[1.75rem] tracking-tight mb-2">Errors are human</h2>
+            <p className="text-text-muted m-0 text-[0.9375rem]">
               No raw <code>ScVal</code> or <code>HostError</code> reaches the UI — every
               contract error maps to a sentence a reviewer can read.
             </p>
           </div>
-          <div className={styles.errGrid}>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-3">
             {errors.map((e) => (
-              <div key={e.code} className={styles.errCell}>
-                <div className={styles.errMeta}>
+              <div key={e.code} className="grid grid-cols-[auto_1fr] gap-3 px-4 py-3.5 bg-surface border border-border rounded-[6px]">
+                <div className="flex flex-col gap-2 items-start">
                   <span
-                    className={`${styles.errCode} ${styles[`errTone_${e.tone}`]}`}
+                    className="font-mono text-[11px] font-semibold text-primary bg-[rgba(245,158,11,0.1)] px-2 py-[3px] rounded h-fit tracking-[0.04em]"
                     aria-label={`Error ${e.code}`}
                   >
                     #{e.code}
                   </span>
                   <span
-                    className={`${styles.errCategory} ${styles[`errTone_${e.tone}`]}`}
+                    className={`font-pixel text-[10.5px] font-bold tracking-[0.1em] uppercase px-2 py-[3px] rounded-full border ${errCategoryClasses[e.tone]}`}
                   >
                     {e.tone}
                   </span>
                 </div>
                 <div>
-                  <p className={styles.errName}>{e.name}</p>
-                  <p className={styles.errCopy}>{e.copy}</p>
+                  <p className="font-mono text-[13px] font-semibold text-text mb-0.5 m-0">{e.name}</p>
+                  <p className="text-xs text-text-muted m-0 leading-[1.4]">{e.copy}</p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        <aside className={styles.credits} aria-label="Deployment receipt">
-          <header className={styles.creditsHeader}>
-            <div className={styles.creditsBrand}>
+        <aside className="relative bg-surface border border-border rounded-xl px-7 py-6 mb-8 overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-linear-to-r before:from-primary before:to-accent" aria-label="Deployment receipt">
+          <header className="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-dashed border-border mb-4">
+            <div className="inline-flex items-center gap-3">
               <img src="/logo.svg" alt="" width={32} height={32} />
               <div>
-                <p className={styles.creditsTitle}>Stellaroid Earn</p>
-                <p className={styles.creditsSubtitle}>
+                <p className="m-0 text-[0.9375rem] font-bold text-text tracking-tight">Stellaroid Earn</p>
+                <p className="mt-0.5 m-0 text-xs text-text-muted leading-normal [&_a]:text-primary [&_a]:no-underline hover:[&_a]:underline">
                   Stellar Philippines UniTour · in partnership with{" "}
                   <a href="https://risein.com" target="_blank" rel="noreferrer">Rise In</a>
                 </p>
               </div>
             </div>
-            <div className={styles.creditsBadges}>
+            <div className="inline-flex gap-2 flex-wrap">
               <Badge tone="accent">Stellar testnet</Badge>
               <Badge tone="verified" dot>Deployed</Badge>
             </div>
           </header>
 
-          <dl className={styles.creditsGrid}>
-            <div className={styles.creditsRow}>
-              <dt>Contract ID</dt>
-              <dd>
-                <code>{appConfig.contractId ? shortenAddress(appConfig.contractId, 8) : "—"}</code>
+          <dl className="grid gap-2.5 m-0">
+            <div className="grid grid-cols-[120px_1fr] max-sm:grid-cols-1 max-sm:gap-1 gap-3 items-center">
+              <dt className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text-muted">Contract ID</dt>
+              <dd className="m-0 inline-flex items-center gap-2.5 flex-wrap">
+                <code className="font-mono text-[12.5px] text-text bg-surface-2 border border-border rounded px-2 py-[3px]">{appConfig.contractId ? shortenAddress(appConfig.contractId, 8) : "—"}</code>
                 {appConfig.contractId ? (
                   <CopyButton value={appConfig.contractId} ariaLabel="Copy contract ID" />
                 ) : null}
-                <a href={contractUrl} target="_blank" rel="noreferrer" className={styles.creditsLink}>
+                <a href={contractUrl} target="_blank" rel="noreferrer" className="text-[13px] text-primary no-underline hover:underline">
                   stellar.expert ↗
                 </a>
               </dd>
             </div>
-            <div className={styles.creditsRow}>
-              <dt>Source</dt>
-              <dd>
+            <div className="grid grid-cols-[120px_1fr] max-sm:grid-cols-1 max-sm:gap-1 gap-3 items-center">
+              <dt className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text-muted">Source</dt>
+              <dd className="m-0 inline-flex items-center gap-2.5 flex-wrap">
                 <a
                   href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026"
                   target="_blank"
                   rel="noreferrer"
-                  className={styles.creditsLink}
+                  className="text-[13px] text-primary no-underline hover:underline"
                 >
                   GitHub ↗
                 </a>
@@ -517,26 +561,26 @@ export default function About() {
                   href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026/tree/main/contract"
                   target="_blank"
                   rel="noreferrer"
-                  className={styles.creditsLink}
+                  className="text-[13px] text-primary no-underline hover:underline"
                 >
                   Contract crate ↗
                 </a>
               </dd>
             </div>
-            <div className={styles.creditsRow}>
-              <dt>Network</dt>
-              <dd>
-                <code>Testnet · Soroban RPC</code>
+            <div className="grid grid-cols-[120px_1fr] max-sm:grid-cols-1 max-sm:gap-1 gap-3 items-center">
+              <dt className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text-muted">Network</dt>
+              <dd className="m-0 inline-flex items-center gap-2.5 flex-wrap">
+                <code className="font-mono text-[12.5px] text-text bg-surface-2 border border-border rounded px-2 py-[3px]">Testnet · Soroban RPC</code>
               </dd>
             </div>
           </dl>
         </aside>
 
-        <div className={styles.ctaRow}>
-          <Link href="/app" className={styles.ctaPrimary}>
+        <div className="flex gap-3 justify-center my-8 mb-16 flex-wrap">
+          <Link href="/app" className="inline-flex items-center gap-2 px-[22px] py-3 rounded-md font-semibold text-[0.9375rem] no-underline bg-primary text-on-primary border border-primary shadow-[0_4px_14px_rgba(245,158,11,0.15)] hover:bg-primary-hover hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(245,158,11,0.25)] transition-[transform,background,box-shadow] duration-150 motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-primary focus-visible:-outline-offset-2">
             Try the demo →
           </Link>
-          <Link href="/proof" className={styles.ctaGhost}>
+          <Link href="/proof" className="inline-flex items-center gap-2 px-[22px] py-3 rounded-md font-semibold text-[0.9375rem] no-underline text-text border border-border bg-transparent hover:bg-surface hover:-translate-y-px transition-[transform,background] duration-150 motion-reduce:hover:translate-y-0">
             Look up a certificate
           </Link>
         </div>

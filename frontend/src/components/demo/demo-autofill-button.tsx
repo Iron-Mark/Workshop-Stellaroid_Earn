@@ -2,7 +2,7 @@
 
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
 import { useToast } from "@/components/ui";
-import styles from "./demo-autofill-button.module.css";
+import { Button } from "@/components/ui";
 
 export const DEMO_AUTOFILL_EVENT = "demo:autofill";
 
@@ -51,16 +51,20 @@ export function DemoAutofillButton() {
   }
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size="sm"
       onClick={handleClick}
-      className={styles.fab}
       aria-label="Autofill demo inputs"
       title="Autofill demo inputs"
+      className="fixed right-5 bottom-5 z-50 rounded-full shadow-[0_6px_20px_rgba(0,0,0,0.12)] border border-border bg-surface hover:shadow-[0_10px_24px_rgba(0,0,0,0.16)] hover:-translate-y-px gap-2"
     >
-      <span className={styles.dot} aria-hidden />
+      <span
+        className="w-2 h-2 rounded-full bg-accent shadow-[0_0_0_3px_rgba(99,102,241,0.2)]"
+        aria-hidden
+      />
       Demo autofill
-    </button>
+    </Button>
   );
 }
 

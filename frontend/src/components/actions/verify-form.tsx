@@ -1,18 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DEMO_AUTOFILL_EVENT, DemoAutofillDetail } from "@/components/demo/demo-autofill-button";
 import { Button, Input, Badge, Skeleton, useToast } from "@/components/ui";
 import { humanizeError } from "@/lib/errors";
 import { withTimeout } from "@/lib/with-timeout";
-import { getCertificate, verifyCertificate, CertificateRecord } from "@/lib/contract-client";
+import {
+  getCertificate,
+  verifyCertificate,
+  revokeCertificate,
+  suspendCertificate,
+  CertificateRecord,
+} from "@/lib/contract-client";
 import { appConfig, hasRequiredConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
-import styles from "./actions.module.css";
+import type { CertificateStatus } from "@/lib/types";
 
 export interface VerifyFormProps {
+  initialHash?: string;
+  allowTrustedActions?: boolean;
   onVerified?: (hash: string, txHash?: string) => void;
+  onStatusChange?: (
+    hash: string,
+    status: CertificateStatus,
+    txHash?: string,
+    record?: CertificateRecord,
+  ) => void;
 }
 
 function isValidHash(hash: string): boolean {
@@ -26,18 +40,101 @@ type LookupState =
   | { status: "missing"; hash: string }
   | { status: "error"; hash: string; message: string };
 
-export function VerifyForm({ onVerified }: VerifyFormProps) {
+function statusLabel(status: CertificateStatus): string {
+  switch (status) {
+    case "verified":
+      return "Verified";
+    case "revoked":
+      return "Revoked";
+    case "suspended":
+      return "Suspended";
+    case "expired":
+      return "Expired";
+    case "issued":
+      return "Issued";
+    default:
+      return "Unknown";
+  }
+}
+
+function statusTone(status: CertificateStatus): "success" | "accent" | "warning" | "danger" | "neutral" {
+  switch (status) {
+    case "verified":
+      return "success";
+    case "issued":
+      return "accent";
+    case "revoked":
+      return "danger";
+    case "suspended":
+    case "expired":
+      return "warning";
+    default:
+      return "neutral";
+  }
+}
+
+type LifecycleAction = "verify" | "suspend" | "revoke";
+
+function actionTitle(action: LifecycleAction) {
+  switch (action) {
+    case "verify":
+      return "Credential verified";
+    case "suspend":
+      return "Credential suspended";
+    case "revoke":
+      return "Credential revoked";
+  }
+}
+
+function actionDetail(action: LifecycleAction) {
+  switch (action) {
+    case "verify":
+      return "Approved verification was submitted on-chain.";
+    case "suspend":
+      return "The credential has been suspended on-chain.";
+    case "revoke":
+      return "The credential has been revoked on-chain.";
+  }
+}
+
+function nextStatusForAction(action: LifecycleAction): CertificateStatus {
+  switch (action) {
+    case "verify":
+      return "verified";
+    case "suspend":
+      return "suspended";
+    case "revoke":
+      return "revoked";
+  }
+}
+
+export function VerifyForm({
+  initialHash,
+  allowTrustedActions = true,
+  onVerified,
+  onStatusChange,
+}: VerifyFormProps) {
   const { wallet } = useFreighterWallet();
   const { toast } = useToast();
+  const onStatusChangeRef = useRef(onStatusChange);
 
-  const [certHash, setCertHash] = useState("");
+  const [certHash, setCertHash] = useState(initialHash ?? "");
   const [hashTouched, setHashTouched] = useState(false);
-  const [verifying, setVerifying] = useState(false);
+  const [pendingAction, setPendingAction] = useState<LifecycleAction | null>(null);
   const [lookup, setLookup] = useState<LookupState>({ status: "idle" });
 
   const normalizedHash = certHash.trim().replace(/^0x/i, "").toLowerCase();
   const configured = hasRequiredConfig();
   const hashOk = isValidHash(certHash);
+
+  useEffect(() => {
+    onStatusChangeRef.current = onStatusChange;
+  }, [onStatusChange]);
+
+  useEffect(() => {
+    if (!initialHash) return;
+    setCertHash((current) => current || initialHash);
+  }, [initialHash]);
 
   useEffect(() => {
     function onAutofill(e: Event) {
@@ -70,6 +167,9 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
         const record = await getCertificate(hash);
         if (cancelled) return;
         setLookup(record ? { status: "found", hash, record } : { status: "missing", hash });
+        if (record) {
+          onStatusChangeRef.current?.(hash, record.status, undefined, record);
+        }
       } catch (e) {
         if (cancelled) return;
         const h = humanizeError(e);
@@ -95,12 +195,30 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
     lookup.status !== "idle" && lookup.hash === normalizedHash ? lookup : { status: "idle" as const };
 
   const canLookup = configured && hashOk && currentLookup.status !== "loading";
+  const mutating = pendingAction !== null;
   const canVerify =
+    allowTrustedActions &&
     configured &&
     walletConnected &&
-    !verifying &&
+    !mutating &&
     currentLookup.status === "found" &&
-    !currentLookup.record.verified;
+    currentLookup.record.status === "issued";
+  const canSuspend =
+    allowTrustedActions &&
+    configured &&
+    walletConnected &&
+    !mutating &&
+    currentLookup.status === "found" &&
+    (currentLookup.record.status === "issued" ||
+      currentLookup.record.status === "verified");
+  const canRevoke =
+    allowTrustedActions &&
+    configured &&
+    walletConnected &&
+    !mutating &&
+    currentLookup.status === "found" &&
+    currentLookup.record.status !== "revoked" &&
+    currentLookup.record.status !== "expired";
 
   async function resolveLookup(noisy: boolean) {
     if (!configured || !hashOk) return null;
@@ -110,6 +228,9 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
     try {
       const record = await getCertificate(hash);
       setLookup(record ? { status: "found", hash, record } : { status: "missing", hash });
+      if (record) {
+        onStatusChangeRef.current?.(hash, record.status, undefined, record);
+      }
       return record;
     } catch (e) {
       const h = humanizeError(e);
@@ -127,7 +248,7 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
     await resolveLookup(true);
   }
 
-  async function handleVerify() {
+  async function handleAction(action: LifecycleAction) {
     setHashTouched(true);
     if (!configured || !hashOk || !wallet.address || !walletConnected) return;
 
@@ -137,13 +258,13 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
     if (!record) {
       toast({
         title: "Certificate not found",
-        detail: "Only registered hashes can be marked verified.",
+        detail: "Only registered hashes can be managed by an approved issuer or admin.",
         tone: "warning",
       });
       return;
     }
 
-    if (record.verified) {
+    if (action === "verify" && record.status === "verified") {
       toast({
         title: "Already verified",
         detail: "This certificate is already marked verified on-chain.",
@@ -152,36 +273,75 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
       return;
     }
 
-    setVerifying(true);
+    if (action === "verify" && record.status !== "issued") {
+      toast({
+        title: "Status blocks verification",
+        detail: `This credential is ${statusLabel(record.status).toLowerCase()}, so it cannot move into verified state right now.`,
+        tone: "warning",
+      });
+      return;
+    }
+
+    if (
+      action === "suspend" &&
+      record.status !== "issued" &&
+      record.status !== "verified"
+    ) {
+      toast({
+        title: "Status blocks suspension",
+        detail: `This credential is ${statusLabel(record.status).toLowerCase()}, so it cannot be suspended right now.`,
+        tone: "warning",
+      });
+      return;
+    }
+
+    if (
+      action === "revoke" &&
+      (record.status === "revoked" || record.status === "expired")
+    ) {
+      toast({
+        title: "Status blocks revocation",
+        detail: `This credential is ${statusLabel(record.status).toLowerCase()}, so revocation is not available right now.`,
+        tone: "warning",
+      });
+      return;
+    }
+
+    setPendingAction(action);
     try {
-      const result = await withTimeout(
-        verifyCertificate(wallet.address, normalizedHash),
-        15000,
-        "verify",
-      );
+      const result =
+        action === "verify"
+          ? await withTimeout(
+              verifyCertificate(wallet.address, normalizedHash),
+              15000,
+              "verify",
+            )
+          : action === "suspend"
+            ? await withTimeout(
+                suspendCertificate(wallet.address, normalizedHash),
+                15000,
+                "suspend",
+              )
+            : await withTimeout(
+                revokeCertificate(wallet.address, normalizedHash),
+                15000,
+                "revoke",
+              );
       const txHash = result?.hash;
-      if (result?.result === false) {
-        setLookup({ status: "missing", hash: normalizedHash });
-        toast({
-          title: "Certificate not found",
-          detail: "That hash is not registered yet, so it could not be marked verified.",
-          tone: "warning",
-          action: txHash
-            ? {
-                label: "View on stellar.expert \u2197",
-                href: `${appConfig.explorerUrl}/tx/${txHash}`,
-              }
-            : undefined,
-        });
-        return;
-      }
+      const nextStatus = nextStatusForAction(action);
       setLookup({
         status: "found",
         hash: normalizedHash,
-        record: { ...record, verified: true },
+        record: {
+          ...record,
+          status: nextStatus,
+          verified: nextStatus === "verified",
+          verifiedAt: nextStatus === "verified" ? Date.now() : record.verifiedAt,
+        },
       });
       toast({
-        title: "Certificate verified",
+        title: actionTitle(action),
+        detail: actionDetail(action),
         tone: "success",
         action: txHash
           ? {
@@ -190,33 +350,61 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
             }
           : undefined,
       });
-      onVerified?.(normalizedHash, txHash);
+      if (action === "verify") {
+        onVerified?.(normalizedHash, txHash);
+      }
+      onStatusChange?.(
+        normalizedHash,
+        nextStatus,
+        txHash,
+        {
+          ...record,
+          status: nextStatus,
+          verified: nextStatus === "verified",
+          verifiedAt: nextStatus === "verified" ? Date.now() : record.verifiedAt,
+        },
+      );
     } catch (e) {
       const h = humanizeError(e);
       toast({ title: h.title, detail: h.detail, tone: "danger" });
     } finally {
-      setVerifying(false);
+      setPendingAction(null);
     }
   }
 
   const formHint = (() => {
     if (!configured) return "Set the contract configuration first before verifying on-chain.";
-    if (!certHash.trim()) return "Paste a certificate hash. The app will check chain state before enabling verification.";
+    if (!certHash.trim()) return "Paste a certificate hash. The app will check chain state before enabling trusted verification.";
     if (!hashOk) return "Enter a full 64-character SHA-256 hash.";
     if (currentLookup.status === "loading") return "Checking whether this hash is already registered...";
     if (currentLookup.status === "missing") return "This hash is not registered, so on-chain verification is blocked.";
     if (currentLookup.status === "error") return currentLookup.message;
-    if (currentLookup.status === "found" && currentLookup.record.verified)
-      return "This certificate is already verified on-chain.";
+    if (currentLookup.status === "found" && currentLookup.record.status === "verified")
+      return allowTrustedActions
+        ? "This credential is already verified on-chain. You can still suspend or revoke it from here."
+        : "This credential is already verified on-chain.";
+    if (currentLookup.status === "found" && currentLookup.record.status === "revoked")
+      return "This credential was revoked and cannot be verified again.";
+    if (currentLookup.status === "found" && currentLookup.record.status === "suspended")
+      return allowTrustedActions
+        ? "This credential is suspended. Approved issuers or the admin can still revoke it."
+        : "This credential is suspended. Resolve issuer status before trying again.";
+    if (currentLookup.status === "found" && currentLookup.record.status === "expired")
+      return "This credential is expired and no longer eligible for verification-based actions.";
     if (currentLookup.status === "found" && !walletConnected)
-      return "Hash found. Connect Freighter on Stellar testnet to submit verification.";
-    if (currentLookup.status === "found") return "Hash found on-chain. You can now mark it verified.";
+      return allowTrustedActions
+        ? "Hash found. Connect Freighter on Stellar testnet with an approved issuer or admin wallet to manage it."
+        : "Hash found. Employers can inspect status here while waiting for trusted verification.";
+    if (currentLookup.status === "found")
+      return allowTrustedActions
+        ? "Hash found on-chain. Approved issuers or the admin wallet can verify, suspend, or revoke it."
+        : "Hash found on-chain. Once an approved issuer or admin verifies it, the employer can pay.";
     return "Use Look up if you want to refresh the current chain state manually.";
   })();
 
   return (
-    <div className={styles.form}>
-      <div className={styles.fieldRow}>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <Input
           mono
           label="Certificate hash"
@@ -227,14 +415,14 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
           }}
           onBlur={() => setHashTouched(true)}
           error={hashError}
-          helper={hashTouched || certHash ? undefined : "The 64-character SHA-256 hash to look up or verify"}
+          helper={hashTouched || certHash ? undefined : "The 64-character SHA-256 hash to look up or verify as an approved issuer"}
           placeholder="0a1b2c..."
           autoComplete="off"
           spellCheck={false}
         />
       </div>
 
-      <div className={styles.buttonRow}>
+      <div className="flex gap-2 flex-wrap max-sm:flex-col [&>*]:max-sm:w-full">
         <Button
           type="button"
           variant="secondary"
@@ -244,56 +432,94 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
         >
           Look up (read-only)
         </Button>
-        <Button
-          type="button"
-          variant="primary"
-          onClick={handleVerify}
-          disabled={!canVerify}
-          loading={verifying}
-        >
-          Mark Verified (on-chain)
-        </Button>
+        {allowTrustedActions ? (
+          <>
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => void handleAction("verify")}
+              disabled={!canVerify}
+              loading={pendingAction === "verify"}
+            >
+              Verify as Issuer/Admin
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => void handleAction("suspend")}
+              disabled={!canSuspend}
+              loading={pendingAction === "suspend"}
+            >
+              Suspend
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => void handleAction("revoke")}
+              disabled={!canRevoke}
+              loading={pendingAction === "revoke"}
+            >
+              Revoke
+            </Button>
+          </>
+        ) : null}
       </div>
 
-      <p className={styles.formHint}>{formHint}</p>
+      <p className="mt-[-4px] text-text-muted text-sm leading-normal">{formHint}</p>
 
       {currentLookup.status === "loading" && (
-        <div className={styles.lookupPanel} aria-label="Loading certificate details" aria-busy="true">
-          <div className={styles.lookupRow}>
-            <span className={styles.lookupLabel}>Status</span>
+        <div
+          className="bg-surface-2 border border-border rounded-md px-4 py-3 flex flex-col gap-2"
+          aria-label="Loading certificate details"
+          aria-busy="true"
+        >
+          <div className="flex gap-2 items-center text-sm flex-wrap">
+            <span className="text-text-muted min-w-[56px]">Status</span>
             <Skeleton width={72} height={22} radius={4} />
           </div>
-          <div className={styles.lookupRow}>
-            <span className={styles.lookupLabel}>Owner</span>
+          <div className="flex gap-2 items-center text-sm flex-wrap">
+            <span className="text-text-muted min-w-[56px]">Owner</span>
             <Skeleton width={160} height={18} radius={4} />
           </div>
-          <div className={styles.lookupRow}>
-            <span className={styles.lookupLabel}>Issuer</span>
+          <div className="flex gap-2 items-center text-sm flex-wrap">
+            <span className="text-text-muted min-w-[56px]">Issuer</span>
             <Skeleton width={160} height={18} radius={4} />
           </div>
         </div>
       )}
 
       {currentLookup.status === "found" && (
-        <div className={styles.lookupPanel}>
-          <div className={styles.lookupRow}>
-            <span className={styles.lookupLabel}>Status</span>
-            <Badge tone={currentLookup.record.verified ? "success" : "accent"} dot>
-              {currentLookup.record.verified ? "Verified" : "Registered"}
+        <div className="bg-surface-2 border border-border rounded-md px-4 py-3 flex flex-col gap-2">
+          <div className="flex gap-2 items-center text-sm flex-wrap">
+            <span className="text-text-muted min-w-[56px]">Status</span>
+            <Badge tone={statusTone(currentLookup.record.status)} dot>
+              {statusLabel(currentLookup.record.status)}
             </Badge>
           </div>
-          <div className={styles.lookupRow}>
-            <span className={styles.lookupLabel}>Owner</span>
-            <span className={styles.lookupValue}>
+          <div className="flex gap-2 items-center text-sm flex-wrap">
+            <span className="text-text-muted min-w-[56px]">Owner</span>
+            <span className="font-mono text-text break-all">
               {shortenAddress(currentLookup.record.owner)}
             </span>
           </div>
-          <div className={styles.lookupRow}>
-            <span className={styles.lookupLabel}>Issuer</span>
-            <span className={styles.lookupValue}>
+          <div className="flex gap-2 items-center text-sm flex-wrap">
+            <span className="text-text-muted min-w-[56px]">Issuer</span>
+            <span className="font-mono text-text break-all">
               {shortenAddress(currentLookup.record.issuer)}
             </span>
           </div>
+          {currentLookup.record.title ? (
+            <div className="flex gap-2 items-center text-sm flex-wrap">
+              <span className="text-text-muted min-w-[56px]">Title</span>
+              <span className="text-text break-all">{currentLookup.record.title}</span>
+            </div>
+          ) : null}
+          {currentLookup.record.cohort ? (
+            <div className="flex gap-2 items-center text-sm flex-wrap">
+              <span className="text-text-muted min-w-[56px]">Cohort</span>
+              <span className="text-text break-all">{currentLookup.record.cohort}</span>
+            </div>
+          ) : null}
         </div>
       )}
 
