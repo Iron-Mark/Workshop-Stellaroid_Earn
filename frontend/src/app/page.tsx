@@ -56,14 +56,12 @@ export default function Landing() {
           <Link href="/app" className={styles.ctaPrimary}>
             Try the demo →
           </Link>
-          <a
-            href={contractUrl}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            href="/proof/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22"
             className={styles.ctaGhost}
           >
-            View contract on stellar.expert
-          </a>
+            See a sample Proof Block — no wallet needed
+          </Link>
         </div>
       </section>
 
