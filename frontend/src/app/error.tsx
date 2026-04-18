@@ -16,6 +16,7 @@ export default function GlobalError({
 
   return (
     <main
+      id="main"
       style={{
         maxWidth: 640,
         margin: "0 auto",

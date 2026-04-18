@@ -1,163 +1,229 @@
-# Follow-ups: investigate & fix
+# Follow-ups: current status
 
-Punch list of gaps found auditing the deployed app. Each item is independently actionable — pick up whichever slot you have time for.
+Current audit of the deployed app versus the original punch list.
 
-Grouped by how much it costs you in a live demo.
+Use this as the live backlog. Items already shipped are called out so we do not re-audit stale issues.
+
+---
+
+## Resolved
+
+### 8. Sitemap + robots.txt
+
+**Status**
+- Done.
+
+**What shipped**
+- `frontend/src/app/sitemap.ts`
+- `frontend/src/app/robots.ts`
+
+**Notes**
+- Static routes `/`, `/about`, `/app`, and `/proof` are present in the sitemap.
+- `robots.ts` explicitly allows crawling and points to the generated sitemap.
 
 ---
 
-## 🔴 Demo blockers — fix before the next live run
-
-### 1. Mobile = Freighter absent (no empty state)
-
-**What**
-Freighter is a desktop-only browser extension. On `/app` from a phone, the **Connect** button either fails silently or shows a generic "Freighter not detected" error. A reviewer opening the landing page from LinkedIn on their phone bounces.
-
-**Verify**
-- Open `/app` on a mobile browser (or Chrome DevTools device emulation).
-- Tap **Connect**.
-- Observe: no clear CTA to get to a working state.
-
-**Fix**
-- Detect mobile user-agent OR absence of `window.freighter` on mount.
-- Swap the form column for an empty state: "Freighter is desktop-only. Scan a Proof Block QR, open on desktop, or view a sample: **[Sample Proof Block →]**".
-- Keep the right-rail Proof Block preview visible (it's the demo without a wallet).
-
-**Files**
-- `frontend/src/components/wallet/*` (connect gate)
-- `frontend/src/app/app/page.tsx` (mobile fallback column)
-
----
+## Partially addressed
 
 ### 2. Contract-ID / network drift silent failure
 
-**What**
-If Freighter is on pubnet, or `NEXT_PUBLIC_CONTRACT_ID` / `NEXT_PUBLIC_NETWORK_PASSPHRASE` drift from the deployed contract, simulate fails with an opaque error. Nothing tells the user "you're on the wrong network."
+**Status**
+- Partially fixed.
 
-**Verify**
-- In Freighter, switch to Pubnet.
-- Hit **Register** on `/app`.
-- Expect: a clear banner. Currently: a raw error surface or nothing.
+**What shipped**
+- Wallet state now captures Freighter network details.
+- Wrong-network state is surfaced in the wallet button as a warning badge.
 
-**Fix**
-- On wallet connect, read the connected network via `freighterApi.getNetwork()`.
-- Compare against `appConfig.networkPassphrase`.
-- If mismatch → render a dismissible yellow banner at top of `/app`: "You're connected to **Pubnet**. This demo is on **Testnet** — switch networks in Freighter to continue."
-- Also flag if `appConfig.contractId` is empty.
+**Still missing**
+- Top-of-page dismissible banner on `/app` explaining the mismatch in plain language.
+- Explicit warning when `NEXT_PUBLIC_CONTRACT_ID` is empty.
+- Stronger UX for pubnet/testnet drift before a form submission fails.
 
 **Files**
-- `frontend/src/hooks/use-freighter.ts` (or wherever connect lives)
-- New `frontend/src/components/app/network-banner.tsx`
-- Mount in `frontend/src/app/app/page.tsx` above the grid
-
----
-
-## 🟡 Polish — visible gaps a reviewer notices
-
-### 3. Locale toggle only covers the hero
-
-**What**
-Flip the footer locale toggle to Tagalog — the hero changes, nothing else does. `/about`, `/app`, FAQ, footer links, and the demo script all stay in English. Either scope up or scope down.
-
-**Options**
-- **A (fast)** — Move the toggle to sit *inside* the hero with copy "View this section in Tagalog" so its scope is obvious.
-- **B (right)** — Extract a `copy/en.ts` + `copy/tl.ts` dictionary, thread through a small React context, translate at least: hero, footer, `/about` lede, `/app` form labels, FAQ.
-
-**Files**
-- `frontend/src/components/layout/locale-toggle.tsx` (A)
-- New `frontend/src/lib/i18n/` + touch most chrome components (B)
-
----
-
-### 4. No live on-chain events feed
-
-**What**
-The contract emits 5 event types (`cert_reg`, `cert_ver`, `reward`, `payment`, plus init). The site has no visible proof that anything is happening on-chain — which is the single strongest trust signal available.
-
-**Fix**
-- New server component `frontend/src/components/activity/recent-activity.tsx`.
-- Fetches last N events for `appConfig.contractId` via Soroban RPC `getEvents` or Horizon `/contracts/{id}/data` paginated.
-- Renders a 3–5 row strip: icon · short event label · short hash · relative time · "View ↗".
-- Mount at the top of `/about` (below the hero) and on `/` between the hero and the Proof Block teaser.
-- Cache for 30s to avoid hammering RPC.
-
-**Files**
-- New `frontend/src/lib/events.ts` — `getRecentEvents(contractId, limit)`.
-- New component + CSS module.
-- Mount points: `frontend/src/app/page.tsx`, `frontend/src/app/about/page.tsx`.
+- `frontend/src/lib/freighter.ts`
+- `frontend/src/hooks/use-freighter-wallet.ts`
+- `frontend/src/components/wallet/wallet-connect-button.tsx`
+- `frontend/src/app/app/page.tsx`
 
 ---
 
 ### 5. `/proof` index has no sample hashes
 
-**What**
-The `/proof` lookup page is a bare form. A reviewer with no hash to paste bounces. We already have a known-good sample hash used on `/`:
-`1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22`.
+**Status**
+- Partially fixed.
 
-**Fix**
-- Below the form, add a "Try a sample" row with 2–3 chips pointing to real cert hashes currently registered on the deployed contract.
-- If (4) lands first, surface the last 3 verified hashes from the events feed.
+**What shipped**
+- `/proof` now includes a demo hash block so the page is no longer a dead-end for first-time visitors.
+
+**Still missing**
+- The original ask was stronger: 2-3 sample chips or recent verified hashes, not a single plain link.
+- If the live activity feed lands, this page should pull the latest real hashes from there instead of hardcoding one.
 
 **Files**
 - `frontend/src/app/proof/page.tsx`
 
 ---
 
-### 6. Errors-are-human grid → category pills
+## Still open
+
+### 1. Mobile = Freighter absent (no empty state)
 
 **What**
-The 6 contract errors on `/about` are a flat list. Now that the contract-surface section groups functions by Init / Write / Read, the errors should mirror the pattern.
+Freighter is a desktop browser extension. `/app` still assumes the wallet flow and does not swap into a mobile-safe empty state that points users to desktop or a sample Proof Block.
+
+**Current behavior**
+- The modal explains how to install Freighter, but it does not solve the mobile dead-end.
+- The main `/app` layout still renders the normal action stack regardless of device context.
 
 **Fix**
-- Tag each error with a category: `#1–#2 state`, `#3 auth`, `#4–#5 input`, `#6 input`.
-- Color the `.errCode` pill by category (reuse the `.fnTone_*` palette from the contract-surface section).
+- Detect mobile user-agent and/or unsupported wallet state early.
+- Swap the action column for a clear empty state:
+  "Freighter is desktop-only. Open this on desktop, or view a sample Proof Block."
+- Keep the right-side Proof Block preview visible so mobile visitors still see a useful demo artifact.
 
 **Files**
-- `frontend/src/app/about/page.tsx` (data)
-- `frontend/src/app/about/page.module.css` (new `.errTone_*` classes)
+- `frontend/src/components/wallet/*`
+- `frontend/src/components/onboarding/freighter-welcome.tsx`
+- `frontend/src/app/app/page.tsx`
 
 ---
 
-## 🟢 Stretch — skip if timeboxed
+### 3. Locale toggle only covers the hero
+
+**What**
+The footer toggle still changes only the homepage hero copy. `/about`, `/app`, footer copy, and the rest of the site remain English, so the scope is still misleading.
+
+**Current behavior**
+- Toggle still lives in the footer.
+- Only `LocalizedHero` subscribes to locale changes.
+
+**Options**
+- **A (fast)** Move the toggle inside the hero with copy that makes the scope explicit.
+- **B (right)** Add a lightweight i18n dictionary/context and translate at least hero, footer, `/about`, `/app`, and FAQ/demo-script-facing copy.
+
+**Files**
+- `frontend/src/components/layout/locale-toggle.tsx`
+- `frontend/src/components/layout/site-footer.tsx`
+- `frontend/src/components/landing/localized-hero.tsx`
+- likely new `frontend/src/lib/i18n/*`
+
+---
+
+### 4. No live on-chain events feed
+
+**What**
+The site still has no fetched on-chain activity strip. Home currently shows hardcoded transaction rows, which is better than nothing but weaker than a real event feed.
+
+**Fix**
+- New server component `frontend/src/components/activity/recent-activity.tsx`
+- New `frontend/src/lib/events.ts` with `getRecentEvents(contractId, limit)`
+- Fetch recent Soroban contract events and render a compact list with event label, short hash, relative time, and explorer link
+- Cache for 30s
+
+**Mount points**
+- `/`
+- `/about`
+
+**Files**
+- `frontend/src/app/page.tsx`
+- `frontend/src/app/about/page.tsx`
+- new activity/event helpers
+
+---
+
+### 6. Errors-are-human grid needs category pills
+
+**What**
+The contract-surface section is grouped nicely, but the error section is still a flat grid. The original category treatment has not landed.
+
+**Fix**
+- Tag each error with a category, for example:
+  - `#1-#2` state
+  - `#3` auth
+  - `#4-#6` input
+- Add colored pills or tones that mirror the existing function-tone system
+
+**Files**
+- `frontend/src/app/about/page.tsx`
+- `frontend/src/app/about/page.module.css`
+
+---
+
+## Stretch
 
 ### 7. Print stylesheet for `/proof/[hash]`
 
-Existing `@media print` in `proof-card.module.css` is minimal. QR block + share buttons print on a second page with broken alignment. Hide the share row; keep the QR; make the card fit A4.
+**Status**
+- Still open.
 
-### 8. Sitemap + robots.txt
+**What**
+Print styling exists but is minimal. The original polish pass for single-page A4 output, cleaner QR alignment, and hiding share affordances has not landed.
 
-Proof Block URLs aren't indexable. Add `frontend/src/app/sitemap.ts` (static: `/`, `/about`, `/app`, `/proof`). Robots.txt already defaults to allow-all via Next — verify.
-
-### 9. Lightweight analytics
-
-Vercel Analytics or Plausible. One-line install. You currently have no visibility into which demo section converts.
-
-### 10. Accessibility pass
-
-- Add a skip-link in `site-nav.tsx` (`<a href="#main">Skip to content</a>`).
-- Audit focus rings on `.ctaPrimary` / `.ctaGhost` / `.stackChip` — currently browser default.
-- Errors grid tone is color-only (`#dc2626` beat icons etc.) — add a text label or `aria-label` that conveys severity.
-
-### 11. Playwright smoke test
-
-One `e2e/register-verify-pay.spec.ts` that:
-1. Visits `/app`.
-2. Mocks Freighter (`window.freighterApi`) with a canned signer.
-3. Clicks Demo autofill → Register → asserts success toast.
-4. Clicks Verify → asserts success.
-5. Navigates to `/proof/<hash>` → asserts the verified badge.
-
-Catches regressions when multiple AIs land parallel commits to the same files.
+**Files**
+- `frontend/src/components/proof/proof-card.module.css`
 
 ---
 
-## Verification checklist (run before merging fixes)
+### 9. Lightweight analytics
+
+**Status**
+- Still open.
+
+**What**
+No Vercel Analytics or Plausible integration is wired up yet, so there is still no visibility into which sections convert during demos.
+
+---
+
+### 10. Accessibility pass
+
+**Status**
+- Still open.
+
+**What**
+- No skip-link in `site-nav.tsx`
+- Focus styling still needs an intentional pass
+- Error-tone communication still leans on visual treatment more than explicit text semantics
+
+**Files**
+- `frontend/src/components/layout/site-nav.tsx`
+- button/chip styles
+- `/about` error grid
+
+---
+
+### 11. Playwright smoke test
+
+**Status**
+- Still open.
+
+**What**
+No `e2e/register-verify-pay.spec.ts` exists yet. There are Playwright packages in the lockfile, but no actual smoke coverage in the repo.
+
+**Fix**
+1. Visit `/app`
+2. Mock Freighter with a canned signer
+3. Run register
+4. Run verify
+5. Open `/proof/<hash>`
+6. Assert verified badge
+
+---
+
+## Verification checklist
 
 ```bash
 cd frontend
 npm run lint
-npm run build           # must succeed
-npm run dev             # manual smoke: /, /app, /about, /proof, /proof/<hash>
+npm run build
+npm run dev
 ```
 
-Cross-check on mobile viewport (375×812) + desktop (1440×900). Flip locale toggle on every page.
+Manual smoke:
+- `/`
+- `/app`
+- `/about`
+- `/proof`
+- `/proof/<hash>`
+- mobile viewport `375x812`
+- desktop `1440x900`
+- locale toggle behavior on every page

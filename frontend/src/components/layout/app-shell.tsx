@@ -49,7 +49,9 @@ export function AppShell({ children, rpcPill, walletButton }: AppShellProps) {
           </a>
         </div>
       </div>
-      <main className={styles.main}>{children}</main>
+      <main id="main" className={styles.main}>
+        {children}
+      </main>
       <SiteFooter />
     </div>
   );

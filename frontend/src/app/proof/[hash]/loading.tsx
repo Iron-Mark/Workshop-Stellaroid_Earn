@@ -6,7 +6,7 @@ export default function ProofLoading() {
   return (
     <>
       <SiteNav />
-      <main style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}>
+      <main id="main" style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}>
         <div className={styles.shell} aria-busy="true" aria-live="polite">
           <div className={styles.card}>
             <div className={styles.headerRow}>

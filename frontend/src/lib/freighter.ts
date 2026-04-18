@@ -10,6 +10,9 @@ import {
 import { getExpectedNetworkPassphrase, appConfig } from "@/lib/config";
 import type { WalletSnapshot } from "@/lib/types";
 
+const E2E_WALLET_ADDRESS =
+  "GAWIOVGF3N7G3K4J4Y6MGSQYPN4K53Q3VHWL5V66B5Y4BBJH3M6AJYLD";
+
 function buildUnsupportedWallet(error?: string): WalletSnapshot {
   return {
     status: "unsupported",
@@ -21,7 +24,27 @@ function buildUnsupportedWallet(error?: string): WalletSnapshot {
   };
 }
 
+function buildE2EWallet(): WalletSnapshot {
+  return {
+    status: "connected",
+    address: E2E_WALLET_ADDRESS,
+    network: appConfig.network,
+    networkPassphrase: getExpectedNetworkPassphrase(),
+    isExpectedNetwork: true,
+  };
+}
+
 export async function readFreighterWallet(): Promise<WalletSnapshot> {
+  if (appConfig.e2eMode) {
+    return {
+      status: "disconnected",
+      address: null,
+      network: appConfig.network,
+      networkPassphrase: getExpectedNetworkPassphrase(),
+      isExpectedNetwork: true,
+    };
+  }
+
   const connection = await isConnected();
 
   if (connection.error) {
@@ -82,6 +105,10 @@ export async function readFreighterWallet(): Promise<WalletSnapshot> {
 }
 
 export async function connectFreighterWallet() {
+  if (appConfig.e2eMode) {
+    return buildE2EWallet();
+  }
+
   const access = await requestAccess();
 
   if (access.error) {
@@ -92,6 +119,10 @@ export async function connectFreighterWallet() {
 }
 
 export async function signWithFreighter(transactionXdr: string, address: string) {
+  if (appConfig.e2eMode) {
+    return transactionXdr;
+  }
+
   const result = await signTransaction(transactionXdr, {
     networkPassphrase: getExpectedNetworkPassphrase(),
     address,

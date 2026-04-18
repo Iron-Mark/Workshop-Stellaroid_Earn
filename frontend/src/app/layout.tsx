@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { ToastProvider } from "@/components/ui";
 import "../styles/globals.css";
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s — Stellaroid Earn",
   },
   description:
-    "Maria graduated top of her cohort in Quezon City. Her diploma is real; proving it to a Singapore employer takes 3 weeks. Stellaroid Earn binds the hash on Stellar, verifies in 5 seconds, and pays her wallet directly — no invoice, no platform, no wait.",
+    "Verify the credential. Pay the graduate. Stellaroid Earn anchors certificate hashes on Stellar, verifies them in seconds, and settles payment directly to the student wallet.",
   icons: {
     icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
     apple: [{ url: "/logo.svg", type: "image/svg+xml" }],
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     url: "/",
     title: "Stellaroid Earn",
     description:
-      "Bind the hash. Pay the wallet. Prove the work. On-chain proof-of-work on Stellar — verify a credential and pay in one click.",
+      "Verify the credential. Pay the graduate. On-chain proof and direct settlement on Stellar.",
     // Dynamic PNG rendered by src/app/opengraph-image.tsx — renders reliably on
     // Facebook, iMessage, WhatsApp, Telegram, LinkedIn, X, Slack, Discord.
   },
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Stellaroid Earn",
     description:
-      "Bind the hash. Pay the wallet. Prove the work. On-chain proof-of-work on Stellar — verify a credential and pay in one click.",
+      "Verify the credential. Pay the graduate. On-chain proof and direct settlement on Stellar.",
   },
 };
 
@@ -35,7 +36,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body suppressHydrationWarning>
-        <ToastProvider>{children}</ToastProvider>
+        <ToastProvider>
+          {children}
+          <Analytics />
+        </ToastProvider>
       </body>
     </html>
   );

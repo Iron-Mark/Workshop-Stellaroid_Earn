@@ -7,6 +7,7 @@ export default function NotFound() {
     <>
       <SiteNav />
       <main
+        id="main"
         style={{
           maxWidth: 640,
           margin: "0 auto",

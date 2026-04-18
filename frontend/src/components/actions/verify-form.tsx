@@ -21,9 +21,10 @@ function isValidHash(hash: string): boolean {
 
 type LookupState =
   | { status: "idle" }
-  | { status: "loading" }
-  | { status: "found"; record: CertificateRecord }
-  | { status: "missing" };
+  | { status: "loading"; hash: string }
+  | { status: "found"; hash: string; record: CertificateRecord }
+  | { status: "missing"; hash: string }
+  | { status: "error"; hash: string; message: string };
 
 export function VerifyForm({ onVerified }: VerifyFormProps) {
   const { wallet } = useFreighterWallet();
@@ -33,6 +34,10 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
   const [hashTouched, setHashTouched] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [lookup, setLookup] = useState<LookupState>({ status: "idle" });
+
+  const normalizedHash = certHash.trim().replace(/^0x/i, "").toLowerCase();
+  const configured = hasRequiredConfig();
+  const hashOk = isValidHash(certHash);
 
   useEffect(() => {
     function onAutofill(e: Event) {
@@ -46,6 +51,38 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
     return () => window.removeEventListener(DEMO_AUTOFILL_EVENT, onAutofill);
   }, []);
 
+  useEffect(() => {
+    if (!configured || !hashOk) {
+      setLookup({ status: "idle" });
+      return;
+    }
+
+    const hash = normalizedHash;
+    let cancelled = false;
+    const timer = window.setTimeout(async () => {
+      setLookup((current) =>
+        current.status === "loading" && current.hash === hash
+          ? current
+          : { status: "loading", hash },
+      );
+
+      try {
+        const record = await getCertificate(hash);
+        if (cancelled) return;
+        setLookup(record ? { status: "found", hash, record } : { status: "missing", hash });
+      } catch (e) {
+        if (cancelled) return;
+        const h = humanizeError(e);
+        setLookup({ status: "error", hash, message: h.detail });
+      }
+    }, 350);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [configured, hashOk, normalizedHash]);
+
   const hashError =
     hashTouched && certHash.trim() !== "" && !isValidHash(certHash)
       ? "Must be exactly 64 hexadecimal characters"
@@ -54,42 +91,95 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
   const walletConnected =
     wallet.status === "connected" && !!wallet.address && wallet.isExpectedNetwork;
 
-  const configured = hasRequiredConfig();
-  const hashOk = isValidHash(certHash);
-  const canLookup = configured && hashOk && lookup.status !== "loading";
-  const canVerify = configured && walletConnected && hashOk && !verifying;
+  const currentLookup =
+    lookup.status !== "idle" && lookup.hash === normalizedHash ? lookup : { status: "idle" as const };
+
+  const canLookup = configured && hashOk && currentLookup.status !== "loading";
+  const canVerify =
+    configured &&
+    walletConnected &&
+    !verifying &&
+    currentLookup.status === "found" &&
+    !currentLookup.record.verified;
+
+  async function resolveLookup(noisy: boolean) {
+    if (!configured || !hashOk) return null;
+
+    const hash = normalizedHash;
+    setLookup({ status: "loading", hash });
+    try {
+      const record = await getCertificate(hash);
+      setLookup(record ? { status: "found", hash, record } : { status: "missing", hash });
+      return record;
+    } catch (e) {
+      const h = humanizeError(e);
+      setLookup({ status: "error", hash, message: h.detail });
+      if (noisy) {
+        toast({ title: h.title, detail: h.detail, tone: "danger" });
+      }
+      return null;
+    }
+  }
 
   async function handleLookup() {
     setHashTouched(true);
     if (!canLookup) return;
-
-    setLookup({ status: "loading" });
-    try {
-      const record = await getCertificate(certHash.trim());
-      if (record) {
-        setLookup({ status: "found", record });
-      } else {
-        setLookup({ status: "missing" });
-      }
-    } catch (e) {
-      const h = humanizeError(e);
-      setLookup({ status: "missing" });
-      toast({ title: h.title, detail: h.detail, tone: "danger" });
-    }
+    await resolveLookup(true);
   }
 
   async function handleVerify() {
     setHashTouched(true);
-    if (!canVerify || !wallet.address) return;
+    if (!configured || !hashOk || !wallet.address || !walletConnected) return;
+
+    const record =
+      currentLookup.status === "found" ? currentLookup.record : await resolveLookup(true);
+
+    if (!record) {
+      toast({
+        title: "Certificate not found",
+        detail: "Only registered hashes can be marked verified.",
+        tone: "warning",
+      });
+      return;
+    }
+
+    if (record.verified) {
+      toast({
+        title: "Already verified",
+        detail: "This certificate is already marked verified on-chain.",
+        tone: "neutral",
+      });
+      return;
+    }
 
     setVerifying(true);
     try {
       const result = await withTimeout(
-        verifyCertificate(wallet.address, certHash.trim()),
+        verifyCertificate(wallet.address, normalizedHash),
         15000,
         "verify",
       );
       const txHash = result?.hash;
+      if (result?.result === false) {
+        setLookup({ status: "missing", hash: normalizedHash });
+        toast({
+          title: "Certificate not found",
+          detail: "That hash is not registered yet, so it could not be marked verified.",
+          tone: "warning",
+          action: txHash
+            ? {
+                label: "View on stellar.expert \u2197",
+                href: `${appConfig.explorerUrl}/tx/${txHash}`,
+              }
+            : undefined,
+        });
+        return;
+      }
+      setLookup({
+        status: "found",
+        hash: normalizedHash,
+        record: { ...record, verified: true },
+      });
       toast({
         title: "Certificate verified",
         tone: "success",
@@ -100,9 +190,7 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
             }
           : undefined,
       });
-      onVerified?.(certHash.trim(), txHash);
-      // refresh lookup state
-      setLookup({ status: "idle" });
+      onVerified?.(normalizedHash, txHash);
     } catch (e) {
       const h = humanizeError(e);
       toast({ title: h.title, detail: h.detail, tone: "danger" });
@@ -110,6 +198,21 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
       setVerifying(false);
     }
   }
+
+  const formHint = (() => {
+    if (!configured) return "Set the contract configuration first before verifying on-chain.";
+    if (!certHash.trim()) return "Paste a certificate hash. The app will check chain state before enabling verification.";
+    if (!hashOk) return "Enter a full 64-character SHA-256 hash.";
+    if (currentLookup.status === "loading") return "Checking whether this hash is already registered...";
+    if (currentLookup.status === "missing") return "This hash is not registered, so on-chain verification is blocked.";
+    if (currentLookup.status === "error") return currentLookup.message;
+    if (currentLookup.status === "found" && currentLookup.record.verified)
+      return "This certificate is already verified on-chain.";
+    if (currentLookup.status === "found" && !walletConnected)
+      return "Hash found. Connect Freighter on Stellar testnet to submit verification.";
+    if (currentLookup.status === "found") return "Hash found on-chain. You can now mark it verified.";
+    return "Use Look up if you want to refresh the current chain state manually.";
+  })();
 
   return (
     <div className={styles.form}>
@@ -137,7 +240,7 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
           variant="secondary"
           onClick={handleLookup}
           disabled={!canLookup}
-          loading={lookup.status === "loading"}
+          loading={currentLookup.status === "loading"}
         >
           Look up (read-only)
         </Button>
@@ -152,7 +255,9 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
         </Button>
       </div>
 
-      {lookup.status === "loading" && (
+      <p className={styles.formHint}>{formHint}</p>
+
+      {currentLookup.status === "loading" && (
         <div className={styles.lookupPanel} aria-label="Loading certificate details" aria-busy="true">
           <div className={styles.lookupRow}>
             <span className={styles.lookupLabel}>Status</span>
@@ -169,32 +274,38 @@ export function VerifyForm({ onVerified }: VerifyFormProps) {
         </div>
       )}
 
-      {lookup.status === "found" && (
+      {currentLookup.status === "found" && (
         <div className={styles.lookupPanel}>
           <div className={styles.lookupRow}>
             <span className={styles.lookupLabel}>Status</span>
-            <Badge tone={lookup.record.verified ? "success" : "neutral"} dot>
-              {lookup.record.verified ? "Verified" : "Unverified"}
+            <Badge tone={currentLookup.record.verified ? "success" : "accent"} dot>
+              {currentLookup.record.verified ? "Verified" : "Registered"}
             </Badge>
           </div>
           <div className={styles.lookupRow}>
             <span className={styles.lookupLabel}>Owner</span>
             <span className={styles.lookupValue}>
-              {shortenAddress(lookup.record.owner)}
+              {shortenAddress(currentLookup.record.owner)}
             </span>
           </div>
           <div className={styles.lookupRow}>
             <span className={styles.lookupLabel}>Issuer</span>
             <span className={styles.lookupValue}>
-              {shortenAddress(lookup.record.issuer)}
+              {shortenAddress(currentLookup.record.issuer)}
             </span>
           </div>
         </div>
       )}
 
-      {lookup.status === "missing" && (
+      {currentLookup.status === "missing" && (
         <Badge tone="warning" dot>
           No certificate for that hash
+        </Badge>
+      )}
+
+      {currentLookup.status === "error" && (
+        <Badge tone="danger" dot>
+          Unable to read chain state right now
         </Badge>
       )}
     </div>

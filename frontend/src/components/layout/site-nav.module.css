@@ -7,6 +7,25 @@
   z-index: 10;
 }
 
+.skipLink {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 11;
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: top var(--transition);
+}
+
+.skipLink:focus {
+  top: 12px;
+}
+
 .inner {
   display: flex;
   align-items: center;
@@ -31,6 +50,15 @@
 }
 
 .brand:hover { opacity: 0.8; }
+
+.brand:focus-visible,
+.links a:focus-visible,
+.ghBtn:focus-visible,
+.drawerLink:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
 
 .links {
   display: flex;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
+import { RecentActivity } from "@/components/activity/recent-activity";
 import { SiteNav } from "@/components/layout/site-nav";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { CopyButton } from "@/components/ui/copy-button";
@@ -212,12 +213,12 @@ const fnGroups = [
 ];
 
 const errors = [
-  { code: "1", name: "AlreadyInitialized", copy: "Init called twice." },
-  { code: "2", name: "NotInitialized", copy: "Admin/token not set yet." },
-  { code: "3", name: "Unauthorized", copy: "Caller isn't allowed." },
-  { code: "4", name: "AlreadyExists", copy: "Duplicate cert hash." },
-  { code: "5", name: "NotFound", copy: "Hash isn't registered." },
-  { code: "6", name: "InvalidAmount", copy: "Amount must be > 0." },
+  { code: "1", name: "AlreadyInitialized", copy: "Init called twice.", tone: "state" },
+  { code: "2", name: "NotInitialized", copy: "Admin/token not set yet.", tone: "state" },
+  { code: "3", name: "Unauthorized", copy: "Caller isn't allowed.", tone: "auth" },
+  { code: "4", name: "AlreadyExists", copy: "Duplicate cert hash.", tone: "input" },
+  { code: "5", name: "NotFound", copy: "Hash isn't registered.", tone: "input" },
+  { code: "6", name: "InvalidAmount", copy: "Amount must be > 0.", tone: "input" },
 ];
 
 export default function About() {
@@ -228,20 +229,24 @@ export default function About() {
   return (
     <div className={styles.page}>
       <SiteNav />
+      <main id="main">
+        <section className={styles.hero}>
+          <span className={styles.eyebrow}>About</span>
+          <h1>
+            Why <em>Stellaroid Earn</em>
+          </h1>
+          <p className={styles.lede}>
+            A thin piece of software around one idea: certificates should be
+            verifiable in seconds, not emails. And if they&rsquo;re verifiable, the grad
+            should get paid on the same tap.
+          </p>
+        </section>
 
-      <section className={styles.hero}>
-        <span className={styles.eyebrow}>About</span>
-        <h1>
-          Why <em>Stellaroid Earn</em>
-        </h1>
-        <p className={styles.lede}>
-          A thin piece of software around one idea: certificates should be
-          verifiable in seconds, not emails. And if they&rsquo;re verifiable, the grad
-          should get paid on the same tap.
-        </p>
-      </section>
+        <div className={styles.container}>
+          <RecentActivity className={styles.activityStrip} compact />
+        </div>
 
-      <div className={styles.container}>
+        <div className={styles.container}>
         <dl className={styles.stats} aria-label="By the numbers">
           {stats.map((s) => (
             <div key={s.label} className={styles.statCell}>
@@ -429,7 +434,19 @@ export default function About() {
           <div className={styles.errGrid}>
             {errors.map((e) => (
               <div key={e.code} className={styles.errCell}>
-                <span className={styles.errCode}>#{e.code}</span>
+                <div className={styles.errMeta}>
+                  <span
+                    className={`${styles.errCode} ${styles[`errTone_${e.tone}`]}`}
+                    aria-label={`Error ${e.code}`}
+                  >
+                    #{e.code}
+                  </span>
+                  <span
+                    className={`${styles.errCategory} ${styles[`errTone_${e.tone}`]}`}
+                  >
+                    {e.tone}
+                  </span>
+                </div>
                 <div>
                   <p className={styles.errName}>{e.name}</p>
                   <p className={styles.errCopy}>{e.copy}</p>
@@ -508,7 +525,8 @@ export default function About() {
             Look up a certificate
           </Link>
         </div>
-      </div>
+        </div>
+      </main>
 
       <SiteFooter />
     </div>

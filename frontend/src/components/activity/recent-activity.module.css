@@ -1,0 +1,145 @@
+.card {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.92));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: var(--ls-tight);
+}
+
+.viewAll {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.viewAll:hover {
+  color: var(--color-primary);
+}
+
+.list {
+  display: grid;
+  gap: 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 120px 1fr 164px auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgba(15, 23, 42, 0.48);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.row:hover {
+  border-color: var(--color-primary);
+}
+
+.label {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.toneRegistered {
+  color: var(--color-primary);
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+
+.toneVerified {
+  color: var(--color-verified);
+  background: rgba(45, 212, 191, 0.12);
+  border: 1px solid rgba(45, 212, 191, 0.28);
+}
+
+.tonePayment {
+  color: var(--color-accent);
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.28);
+}
+
+.toneNeutral {
+  color: var(--color-text-muted);
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.detail {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+}
+
+.hash {
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.time {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 820px) {
+  .row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "label time"
+      "detail detail"
+      "hash hash";
+  }
+
+  .label {
+    grid-area: label;
+    justify-self: start;
+  }
+
+  .detail {
+    grid-area: detail;
+  }
+
+  .hash {
+    grid-area: hash;
+  }
+
+  .time {
+    grid-area: time;
+  }
+}

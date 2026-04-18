@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { connectFreighterWallet, readFreighterWallet } from "@/lib/freighter";
 import type { WalletSnapshot } from "@/lib/types";
 
@@ -12,8 +18,24 @@ const initialWalletState: WalletSnapshot = {
   isExpectedNetwork: false,
 };
 
-export function useFreighterWallet() {
+export type FreighterWalletState = {
+  wallet: WalletSnapshot;
+  connectWallet: () => Promise<WalletSnapshot>;
+  disconnectWallet: () => void;
+  refreshWallet: () => Promise<WalletSnapshot>;
+  isMobileBrowser: boolean;
+};
+
+const FreighterWalletContext = createContext<FreighterWalletState | null>(null);
+
+function detectMobileBrowser() {
+  if (typeof navigator === "undefined") return false;
+  return /android|iphone|ipad|ipod|iemobile|opera mini/i.test(navigator.userAgent);
+}
+
+function useFreighterWalletState(): FreighterWalletState {
   const [wallet, setWallet] = useState<WalletSnapshot>(initialWalletState);
+  const [isMobileBrowser, setIsMobileBrowser] = useState(false);
 
   async function refreshWallet() {
     setWallet((current) => ({
@@ -68,8 +90,33 @@ export function useFreighterWallet() {
   }
 
   useEffect(() => {
+    setIsMobileBrowser(detectMobileBrowser());
     void refreshWallet();
   }, []);
 
-  return { wallet, connectWallet, disconnectWallet, refreshWallet };
+  return {
+    wallet,
+    connectWallet,
+    disconnectWallet,
+    refreshWallet,
+    isMobileBrowser,
+  };
+}
+
+export function FreighterWalletProvider({ children }: { children: ReactNode }) {
+  const value = useFreighterWalletState();
+
+  return (
+    <FreighterWalletContext.Provider value={value}>
+      {children}
+    </FreighterWalletContext.Provider>
+  );
+}
+
+export function useFreighterWallet() {
+  const context = useContext(FreighterWalletContext);
+  if (!context) {
+    throw new Error("useFreighterWallet must be used within a FreighterWalletProvider.");
+  }
+  return context;
 }

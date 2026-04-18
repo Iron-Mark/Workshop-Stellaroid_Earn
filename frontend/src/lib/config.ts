@@ -10,6 +10,7 @@ export const appConfig = {
     process.env.NEXT_PUBLIC_STELLAR_RPC_URL ?? "https://soroban-testnet.stellar.org",
   network: process.env.NEXT_PUBLIC_STELLAR_NETWORK ?? "TESTNET",
   networkPassphrase: configuredPassphrase,
+  e2eMode: process.env.NEXT_PUBLIC_E2E_MODE === "1",
   contractId: process.env.NEXT_PUBLIC_SOROBAN_CONTRACT_ID ?? "",
   assetAddress: process.env.NEXT_PUBLIC_SOROBAN_ASSET_ADDRESS ?? "",
   assetCode: process.env.NEXT_PUBLIC_SOROBAN_ASSET_CODE ?? "XLM",
@@ -26,8 +27,18 @@ const networkPassphraseByName: Record<string, string> = {
   PUBNET: Networks.PUBLIC,
 };
 
+const networkLabelByName: Record<string, string> = {
+  TESTNET: "Testnet",
+  PUBLIC: "Pubnet",
+  PUBNET: "Pubnet",
+};
+
 export function getExpectedNetworkPassphrase() {
   return networkPassphraseByName[appConfig.network] ?? appConfig.networkPassphrase;
+}
+
+export function getExpectedNetworkLabel() {
+  return networkLabelByName[appConfig.network] ?? appConfig.network;
 }
 
 export function hasRequiredConfig() {

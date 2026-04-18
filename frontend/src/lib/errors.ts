@@ -1,15 +1,15 @@
-export type HumanError = { title: string; detail: string; recoverable: boolean };
+export type HumanError = {
+  title: string;
+  detail: string;
+  recoverable: boolean;
+};
 
 export function humanizeError(err: unknown): HumanError {
   try {
-    const message =
-      err instanceof Error
-        ? err.message.toLowerCase()
-        : typeof err === "string"
-          ? err.toLowerCase()
-          : "";
-    const name =
-      err instanceof Error ? err.name.toLowerCase() : "";
+    const rawMessage =
+      err instanceof Error ? err.message : typeof err === "string" ? err : "";
+    const message = rawMessage.toLowerCase();
+    const name = err instanceof Error ? err.name.toLowerCase() : "";
 
     // User rejected / declined / denied
     if (
@@ -25,11 +25,48 @@ export function humanizeError(err: unknown): HumanError {
     }
 
     // Network mismatch / wrong network
-    if (message.includes("network mismatch") || message.includes("wrong network")) {
+    if (
+      message.includes("network mismatch") ||
+      message.includes("wrong network")
+    ) {
       return {
         title: "Wrong network",
         detail: "Switch Freighter to the Stellar testnet and try again.",
         recoverable: true,
+      };
+    }
+
+    if (
+      message.includes("missing contract configuration") ||
+      message.includes("next_public_soroban_contract_id")
+    ) {
+      return {
+        title: "Missing app configuration",
+        detail:
+          "Set NEXT_PUBLIC_SOROBAN_CONTRACT_ID in frontend/.env.local and restart the app.",
+        recoverable: false,
+      };
+    }
+
+    if (message.includes("bad union switch")) {
+      return {
+        title: "RPC/XDR compatibility issue",
+        detail:
+          "The transaction reached RPC, but response decoding failed. Update frontend dependencies and confirm the contract ABI matches this app build.",
+        recoverable: true,
+      };
+    }
+
+    if (
+      message.includes("freighter is not available") ||
+      message.includes("could not establish connection to freighter") ||
+      message.includes("unsupported")
+    ) {
+      return {
+        title: "Freighter unavailable",
+        detail:
+          "Open the app in a browser with the Freighter extension installed and unlocked.",
+        recoverable: false,
       };
     }
 
@@ -53,11 +90,11 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
-    // Unauthorized / auth / #1
+    // Unauthorized / auth / #3
     if (
       message.includes("unauthorized") ||
       message.includes(" auth") ||
-      message.includes("#1") ||
+      message.includes("#3") ||
       name.includes("unauthorized")
     ) {
       return {
@@ -67,11 +104,8 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
-    // Not found / #2
-    if (
-      message.includes("not found") ||
-      message.includes("#2")
-    ) {
+    // Not found / #5
+    if (message.includes("not found") || message.includes("#5")) {
       return {
         title: "Not found",
         detail: "No record for that certificate hash yet.",
@@ -79,11 +113,11 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
-    // Already exists / duplicate / #3
+    // Already exists / duplicate / #4
     if (
       message.includes("already exists") ||
       message.includes("duplicate") ||
-      message.includes("#3")
+      message.includes("#4")
     ) {
       return {
         title: "Already registered",
@@ -92,11 +126,13 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
-    // Invalid input / invalid / #4
+    // Invalid input / invalid / #6 or client-side validation
     if (
       message.includes("invalid input") ||
       message.includes("invalid") ||
-      message.includes("#4")
+      message.includes("#6") ||
+      message.includes("64 hexadecimal") ||
+      message.includes("stellar address")
     ) {
       return {
         title: "Invalid input",
@@ -110,7 +146,8 @@ export function humanizeError(err: unknown): HumanError {
     if (
       message.includes("fetch failed") ||
       message.includes("network error") ||
-      message.includes("econnrefused")
+      message.includes("econnrefused") ||
+      message.includes("failed to fetch")
     ) {
       return {
         title: "Connection problem",
@@ -119,11 +156,37 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
-    // Insufficient balance
-    if (message.includes("insufficient") || message.includes("balance")) {
+    if (
+      message.includes("tx_insufficient_balance") ||
+      message.includes("op_underfunded") ||
+      message.includes("balance") ||
+      message.includes("underfunded")
+    ) {
       return {
         title: "Insufficient balance",
-        detail: "Fund your testnet wallet with Friendbot and try again.",
+        detail:
+          "Fund the signing testnet wallet with Friendbot, then try again.",
+        recoverable: true,
+      };
+    }
+
+    if (
+      message.includes("tx_no_source_account") ||
+      message.includes("op_no_account")
+    ) {
+      return {
+        title: "Wallet not funded",
+        detail:
+          "This testnet wallet does not exist on-chain yet. Fund it with Friendbot first.",
+        recoverable: true,
+      };
+    }
+
+    if (message.includes("false")) {
+      return {
+        title: "Certificate not found",
+        detail:
+          "That hash is not registered yet, so it cannot be marked verified.",
         recoverable: true,
       };
     }
@@ -132,6 +195,7 @@ export function humanizeError(err: unknown): HumanError {
     return {
       title: "Transaction failed",
       detail:
+        rawMessage ||
         "Please try again. If this keeps happening, check the explorer.",
       recoverable: true,
     };

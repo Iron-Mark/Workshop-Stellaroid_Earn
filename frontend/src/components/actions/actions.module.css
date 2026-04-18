@@ -44,6 +44,13 @@
   flex-wrap: wrap;
 }
 
+.formHint {
+  margin: -4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
 .lookupPanel {
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
@@ -79,6 +86,8 @@
 @media (max-width: 480px) {
   .submitRow { flex-direction: column; }
   .submitRow > * { width: 100%; }
+  .buttonRow { flex-direction: column; }
+  .buttonRow > * { width: 100%; }
   .hashRowActions { flex-direction: column; align-items: stretch; }
   .hashComputeBtn { align-self: stretch; }
   .lookupRow { flex-wrap: wrap; }

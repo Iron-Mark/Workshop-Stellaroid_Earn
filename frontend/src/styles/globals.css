@@ -91,6 +91,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+main[id] {
+  scroll-margin-top: 96px;
+}
+
 code,
 pre {
   font-family: var(--font-mono);

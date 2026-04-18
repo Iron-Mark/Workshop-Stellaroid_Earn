@@ -283,9 +283,65 @@
 }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  .shell {
+    max-width: none;
+    padding: 0;
+  }
+
   .card {
     background: white;
     color: black;
     border: 1px solid #000;
+    gap: 16px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .card::after {
+    display: none;
+  }
+
+  .metaLink,
+  .shareSection,
+  .notFoundCta {
+    display: none !important;
+  }
+
+  .card button {
+    display: none !important;
+  }
+
+  .qrBlock,
+  .rubricSection,
+  .footer {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .qrBlock {
+    gap: 12px;
+    align-items: center;
+  }
+
+  .qrImage {
+    width: 84px;
+    height: 84px;
+    border: 1px solid #d1d5db;
+  }
+
+  .metaCode,
+  .pitch,
+  .notFoundTitle,
+  .notFoundBody,
+  .qrCopy,
+  .qrCopy strong,
+  .rubricItem,
+  .footer {
+    color: black;
   }
 }

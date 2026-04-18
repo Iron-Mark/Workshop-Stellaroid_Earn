@@ -88,6 +88,24 @@
   line-height: 1.55;
 }
 
+.localeScope {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0 auto 20px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: rgba(30, 41, 59, 0.64);
+}
+
+.localeScopeLabel {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
 .ctaRow {
   display: flex;
   gap: 12px;
@@ -119,6 +137,13 @@
   background: var(--color-primary-hover);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(245, 158, 11, 0.25);
+}
+
+.ctaPrimary:focus-visible,
+.ctaGhost:focus-visible,
+.txRow:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
 }
 
 .ctaGhost {
@@ -297,4 +322,8 @@
 @media (max-width: 600px) {
   .h1 { font-size: 40px; }
   .hero { padding: 64px 20px 40px; }
+  .localeScope {
+    border-radius: var(--radius-md);
+    padding: 12px;
+  }
 }

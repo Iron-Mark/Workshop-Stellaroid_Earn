@@ -1,4 +1,5 @@
 // Server component — no "use client"
+import Link from "next/link";
 import { CertificateRecord } from "@/lib/contract-client";
 import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
@@ -13,6 +14,7 @@ import styles from "./proof-card.module.css";
 interface ProofCardProps {
   hash: string;
   cert: CertificateRecord | null;
+  lookupFailed?: boolean;
 }
 
 function CheckIcon() {
@@ -36,14 +38,26 @@ function CheckIcon() {
   );
 }
 
-export function ProofCard({ hash, cert }: ProofCardProps) {
+export function ProofCard({
+  hash,
+  cert,
+  lookupFailed = false,
+}: ProofCardProps) {
   const contractId = appConfig.contractId;
   const explorerUrl = appConfig.explorerUrl;
   const shortContract = shortenAddress(contractId, 8);
   const shortHash = shortenAddress(hash, 8);
 
-  const verifiedTone = cert?.verified ? "verified" : cert ? "warning" : "neutral";
-  const verifiedLabel = cert?.verified ? "Verified" : cert ? "Registered" : "Not found";
+  const verifiedTone = cert?.verified
+    ? "verified"
+    : cert
+      ? "warning"
+      : "neutral";
+  const verifiedLabel = cert?.verified
+    ? "Verified"
+    : cert
+      ? "Registered"
+      : "Not found";
 
   return (
     <div className={styles.shell}>
@@ -51,8 +65,8 @@ export function ProofCard({ hash, cert }: ProofCardProps) {
         {/* 1. Header row */}
         <header className={styles.headerRow}>
           <Badge tone="accent">Stellar testnet</Badge>
-          <Badge tone={verifiedTone} dot>
-            {verifiedLabel}
+          <Badge tone={lookupFailed ? "warning" : verifiedTone} dot>
+            {lookupFailed ? "Lookup failed" : verifiedLabel}
           </Badge>
         </header>
 
@@ -98,12 +112,16 @@ export function ProofCard({ hash, cert }: ProofCardProps) {
           <section className={styles.certGrid} aria-label="Certificate details">
             <div className={styles.certRow}>
               <span className={styles.metaLabel}>Owner</span>
-              <code className={styles.metaCode}>{shortenAddress(cert.owner, 8)}</code>
+              <code className={styles.metaCode}>
+                {shortenAddress(cert.owner, 8)}
+              </code>
               <CopyButton value={cert.owner} ariaLabel="Copy owner address" />
             </div>
             <div className={styles.certRow}>
               <span className={styles.metaLabel}>Issuer</span>
-              <code className={styles.metaCode}>{shortenAddress(cert.issuer, 8)}</code>
+              <code className={styles.metaCode}>
+                {shortenAddress(cert.issuer, 8)}
+              </code>
               <CopyButton value={cert.issuer} ariaLabel="Copy issuer address" />
               {(() => {
                 const info = lookupIssuer(cert.issuer);
@@ -130,19 +148,39 @@ export function ProofCard({ hash, cert }: ProofCardProps) {
               height={107}
               style={{ imageRendering: "pixelated", marginBottom: 12 }}
             />
-            <p className={styles.notFoundTitle}>No record for this hash yet.</p>
-            <p className={styles.notFoundBody}>
-              The hash may be mistyped, or the certificate hasn&rsquo;t been registered
-              on-chain. Double-check the 64 hex characters, or look up a different one.
-            </p>
-            <a href="/proof" className={styles.notFoundCta}>
+            {lookupFailed ? (
+              <>
+                <p className={styles.notFoundTitle}>
+                  Couldn&rsquo;t read the chain right now.
+                </p>
+                <p className={styles.notFoundBody}>
+                  This does not always mean the hash is missing. RPC lookup
+                  failed, so try refreshing once, then retry in a few seconds.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className={styles.notFoundTitle}>
+                  No record for this hash yet.
+                </p>
+                <p className={styles.notFoundBody}>
+                  The hash may be mistyped, or the certificate hasn&rsquo;t been
+                  registered on-chain. Double-check the 64 hex characters, or
+                  look up a different one.
+                </p>
+              </>
+            )}
+            <Link href="/proof" className={styles.notFoundCta}>
               Look up another hash →
-            </a>
+            </Link>
           </div>
         )}
 
         {/* 6. Rubric self-check */}
-        <section className={styles.rubricSection} aria-label="Submission rubric">
+        <section
+          className={styles.rubricSection}
+          aria-label="Submission rubric"
+        >
           <p className={styles.rubricTitle}>Submission self-check</p>
           <ul className={styles.rubricList} role="list">
             <li className={styles.rubricItem}>

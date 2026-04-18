@@ -3,16 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "@/app/page.module.css";
+import { DEFAULT_SAMPLE_PROOF_HASH } from "@/lib/demo-data";
 import {
   LOCALE_CHANGE_EVENT,
   LOCALE_STORAGE_KEY,
+  LocaleToggle,
   type Locale,
 } from "@/components/layout/locale-toggle";
 
 const copy = {
   en: {
     eyebrow: "Stellar Testnet · Soroban · Freighter",
-    h1a: "Prove Maria\u2019s credentials.",
+    h1a: "Prove Maria’s credentials.",
     h1b: "Pay her in the same breath.",
     lede:
       "Maria graduated top of her bootcamp in Quezon City. A Singapore employer hashes her diploma, verifies it on Stellar in five seconds, and pays her directly in XLM \u2014 no invoice, no platform, no three-week email thread. Sub-cent fees make every cert worth settling on-chain.",
@@ -22,19 +24,13 @@ const copy = {
   tl: {
     eyebrow: "Stellar Testnet · Soroban · Freighter",
     h1a: "Patunayan ang kredensyal ni Maria.",
-    h1b: "Bayaran siya sa parehong sandali.",
+    h1b: "Bayaran siya nang sabay.",
     lede:
-      "Nagtapos si Maria bilang nangunguna sa kanyang bootcamp sa Quezon City. Hina-hash ng isang employer sa Singapore ang kanyang diploma, bini-verify ito sa Stellar sa loob ng limang segundo, at direkta siyang binabayaran sa XLM \u2014 walang invoice, walang platform, walang tatlong linggong email thread. Sa sub-cent na bayad, sulit i-settle sa on-chain ang bawat sertipiko.",
+      "Nagtapos si Maria bilang nangunguna sa kanyang bootcamp sa Quezon City. I-ha-hash ng isang employer sa Singapore ang kanyang diploma, ibe-verify sa Stellar sa loob ng limang segundo, at direktang babayaran siya gamit ang XLM \u2014 walang invoice, walang platform, at walang tatlong linggong email thread. Dahil sa sub-cent fees, sulit i-settle on-chain ang bawat cert.",
     ctaPrimary: "Subukan ang demo \u2192",
     ctaGhost: "Tingnan ang sample Proof Block \u2014 walang wallet kailangan",
   },
 } satisfies Record<Locale, Record<string, string>>;
-
-// Real registered + verified certificate hash on Stellar testnet.
-// Resolves to { issuer: GAWIOVGF..., owner: GAWIOVGF..., verified: true }
-// and triggers the trusted-issuer "Stellaroid Academy" badge.
-const SAMPLE_HASH =
-  "35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e";
 
 export function LocalizedHero() {
   const [locale, setLocale] = useState<Locale>("en");
@@ -65,11 +61,17 @@ export function LocalizedHero() {
         <em>{t.h1b}</em>
       </h1>
       <p className={styles.lede}>{t.lede}</p>
+      <div className={styles.localeScope}>
+        <span className={styles.localeScopeLabel}>
+          View this hero in {locale === "en" ? "Tagalog" : "English"}
+        </span>
+        <LocaleToggle />
+      </div>
       <div className={styles.ctaRow}>
         <Link href="/app" className={styles.ctaPrimary}>
           {t.ctaPrimary}
         </Link>
-        <Link href={`/proof/${SAMPLE_HASH}`} className={styles.ctaGhost}>
+        <Link href={`/proof/${DEFAULT_SAMPLE_PROOF_HASH}`} className={styles.ctaGhost}>
           {t.ctaGhost}
         </Link>
       </div>

@@ -11,7 +11,7 @@ export function WalletConnectButton() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (wallet.error) {
+    if (wallet.error && wallet.status !== "unsupported") {
       toast({
         title: "Wallet error",
         detail: wallet.error,
@@ -46,6 +46,14 @@ export function WalletConnectButton() {
           Disconnect
         </Button>
       </div>
+    );
+  }
+
+  if (wallet.status === "unsupported") {
+    return (
+      <Button variant="secondary" size="sm" disabled>
+        Freighter unavailable
+      </Button>
     );
   }
 

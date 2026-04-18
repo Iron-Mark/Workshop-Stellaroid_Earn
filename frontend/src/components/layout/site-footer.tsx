@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { appConfig } from "@/lib/config";
-import { LocaleToggle } from "./locale-toggle";
 import styles from "./site-footer.module.css";
 
 export function SiteFooter() {
@@ -74,7 +73,6 @@ export function SiteFooter() {
       </div>
       <div className={styles.bottom}>
         <span>© Stellar Philippines UniTour · {new Date().getFullYear()}</span>
-        <LocaleToggle />
       </div>
     </footer>
   );

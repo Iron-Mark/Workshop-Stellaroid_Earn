@@ -40,6 +40,9 @@ export function SiteNav({ right }: SiteNavProps) {
 
   return (
     <nav className={styles.nav} aria-label="Primary">
+      <a href="#main" className={styles.skipLink}>
+        Skip to content
+      </a>
       <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
           <img src="/logo.svg" alt="" width={28} height={28} />

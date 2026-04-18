@@ -110,7 +110,7 @@ export function NextActionCard({
   walletConnected,
 }: NextActionCardProps) {
   const { title, subtitle } = getContent(role, milestones, walletConnected);
-  const indicatorPosition = role === "issuer" ? "0%" : "50%";
+  const indicatorPosition = role === "issuer" ? "0%" : "100%";
 
   return (
     <div className={styles.card}>
