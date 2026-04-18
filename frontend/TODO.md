@@ -4,7 +4,7 @@ Next steps to get the frontend running end-to-end.
 
 ## Setup
 
-- [ ] `cd src/frontend && cp .env.example .env.local`
+- [ ] `cd frontend && cp .env.example .env.local`
 - [ ] Deploy your Soroban contract to testnet
 - [ ] Fill in `NEXT_PUBLIC_SOROBAN_CONTRACT_ID` in `.env.local`
 - [ ] Fund a testnet `G...` account at https://friendbot.stellar.org/ and set it as `NEXT_PUBLIC_STELLAR_READ_ADDRESS`

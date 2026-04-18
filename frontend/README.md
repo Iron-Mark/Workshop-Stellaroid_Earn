@@ -2,12 +2,12 @@
 
 Sample Next.js 15 App Router frontend that connects to the Freighter wallet and calls a Soroban contract on Stellar testnet.
 
-Built following `../../setup/STELLAR_FREIGHTER_INTEGRATION_GUIDE.md`.
+Built following `../setup/STELLAR_FREIGHTER_INTEGRATION_GUIDE.md`.
 
 ## Setup
 
 ```bash
-cd src/frontend
+cd frontend
 npm install
 cp .env.example .env.local
 ```
@@ -28,7 +28,7 @@ Open http://localhost:3000. Install [Freighter](https://www.freighter.app/) and 
 ## Layout
 
 ```
-src/frontend/
+frontend/
 ├── src/
 │   ├── app/                      App Router entry (layout, page)
 │   ├── components/

@@ -9,7 +9,7 @@ This is the **Stellar Philippines UniTour** bootcamp repository — a participan
 1. **`README.md`** — 5-step walkthrough: install toolchain → complete assigned Soroban contract → `cargo test` (≥3 tests) → deploy to Stellar **testnet** → submit on Rise In.
 2. **`setup/[ENG] Pre-Workshop Setup Guide.pdf`** — participant install guide (Rust, Stellar CLI, WASM target, Freighter).
 3. **`setup/STELLAR_FREIGHTER_INTEGRATION_GUIDE.md`** — generalized Next.js + Soroban + Freighter integration recipe.
-4. **`src/frontend/`** — Next.js 15 (App Router) + React 19 reference frontend using `@stellar/stellar-sdk` and `@stellar/freighter-api`. Subdirs: `app/`, `components/`, `hooks/`, `lib/`.
+4. **`frontend/`** — Next.js 15 (App Router) + React 19 reference frontend using `@stellar/stellar-sdk` and `@stellar/freighter-api`. Subdirs: `app/`, `components/`, `hooks/`, `lib/`.
 5. **`setup/TODO.md`** — local setup progress tracker (A–E sections: Environment, Manual pre-workshop, Contract deploy, Rise In, Phase 2 fullstack).
 6. **`setup/FULLSTACK_PROMPT_TEMPLATE.md`** — v3 prompt template for generating a Stellar dApp idea + Soroban contract files + frontend design brief. Used in Phase 2 after the Contract ID is deployed. Refined against the `stellar-dev`, `ui-ux-pro-max`, and `superpowers/writing-skills` plugins.
 
@@ -17,7 +17,7 @@ The assigned Soroban contract itself is **not** in this repo — participants cl
 
 ## Common commands
 
-### Frontend (`src/frontend/`)
+### Frontend (`frontend/`)
 ```bash
 npm install
 npm run dev       # next dev

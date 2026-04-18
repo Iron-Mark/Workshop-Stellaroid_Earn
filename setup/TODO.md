@@ -53,13 +53,13 @@ Template: [`FULLSTACK_PROMPT_TEMPLATE.md`](./FULLSTACK_PROMPT_TEMPLATE.md)
 - [x] **E1.** Verify deployed Contract ID on Stellar Expert
 - [x] **E2.** Project idea: **Stellaroid Earn** — on-chain credential registry + employer-to-student payments (SEA, Students/Employers, Web app + Soroban required, Education theme)
 - [x] **E3.** Generated Soroban contract (`contract/src/lib.rs` + 5 tests in `test.rs` + `Cargo.toml` + `README.md`)
-- [x] **E4.** Adapted `src/frontend/` for Stellaroid Earn (register/verify/lookup/pay cards, SHA-256 file helper, RPC health banner, human-readable error mapping)
+- [x] **E4.** Adapted `frontend/` for Stellaroid Earn (register/verify/lookup/pay cards, SHA-256 file helper, RPC health banner, human-readable error mapping)
 - [x] **E5.** Wired frontend to deployed Contract ID + native XLM SAC
   - `NEXT_PUBLIC_SOROBAN_CONTRACT_ID=CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`
   - `NEXT_PUBLIC_SOROBAN_ASSET_ADDRESS=CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`
   - Contract initialized via `init` (tx `c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721`)
-- [ ] **E6.** Demo-able MVP flow: user action → on-chain tx → visible result (<2 min) — run `cd src/frontend && npm run dev`, open `http://localhost:3000`, connect Freighter on testnet, drive register → verify → pay
-- [ ] **E7.** Final repo layout: `contract/`, `frontend/`, optional `backend/`
+- [ ] **E6.** Demo-able MVP flow: user action → on-chain tx → visible result (<2 min) — run `cd frontend && npm run dev`, open `http://localhost:3000`, connect Freighter on testnet, drive register → verify → pay
+- [x] **E7.** Final repo layout: `contract/` + `frontend/` at repo root (backend skipped per CLAUDE.md)
 
 ---
 

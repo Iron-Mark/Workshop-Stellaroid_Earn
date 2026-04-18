@@ -204,6 +204,19 @@ export function ContractDashboard() {
             style={styles.inputMono}
           />
         </label>
+        <div style={{ display: "flex", gap: 8, marginTop: 4, marginBottom: 8 }}>
+          <button
+            type="button"
+            onClick={() => wallet.address && setStudentAddr(wallet.address)}
+            disabled={!wallet.address}
+            style={styles.buttonSecondary}
+          >
+            Use my connected wallet
+          </button>
+          <span style={styles.subtle}>
+            Quick self-demo — issuer and student become the same address.
+          </span>
+        </div>
         <label style={styles.label}>
           Certificate hash (64 hex chars)
           <input
