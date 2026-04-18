@@ -12,7 +12,7 @@ export function SiteFooter() {
       <div className={styles.inner}>
         <div className={styles.brandBlock}>
           <div className={styles.brandRow}>
-            <img src="/logo-mono.svg" alt="" width={24} height={24} />
+            <img src="/logo.svg" alt="" width={24} height={24} />
             <span>Stellaroid Earn</span>
           </div>
           <p>

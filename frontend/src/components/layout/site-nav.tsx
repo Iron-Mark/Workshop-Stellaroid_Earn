@@ -42,7 +42,7 @@ export function SiteNav({ right }: SiteNavProps) {
     <nav className={styles.nav} aria-label="Primary">
       <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
-          <img src="/logo-mono.svg" alt="" width={28} height={28} />
+          <img src="/logo.svg" alt="" width={28} height={28} />
           <span>Stellaroid Earn</span>
         </Link>
         <div className={styles.links}>
