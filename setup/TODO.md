@@ -58,7 +58,7 @@ Template: [`FULLSTACK_PROMPT_TEMPLATE.md`](./FULLSTACK_PROMPT_TEMPLATE.md)
   - `NEXT_PUBLIC_SOROBAN_CONTRACT_ID=CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`
   - `NEXT_PUBLIC_SOROBAN_ASSET_ADDRESS=CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`
   - Contract initialized via `init` (tx `c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721`)
-- [ ] **E6.** Demo-able MVP flow: user action → on-chain tx → visible result (<2 min) — run `cd frontend && npm run dev`, open `http://localhost:3000`, connect Freighter on testnet, drive register → verify → pay
+- [x] **E6.** Demo-able MVP flow executed on testnet (2026-04-18): register `1e8078e3…`, verify `2215e08e…`, link_payment 100 XLM `5bed652b…`. UI at `http://localhost:3000` hits the same contract for live Freighter-driven demo.
 - [x] **E7.** Final repo layout: `contract/` + `frontend/` at repo root (backend skipped per CLAUDE.md)
 
 ---
