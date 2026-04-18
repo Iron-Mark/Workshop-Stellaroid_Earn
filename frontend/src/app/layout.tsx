@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     title: "Stellaroid Earn",
     description:
       "Bind the hash. Pay the wallet. Prove the work. On-chain proof-of-work on Stellar — verify a credential and pay in one click.",
-    images: [{ url: "/og.svg", width: 1200, height: 630, alt: "Stellaroid Earn" }],
+    // Dynamic PNG rendered by src/app/opengraph-image.tsx — renders reliably on
+    // Facebook, iMessage, WhatsApp, Telegram, LinkedIn, X, Slack, Discord.
   },
   twitter: {
     card: "summary_large_image",
     title: "Stellaroid Earn",
     description:
       "Bind the hash. Pay the wallet. Prove the work. On-chain proof-of-work on Stellar — verify a credential and pay in one click.",
-    images: ["/og.svg"],
   },
 };
 
