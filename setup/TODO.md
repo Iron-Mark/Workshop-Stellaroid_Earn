@@ -30,24 +30,16 @@ Legend: **A** = Environment (codespace) · **B** = Manual pre-workshop · **C** 
   - PR: https://github.com/armlynobinguar/Stellar-Bootcamp-2026/pull/73
 
 ## C. Contract Deployment (Step 4)
-- [ ] **C1.** Get facilitator-provided repo link
-- [ ] **C2.** Clone and enter contract folder:
-  ```bash
-  git clone <facilitator-provided-repo-link>
-  cd <contract-folder>
-  ```
-- [ ] **C3.** Complete `src/lib.rs` + ensure 3+ passing tests in `src/test.rs`
-- [ ] **C4.** `cargo test`
-- [ ] **C5.** `cargo build --target wasm32-unknown-unknown --release`
-- [ ] **C6.** Deploy:
-  ```bash
-  stellar contract deploy \
-    --wasm target/wasm32-unknown-unknown/release/<your_contract>.wasm \
-    --source my-key \
-    --network testnet
-  ```
-- [ ] **C7.** Copy Contract ID (starts with `C...`)
-- [ ] **C8.** Verify on Stellar Expert: `https://stellar.expert/explorer/testnet/contract/<CONTRACT_ID>`
+Facilitator update: skip C1–C2 (no facilitator repo). Built own contract `stellaroid_earn` from FULLSTACK_PROMPT_TEMPLATE.md v4 instead.
+
+- [x] ~~**C1.** Get facilitator-provided repo link~~ (skipped per instructor)
+- [x] ~~**C2.** Clone facilitator repo~~ (skipped — own `contract/` folder instead)
+- [x] **C3.** Complete `contract/src/lib.rs` + 5 passing tests in `contract/src/test.rs`
+- [x] **C4.** `cargo test` — 5/5 passed
+- [x] **C5.** `stellar contract build` — wasm at `target/wasm32v1-none/release/stellaroid_earn.wasm`
+- [x] **C6.** Deployed via `stellar contract deploy --source my-key --network testnet`
+- [x] **C7.** Contract ID: `CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`
+- [x] **C8.** Verify: https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ
 
 ## D. Rise In Submission (Step 5)
 - [ ] **D1.** Push code to your own GitHub repo
@@ -58,9 +50,9 @@ Use the Stellar-provided template prompt to generate a project idea + Soroban co
 
 Template: [`FULLSTACK_PROMPT_TEMPLATE.md`](./FULLSTACK_PROMPT_TEMPLATE.md)
 
-- [ ] **E1.** Verify deployed Contract ID on Stellar Expert
-- [ ] **E2.** Pick project idea using the template prompt (region / user type / theme / Stellar features)
-- [ ] **E3.** Generate/adapt Soroban contract (`lib.rs` + 5 tests in `test.rs` + `Cargo.toml` + `README.md`)
+- [x] **E1.** Verify deployed Contract ID on Stellar Expert
+- [x] **E2.** Project idea: **Stellaroid Earn** — on-chain credential registry + employer-to-student payments (SEA, Students/Employers, Web app + Soroban required, Education theme)
+- [x] **E3.** Generated Soroban contract (`contract/src/lib.rs` + 5 tests in `test.rs` + `Cargo.toml` + `README.md`)
 - [ ] **E4.** Scaffold fullstack from `src/frontend/` (Next.js 15 + Freighter + stellar-sdk)
   - Base on [`STELLAR_FREIGHTER_INTEGRATION_GUIDE.md`](./STELLAR_FREIGHTER_INTEGRATION_GUIDE.md)
 - [ ] **E5.** Wire frontend to deployed Contract ID (set `NEXT_PUBLIC_SOROBAN_CONTRACT_ID`)
