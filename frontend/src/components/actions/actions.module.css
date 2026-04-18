@@ -75,3 +75,12 @@
 .hiddenInput {
   display: none;
 }
+
+@media (max-width: 480px) {
+  .submitRow { flex-direction: column; }
+  .submitRow > * { width: 100%; }
+  .hashRowActions { flex-direction: column; align-items: stretch; }
+  .hashComputeBtn { align-self: stretch; }
+  .lookupRow { flex-wrap: wrap; }
+  .lookupValue { word-break: break-all; }
+}
