@@ -89,20 +89,31 @@ Every completed cycle produces a public URL. Users share it on LinkedIn, X, port
 
 No other credentialing dApp produces a shareable social object by default. This is the same loop that drove **Wordle** (share your grid), **Duolingo** (streak screenshots), **GitHub** (contribution graph), and **LinkedIn** (Open to Work). The artifact markets the product.
 
-### 2. One contract, many verticals
+### 2. One contract, many verticals — the universal primitive
+
+We didn&rsquo;t pick a vertical. We picked a **shape of transaction**. Any situation where someone does work, someone verifies it, and someone pays for it has the same shape. Our contract encodes that shape in four fields:
+
+1. A **hash** &mdash; what was done (32 bytes)
+2. An **issuer** &mdash; who says it was done
+3. An **owner** &mdash; who did it
+4. A **payment** &mdash; what it was worth
+
+Nothing in that list is domain-specific. A diploma hash and a freelance-deliverable hash are both just 32 bytes. A bootcamp paying a stipend and a DAO paying a grant milestone both call `link_payment`. Which vertical it&rsquo;s used in is a **GTM decision, not a technical one.**
 
 "Prove work → get paid" is not a niche:
 
-| Segment | Scale | Unit fit |
-|---|---|---|
-| Freelance / gig | **70M US workers, $1.3T** | Escrow-free milestone payouts |
-| Bootcamps / cohorts | 1,100+ bootcamps globally | Provable completion + stipend release |
-| Bounty programs | Immunefi: **$100M+** paid | Hash-anchored submissions + payout |
-| Grant DAOs | Gitcoin: **$60M+** distributed | Milestone verification + disbursement |
-| Micro-internships | 2M+ annually (US) | Portable receipts across employers |
-| Creators | 50M+ globally | Anchored deliverables for brand deals |
+| Segment | Scale | What the hash represents | What the payment is |
+|---|---|---|---|
+| Freelance / gig | **70M US workers, $1.3T** | deliverable file | project milestone |
+| Bootcamps / cohorts | 1,100+ bootcamps globally | diploma / completion record | stipend release |
+| Bounty programs | Immunefi: **$100M+** paid | PR / submission | bounty payout |
+| Grant DAOs | Gitcoin: **$60M+** distributed | milestone report | tranche disbursement |
+| Micro-internships | 2M+ annually (US) | project report | stipend |
+| Creators | 50M+ globally | final asset | brand-deal payment |
 
-One contract. Many verticals. No rewrite per market.
+Same four fields every row. The branding changes. The contract doesn&rsquo;t.
+
+The Proof Block is universal too. `/proof/[hash]` is just a URL &mdash; a recruiter, grant LP, client, employer, or collaborator consumes it the same way: **click, read, trust, act.** A Wordle grid works for every Wordle player. A GitHub contribution graph works for every developer. A Proof Block works for every kind of work. The social object is the moat, and the moat is shape-agnostic.
 
 ### 3. Stellar-native unit economics
 
