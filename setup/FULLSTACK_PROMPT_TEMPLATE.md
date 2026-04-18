@@ -1,11 +1,12 @@
-# Fullstack Prompt Template (Stellar / Soroban) — v3
+# Fullstack Prompt Template (Stellar / Soroban) — v4
 
-Generate a Stellar dApp idea + a compile-ready Soroban contract package + a concrete frontend design spec, as the foundation for a hackathon fullstack demo.
+Generate a Stellar dApp idea + a compile-ready Soroban contract package + a concrete frontend design spec, optimized for the **"idea → verified demo → public proof"** loop that defines a shippable bootcamp project.
 
-Refined with three skills:
+Refined with three skills + the April 2026 deep-research report:
 - **stellar-dev** → current Soroban/Stellar CLI correctness, x402/MPP agentic payments
 - **ui-ux-pro-max** → concrete UI style, palette, typography, and CTA guidance for the frontend
 - **superpowers/writing-skills** → concise, appropriately-scoped prompt design
+- **deep-research-report.md** → proof-first UX, wallet/RPC reliability, showcase publishing as primary output
 
 ---
 
@@ -27,8 +28,11 @@ Generate exactly N = {{N}} Stellar dApp idea(s). For EACH idea, produce:
   (A) a filled Idea Spec
   (B) four compile-ready contract files (lib.rs, test.rs, Cargo.toml, README.md)
   (C) a concrete frontend design brief (not code — spec only: style, palette, typography, key screens, primary CTA, UX anti-patterns to avoid)
+  (D) a Proof Block spec — the public showcase artifact the user will publish after a successful demo
 
 All contract code must compile against soroban-sdk 22+, target wasm32-unknown-unknown, and map every function to the MVP transaction. No TODOs or placeholders.
+
+GUIDING PRINCIPLE: every screen, function, and field must answer one question — **"what is the next action that increases proof?"** If it doesn't, cut it.
 </task>
 
 <constraints>
@@ -68,9 +72,13 @@ REQUIRED
   - Every contract fn maps to a concrete MVP step
   - Explicit storage type per key: Temporary / Persistent / Instance, with TTL extension where needed
   - `require_auth()` on every mutating fn
-  - Events emitted for state changes (topics use `symbol_short!`)
+  - Events emitted for state changes (topics use `symbol_short!`) — each event must be indexable and visible in the Proof Block
   - `#![no_std]` at crate root
   - Frontend spec names specific colors/fonts/screens, not "modern clean minimalist design"
+  - RPC timeout/fallback copy defined (testnet latency WILL spike during demo)
+  - Every tx result must surface a `stellar.expert` explorer link (copyable)
+  - Human-readable error mapping — no raw `ScVal` / `HostError` leaks to the UI
+  - Proof Block (Section D) is mandatory — a showcase-ready artifact is the MVP's actual output, not the deployed contract
 </hard_rules>
 
 <degrees_of_freedom>
@@ -175,17 +183,34 @@ Sections in this order:
   10. `## License` — MIT
 
 ## C. Frontend Design Brief
-(spec only — not code. The participant will build from `src/frontend/` Next.js 15 + Freighter reference.)
+(spec only — not code. The participant will build from `frontend/` Next.js 15 + Freighter reference.)
 
 STYLE CATEGORY:     (e.g., "Bitcoin DeFi Dark", "High-Tech Boutique SaaS", "Financial Dashboard") — must justify fit with target users
 COLOR PALETTE:      primary / accent / background / surface / success / danger — use HEX values
 TYPOGRAPHY:         display / body / monospace — name specific fonts (e.g., Space Grotesk, Inter, JetBrains Mono)
-KEY SCREENS:        list 3–5 screens with one-sentence purpose each (e.g., "Connect Wallet — single CTA, no other actions")
-PRIMARY CTA:        exact button copy + what happens (signs tx via Freighter / calls contract fn X / shows result Y)
-EMPTY/LOADING/ERROR: one sentence each for the MVP screen
+LAYOUT ANCHORS:     the home view MUST contain three blocks — (1) Next Action card (one task, one button), (2) Milestones panel (proof state in plain language), (3) Proof Block preview (demo video slot, repo link, contract ID, verification status)
+KEY SCREENS:        list 3–5 screens with one-sentence purpose each (e.g., "Connect Wallet — single CTA, no other actions"). Include: Connect → MVP Action → Settling (with 15s RPC timeout copy) → Receipt (explorer link) → Showcase
+PRIMARY CTA:        exact button copy + what happens (signs tx via Freighter / calls contract fn X / shows result Y + explorer link)
+EMPTY/LOADING/ERROR: one sentence each for the MVP screen — error copy must be human-readable and suggest next action
 UX ANTI-PATTERNS TO AVOID: list 3 specific pitfalls for this vertical (e.g., "never hide tx fees", "never auto-retry a signing popup", "never show raw ScVal errors to users")
 ACCESSIBILITY:      WCAG target (AA default) + specific concern (e.g., "color-blind-safe profit/loss indicators — pair color with icon")
 MOBILE vs WEB:      which COMPLEXITY pick this targets + why
+
+## D. Proof Block (Showcase Artifact)
+(the public output a reviewer / sponsor / employer sees — this is the MVP's real deliverable)
+
+PITCH LINE:         one sentence, ≤20 words, no jargon
+CONTRACT ID:        `C...` testnet address + `stellar.expert` link format
+REPO LINK:          GitHub URL shape (owner/repo)
+DEMO EVIDENCE:      which of — 60-90s video / live testnet URL / screenshot carousel — and why that fits this idea
+VERIFIED EVENTS:    list the 1-2 on-chain events a reviewer can check on stellar.expert to confirm the demo actually ran
+RUBRIC SELF-CHECK:  5-item checklist the builder ticks before publishing:
+                    [ ] Contract deployed to testnet and ID verified on stellar.expert
+                    [ ] `cargo test` passes (≥5 tests)
+                    [ ] Frontend signs a real tx via Freighter end-to-end
+                    [ ] At least one event emitted and visible in explorer
+                    [ ] No raw ScVal / HostError surfaces in any error path
+SHAREABLE COPY:     the tweet/LinkedIn one-liner the builder posts with the showcase card (≤240 chars)
 </output_format>
 
 <mini_example>
@@ -214,6 +239,15 @@ UX ANTI-PATTERNS:   (1) Never auto-dismiss Freighter popup  (2) Never hide the f
 ACCESSIBILITY:      WCAG AA; pair success green with ✓ icon for color-blind riders; 44×44 touch targets.
 MOBILE vs WEB:      Mobile-first — riders are on phones in transit; web is secondary.
 
+## D. Proof Block
+PITCH LINE:         "Split a jeepney fare on Stellar testnet in one tap — no coins, no IOUs."
+CONTRACT ID:        `C...` → https://stellar.expert/explorer/testnet/contract/<CONTRACT_ID>
+REPO LINK:          github.com/<you>/jeepney_split
+DEMO EVIDENCE:      60s video — physical QR scan → Freighter popup → green receipt. Shows real mobile UX; stills would hide the tap flow.
+VERIFIED EVENTS:    `ride_joined` (per rider) and `ride_settled` (driver payout) — both visible on stellar.expert under the contract's Events tab.
+RUBRIC SELF-CHECK:  [x] Deployed + verified  [x] 5 tests pass  [x] Freighter signs end-to-end  [x] Events visible  [x] Human error copy only
+SHAREABLE COPY:     "Built jeepney_split on @StellarOrg testnet — 4 riders split a ₱40 fare in one tap, settled in <5s. Contract + demo: <link>"
+
 (End of mini_example. Generate your own idea(s) fresh.)
 </mini_example>
 
@@ -227,7 +261,7 @@ Commerce & Loyalty: SME merchant payments · Marketplace escrow
 Governance & ID:    Digital identity / KYC · Transparent fund distribution
 </themes_reference>
 
-Now generate N={{N}} idea(s) following <output_format> exactly. Do not skip sections A, B, or C.
+Now generate N={{N}} idea(s) following <output_format> exactly. Do not skip sections A, B, C, or D.
 ````
 
 ---
@@ -238,7 +272,17 @@ Now generate N={{N}} idea(s) following <output_format> exactly. Do not skip sect
 2. Tick boxes in `<constraints>`.
 3. Paste into Claude / ChatGPT.
 4. Run `cd contract && cargo test && stellar contract build` to verify the generated contract compiles.
-5. Deploy winning idea to testnet; wire `src/frontend/` against the new Contract ID using the Frontend Design Brief as the spec.
+5. Deploy winning idea to testnet; wire `frontend/` against the new Contract ID using the Frontend Design Brief as the spec.
+
+## Changelog (v3 → v4)
+
+| Change | Source | Why |
+|---|---|---|
+| Added **Section D: Proof Block** as a required output | deep-research-report | Canonical object is the *project*, not the lesson; the showcase artifact is the MVP's real deliverable |
+| Added **LAYOUT ANCHORS** (Next Action / Milestones / Proof Block) to frontend brief | deep-research-report | Every screen must answer "what is the next action that increases proof?" |
+| Required **explorer link + RPC timeout/fallback copy** in hard_rules | deep-research-report | Activation dies at wallet/RPC seams; testnet latency WILL spike on demo day |
+| Required **human-readable error mapping** (no raw ScVal) as hard rule | deep-research-report | Top UX anti-pattern observed across Stellar demo frontends |
+| Added **Rubric Self-Check** and **Shareable Copy** fields | deep-research-report | Converts coursework into distribution — showcase publishing is the monetization wedge |
 
 ## Changelog (v2 → v3)
 
