@@ -91,6 +91,7 @@ https://stellar.expert/explorer/testnet/contract/<CONTRACT_ID>
 ## Proof Block
 
 - **Pitch:** Verify a Philippine bootcamp certificate and pay the grad in one click — on Stellar testnet.
+- **Live demo:** https://stellaroid-earn-demo.vercel.app/
 - **Contract ID:** `CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`
   → https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ
 - **Reward token (native XLM SAC):** `CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC`

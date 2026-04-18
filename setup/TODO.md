@@ -42,8 +42,9 @@ Facilitator update: skip C1–C2 (no facilitator repo). Built own contract `stel
 - [x] **C8.** Verify: https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ
 
 ## D. Rise In Submission (Step 5)
-- [ ] **D1.** Push code to your own GitHub repo
-- [ ] **D2.** Submit on Rise In: GitHub link, Contract ID, Stellar Expert link, short description
+- [x] **D1.** Pushed to https://github.com/Iron-Mark/Stellar-Bootcamp-2026 (dev merged to main as PR #1)
+- [x] **D1b.** Live demo deployed to Vercel: https://stellaroid-earn-demo.vercel.app/
+- [ ] **D2.** Submit on Rise In: GitHub link, Contract ID, Stellar Expert link, Vercel link, short description
 
 ## E. Phase 2 — Fullstack (after Contract ID is verified)
 Use the Stellar-provided template prompt to generate a project idea + Soroban contract files, then build the fullstack on top.
