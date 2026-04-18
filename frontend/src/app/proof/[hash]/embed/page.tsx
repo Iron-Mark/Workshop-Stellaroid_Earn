@@ -8,9 +8,12 @@ import Link from "next/link";
 import {
   getCertificateServer,
   CertificateRecord,
+  getIssuerServer,
 } from "@/lib/contract-read-server";
 import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
+import { getProofMetadataForCertificate } from "@/lib/proof-metadata";
+import type { IssuerRecord } from "@/lib/types";
 
 const HASH_RE = /^[0-9a-f]{64}$/i;
 
@@ -36,18 +39,47 @@ export default async function EmbedProof({ params }: PageProps) {
   if (!HASH_RE.test(hash)) notFound();
 
   let cert: CertificateRecord | null = null;
+  let issuer: IssuerRecord | null = null;
   try {
     cert = await getCertificateServer(hash);
   } catch {
     cert = null;
   }
 
-  const status = cert?.verified
-    ? "Verified"
-    : cert
-      ? "Registered"
-      : "Not found";
-  const statusColor = cert?.verified ? "#10B981" : cert ? "#F59E0B" : "#64748B";
+  if (cert) {
+    try {
+      issuer = await getIssuerServer(cert.issuer);
+    } catch {
+      issuer = null;
+    }
+  }
+
+  const proofMetadata = getProofMetadataForCertificate(hash, cert);
+
+  const status =
+    cert?.status === "verified"
+      ? "Verified"
+      : cert?.status === "revoked"
+        ? "Revoked"
+        : cert?.status === "suspended"
+          ? "Suspended"
+          : cert?.status === "expired"
+            ? "Expired"
+            : cert?.status === "issued"
+              ? "Issued"
+              : cert
+                ? "Unknown"
+                : "Not found";
+  const statusColor =
+    cert?.status === "verified"
+      ? "#10B981"
+      : cert?.status === "revoked"
+        ? "#EF4444"
+        : cert?.status === "suspended" || cert?.status === "expired"
+          ? "#F59E0B"
+          : cert
+            ? "#8B5CF6"
+            : "#64748B";
   const short =
     hash.length > 20 ? `${hash.slice(0, 10)}…${hash.slice(-10)}` : hash;
   const proofUrl = `/proof/${hash}`;
@@ -119,8 +151,16 @@ export default async function EmbedProof({ params }: PageProps) {
       </div>
 
       <div style={{ fontSize: "15px", color: "#94A3B8", lineHeight: 1.4 }}>
-        On-chain proof of work — SHA-256 anchored on Stellar.
+        {proofMetadata?.title
+          ? `${proofMetadata.title} — on-chain credential anchored on Stellar.`
+          : "On-chain proof of work — SHA-256 anchored on Stellar."}
       </div>
+
+      {proofMetadata?.cohort ? (
+        <div style={{ fontSize: "12px", color: "#C4B5FD", fontWeight: 600 }}>
+          {proofMetadata.cohort}
+        </div>
+      ) : null}
 
       <code
         style={{
@@ -139,10 +179,39 @@ export default async function EmbedProof({ params }: PageProps) {
 
       {cert && (
         <div style={{ fontSize: "12px", color: "#94A3B8" }}>
-          Issuer {shortenAddress(cert.issuer, 6)} · Owner{" "}
-          {shortenAddress(cert.owner, 6)}
+          Issuer{" "}
+          {issuer?.name
+            ? `${issuer.name} (${shortenAddress(cert.issuer, 6)})`
+            : shortenAddress(cert.issuer, 6)}{" "}
+          · Owner {shortenAddress(cert.owner, 6)}
         </div>
       )}
+
+      {proofMetadata?.skills.length ? (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            flexWrap: "wrap",
+            fontSize: "11px",
+          }}
+        >
+          {proofMetadata.skills.slice(0, 3).map((skill) => (
+            <span
+              key={skill}
+              style={{
+                padding: "4px 8px",
+                borderRadius: "999px",
+                background: "rgba(245, 158, 11, 0.12)",
+                border: "1px solid rgba(245, 158, 11, 0.24)",
+                color: "#FCD34D",
+              }}
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      ) : null}
 
       <div
         style={{

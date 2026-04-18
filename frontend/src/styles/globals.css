@@ -1,11 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Share+Tech+Mono&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  /* Colors */
+@theme {
+  /* Colors — existing palette */
   --color-bg: #0F172A;
   --color-surface: #1E293B;
   --color-surface-2: #273549;
+  --color-surface-glass: rgba(30, 41, 59, 0.6);
   --color-border: #334155;
+  --color-border-glass: rgba(255, 255, 255, 0.08);
   --color-text: #F8FAFC;
   --color-text-muted: #94A3B8;
   --color-primary: #F59E0B;
@@ -19,49 +22,76 @@
   --color-warning: #F59E0B;
   --color-danger: #EF4444;
 
-  /* Border radii */
+  /* DeFi glow colors */
+  --color-glow-primary: rgba(245, 158, 11, 0.35);
+  --color-glow-accent: rgba(139, 92, 246, 0.35);
+  --color-glow-verified: rgba(45, 212, 191, 0.35);
+
+  /* Border radius */
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
 
   /* Spacing */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
 
-  /* Transitions */
-  --transition: 200ms ease-out;
-
-  /* Typography */
-  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  /* Fonts */
+  --font-heading: 'Orbitron', system-ui, sans-serif;
+  --font-sans: 'Exo 2', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --font-pixel: 'Share Tech Mono', ui-monospace, monospace;
 
-  /* Type scale (1.25 modular scale, 16px base) */
-  --fs-xs: 0.75rem;   /* 12 */
-  --fs-sm: 0.875rem;  /* 14 */
-  --fs-base: 1rem;    /* 16 */
-  --fs-md: 1.125rem;  /* 18 */
-  --fs-lg: 1.25rem;   /* 20 */
-  --fs-xl: 1.5rem;    /* 24 */
-  --fs-2xl: 1.875rem; /* 30 */
-  --fs-3xl: 2.5rem;   /* 40 */
-  --fs-4xl: 3.25rem;  /* 52 */
+  /* Type scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3.25rem;
 
-  /* Line heights */
-  --lh-tight: 1.15;
-  --lh-snug: 1.3;
-  --lh-normal: 1.5;
-  --lh-loose: 1.7;
+  /* DeFi shadow / glow scale */
+  --shadow-glow-sm: 0 0 12px rgba(245, 158, 11, 0.25);
+  --shadow-glow-md: 0 0 24px rgba(245, 158, 11, 0.35);
+  --shadow-glow-lg: 0 4px 32px rgba(245, 158, 11, 0.45), 0 0 64px rgba(245, 158, 11, 0.15);
+  --shadow-glow-accent: 0 0 24px rgba(139, 92, 246, 0.35);
+  --shadow-glow-verified: 0 0 16px rgba(45, 212, 191, 0.35);
 
-  /* Letter spacing */
-  --ls-tight: -0.02em;
-  --ls-normal: 0;
-  --ls-wide: 0.08em;
-  --ls-wider: 0.12em;
+  /* DeFi easing */
+  --ease-defi: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* shadcn/ui CSS variable bridge — uses RGB channel format */
+@layer base {
+  :root {
+    --background: 15 23 42;
+    --foreground: 248 250 252;
+    --card: 30 41 59;
+    --card-foreground: 248 250 252;
+    --popover: 30 41 59;
+    --popover-foreground: 248 250 252;
+    --primary: 245 158 11;
+    --primary-foreground: 15 23 42;
+    --secondary: 39 53 73;
+    --secondary-foreground: 248 250 252;
+    --muted: 39 53 73;
+    --muted-foreground: 148 163 184;
+    --accent: 139 92 246;
+    --accent-foreground: 248 250 252;
+    --destructive: 239 68 68;
+    --destructive-foreground: 248 250 252;
+    --border: 51 65 85;
+    --input: 51 65 85;
+    --ring: 245 158 11;
+    --radius: 0.5rem;
+  }
 }
 
 /* CSS Reset */
@@ -72,19 +102,14 @@
 }
 
 body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+h1, h2, h3, h4, h5, h6,
 p {
   margin: 0;
 }
 
 body {
   min-height: 100dvh;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 16px;
@@ -96,19 +121,16 @@ main[id] {
   scroll-margin-top: 96px;
 }
 
-code,
-pre {
+code, pre {
   font-family: var(--font-mono);
 }
 
-/* Focus styles */
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
-/* Link defaults */
 a {
   color: var(--color-accent);
   text-decoration: underline;
@@ -119,15 +141,41 @@ a:hover {
   color: var(--color-primary);
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Keyframes */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 18px rgba(245, 158, 11, 0.8); }
+}
+
+/* Noise texture utility for hero sections */
+@layer utilities {
+  .noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
   }
 }
 
@@ -143,3 +191,27 @@ a:hover {
   white-space: nowrap;
   border: 0;
 }
+
+/* Milestone rail animations */
+@keyframes pixelPop {
+  0%   { transform: scale(0.7); opacity: 0.4; }
+  60%  { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulseRing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.35); }
+  50%      { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+}
+
+/* Freighter welcome modal animations */
+@keyframes modalFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalRise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+

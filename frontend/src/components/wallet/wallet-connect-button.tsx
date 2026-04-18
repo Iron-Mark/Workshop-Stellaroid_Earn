@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { Button, Badge, useToast } from "@/components/ui";
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
 import { shortenAddress } from "@/lib/format";
-import styles from "./wallet-connect-button.module.css";
 
 export function WalletConnectButton() {
   const { wallet, connectWallet, disconnectWallet } = useFreighterWallet();
@@ -31,7 +30,7 @@ export function WalletConnectButton() {
 
   if (wallet.status === "connected" && wallet.address) {
     return (
-      <div className={styles.container}>
+      <div className="flex items-center gap-2 flex-wrap">
         {!wallet.isExpectedNetwork && (
           <Badge tone="warning" dot>Wrong network</Badge>
         )}

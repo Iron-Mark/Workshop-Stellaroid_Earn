@@ -2,6 +2,16 @@ export type WalletStatus = "disconnected" | "connecting" | "connected" | "unsupp
 
 export type TxState = "idle" | "signing" | "submitting" | "success" | "error";
 
+export type IssuerStatus = "pending" | "approved" | "suspended";
+
+export type CertificateStatus =
+  | "issued"
+  | "verified"
+  | "revoked"
+  | "suspended"
+  | "expired"
+  | "unknown";
+
 export type WalletSnapshot = {
   status: WalletStatus;
   address: string | null;
@@ -16,4 +26,26 @@ export type TxFeedback = {
   title: string;
   detail?: string;
   hash?: string;
+};
+
+export type IssuerRecord = {
+  address: string;
+  name: string;
+  website: string;
+  category: string;
+  status: IssuerStatus;
+};
+
+export type ProofEvidenceLink = {
+  label: string;
+  href: string;
+};
+
+export type ProofMetadata = {
+  title: string;
+  description: string;
+  cohort?: string;
+  criteria?: string;
+  skills: string[];
+  evidence: ProofEvidenceLink[];
 };
