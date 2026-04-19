@@ -1,6 +1,6 @@
 # Issuer Trust Layer Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Rebuild and redeploy the Soroban contract from the current trust-layer source, then seed the new deployment with issuer and demo certificate data so the fully-built frontend surfaces work end-to-end.
 
@@ -31,7 +31,7 @@
 
 **Files:** `contract/src/lib.rs`, `contract/src/test.rs`
 
-- [ ] **Step 1: Check line count**
+- [x] **Step 1: Check line count**
 
 ```bash
 wc -l contract/src/lib.rs contract/src/test.rs
@@ -45,7 +45,7 @@ Expected output:
 
 If lib.rs shows ~192 lines, stop — the source has been reverted. Do not proceed until the correct source is restored from git history or the trust-layer branch.
 
-- [ ] **Step 2: Confirm all 12 public functions exist**
+- [x] **Step 2: Confirm all 12 public functions exist**
 
 ```bash
 grep "pub fn" contract/src/lib.rs
@@ -69,7 +69,7 @@ Expected output (order may vary):
 
 If any are missing, stop. The source does not match the spec.
 
-- [ ] **Step 3: Run contract tests**
+- [x] **Step 3: Run contract tests**
 
 ```bash
 cd contract && cargo test 2>&1
@@ -82,7 +82,7 @@ test result: ok. 6 passed; 0 failed; 0 ignored
 
 If fewer than 6 tests pass, fix the test failures before proceeding.
 
-- [ ] **Step 4: Return to repo root**
+- [x] **Step 4: Return to repo root**
 
 ```bash
 cd ..
@@ -94,7 +94,7 @@ cd ..
 
 **Files:** `contract/target/wasm32v1-none/release/stellaroid_earn.wasm` (generated)
 
-- [ ] **Step 1: Remove the stale build artifact**
+- [x] **Step 1: Remove the stale build artifact**
 
 ```bash
 cd contract && cargo clean
@@ -102,7 +102,7 @@ cd contract && cargo clean
 
 Expected: no output, old `target/` is deleted.
 
-- [ ] **Step 2: Build fresh WASM**
+- [x] **Step 2: Build fresh WASM**
 
 ```bash
 stellar contract build
@@ -114,7 +114,7 @@ Compiling stellaroid_earn ...
 ```
 Artifact produced at: `target/wasm32v1-none/release/stellaroid_earn.wasm`
 
-- [ ] **Step 3: Inspect exported functions**
+- [x] **Step 3: Inspect exported functions**
 
 ```bash
 stellar contract inspect \
@@ -125,7 +125,7 @@ Expected: output lists all 12 functions including `register_issuer`, `approve_is
 
 If only 6 functions appear, the build used a cached artifact. Run `cargo clean` again and rebuild.
 
-- [ ] **Step 4: Return to repo root**
+- [x] **Step 4: Return to repo root**
 
 ```bash
 cd ..
@@ -137,7 +137,7 @@ cd ..
 
 **Files:** `frontend/.env.local` (will be updated in Task 5)
 
-- [ ] **Step 1: Deploy**
+- [x] **Step 1: Deploy**
 
 ```bash
 stellar contract deploy \
@@ -153,7 +153,7 @@ CNEW...CONTRACT...ID
 
 **Copy this contract ID — you will need it in Tasks 4, 5, and 6.**
 
-- [ ] **Step 2: Initialize the contract**
+- [x] **Step 2: Initialize the contract**
 
 Replace `<NEW_CONTRACT_ID>` with the address from Step 1.
 Admin address is `GAWIOVGFSPJDEIJJZUSVRFPVP3D5VNO2LGCU47KEHJD6MV277QKNR34D`.
@@ -177,7 +177,7 @@ Expected: `null` (Soroban returns `()` from `init` on success).
 
 **Files:** none (on-chain state change only)
 
-- [ ] **Step 1: Register the facilitator wallet as an issuer**
+- [x] **Step 1: Register the facilitator wallet as an issuer**
 
 ```bash
 stellar contract invoke \
@@ -193,7 +193,7 @@ stellar contract invoke \
 
 Expected: `null`
 
-- [ ] **Step 2: Approve the issuer with the admin wallet**
+- [x] **Step 2: Approve the issuer with the admin wallet**
 
 Same wallet is both admin and issuer here (valid for initial seeding).
 
@@ -209,7 +209,7 @@ stellar contract invoke \
 
 Expected: `null`
 
-- [ ] **Step 3: Verify issuer status on-chain**
+- [x] **Step 3: Verify issuer status on-chain**
 
 ```bash
 stellar contract invoke \
@@ -228,7 +228,7 @@ Expected: JSON with `"status": "Approved"` (or the Soroban enum variant equivale
 
 **Files:** `frontend/.env.local`
 
-- [ ] **Step 1: Open `frontend/.env.local` and replace the contract ID**
+- [x] **Step 1: Open `frontend/.env.local` and replace the contract ID**
 
 Change:
 ```
@@ -242,7 +242,7 @@ NEXT_PUBLIC_SOROBAN_CONTRACT_ID=<NEW_CONTRACT_ID>
 
 Leave all other values unchanged.
 
-- [ ] **Step 2: Run build to confirm no type errors**
+- [x] **Step 2: Run build to confirm no type errors**
 
 ```bash
 cd frontend && npm run build 2>&1 | tail -20
@@ -250,7 +250,7 @@ cd frontend && npm run build 2>&1 | tail -20
 
 Expected: build completes with the route table printed. No TypeScript or compilation errors.
 
-- [ ] **Step 3: Return to repo root**
+- [x] **Step 3: Return to repo root**
 
 ```bash
 cd ..
@@ -262,7 +262,7 @@ cd ..
 
 The demo proof hash `35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e` must exist on the new contract so `/proof/<hash>` loads real data.
 
-- [ ] **Step 1: Register the demo certificate**
+- [x] **Step 1: Register the demo certificate**
 
 ```bash
 stellar contract invoke \
@@ -280,7 +280,7 @@ stellar contract invoke \
 
 Expected: `null`
 
-- [ ] **Step 2: Verify the demo certificate**
+- [x] **Step 2: Verify the demo certificate**
 
 ```bash
 stellar contract invoke \
@@ -294,7 +294,7 @@ stellar contract invoke \
 
 Expected: `null`
 
-- [ ] **Step 3: Confirm certificate status on-chain**
+- [x] **Step 3: Confirm certificate status on-chain**
 
 ```bash
 stellar contract invoke \
@@ -313,7 +313,7 @@ Expected: JSON with `"status": "Verified"`, `"title": "Stellar Smart Contract Bo
 
 **Files:** none (browser verification)
 
-- [ ] **Step 1: Start dev server**
+- [x] **Step 1: Start dev server**
 
 ```bash
 cd frontend && npm run dev
@@ -321,7 +321,7 @@ cd frontend && npm run dev
 
 Wait for `✓ Ready in` message.
 
-- [ ] **Step 2: Verify proof page with issuer card**
+- [x] **Step 2: Verify proof page with issuer card**
 
 Open `http://localhost:3000/proof/35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e`
 
@@ -331,7 +331,7 @@ Confirm:
 - Credential metadata panel shows title, cohort, skills
 - No console errors
 
-- [ ] **Step 3: Verify embed page**
+- [x] **Step 3: Verify embed page**
 
 Open `http://localhost:3000/proof/35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e/embed`
 
@@ -339,7 +339,7 @@ Confirm:
 - Status badge shows **Verified**
 - Issuer line reads `Stellar PH Bootcamp (GAWIO…)` not just the raw address
 
-- [ ] **Step 4: Verify issuer dashboard — approved state**
+- [x] **Step 4: Verify issuer dashboard — approved state**
 
 Connect Freighter (admin wallet `GAWIO…`) and open `http://localhost:3000/issuer`
 
@@ -349,7 +349,7 @@ Confirm:
 - Admin panel is visible (because wallet matches `NEXT_PUBLIC_STELLAR_ADMIN_ADDRESS`)
 - Address input + "Load issuer" button present
 
-- [ ] **Step 5: Verify issuer dashboard — registration flow (second wallet)**
+- [x] **Step 5: Verify issuer dashboard — registration flow (second wallet)**
 
 Connect a different funded testnet wallet and open `http://localhost:3000/issuer/register`
 
@@ -358,7 +358,7 @@ Confirm:
 - Submit calls `registerIssuer` via Freighter (approve in wallet popup)
 - After success, redirects to `/issuer` and shows **pending** status
 
-- [ ] **Step 6: Approve the second wallet from admin panel**
+- [x] **Step 6: Approve the second wallet from admin panel**
 
 Switch back to admin wallet. Open `/issuer`.
 
@@ -368,7 +368,7 @@ Confirm:
 - Click "Approve issuer" → Freighter popup → approve
 - Status updates to **approved**
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd ..

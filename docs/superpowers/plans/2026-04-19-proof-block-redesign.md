@@ -1,6 +1,6 @@
 # Proof Block Redesign — Trust Narrative Flow Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Restructure the Proof Block's two UI surfaces (dashboard preview card and full public proof page) into a trust-first reading order: What they earned → Is it trustworthy → How to verify → Share it.
 
@@ -38,7 +38,7 @@ This project has no unit test runner for frontend components. After each task:
 **Files:**
 - Modify: `frontend/src/components/proof/proof-qr-block.tsx`
 
-- [ ] **Step 1: Edit proof-qr-block.tsx**
+- [x] **Step 1: Edit proof-qr-block.tsx**
 
   Replace the entire file content with:
 
@@ -82,7 +82,7 @@ This project has no unit test runner for frontend components. After each task:
 
   Note: `w-32 h-32` = 128 px (Tailwind scale). The border-top and pt-4 are removed here — the parent section in `proof-card.tsx` will own the separator in Task 4.
 
-- [ ] **Step 2: Type check**
+- [x] **Step 2: Type check**
 
   ```bash
   cd frontend && npx tsc --noEmit
@@ -90,7 +90,7 @@ This project has no unit test runner for frontend components. After each task:
 
   Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   cd frontend && git add src/components/proof/proof-qr-block.tsx
@@ -104,7 +104,7 @@ This project has no unit test runner for frontend components. After each task:
 **Files:**
 - Modify: `frontend/src/components/proof/proof-block-preview.tsx`
 
-- [ ] **Step 1: Replace the entire file**
+- [x] **Step 1: Replace the entire file**
 
   ```tsx
   import Link from "next/link";
@@ -194,7 +194,7 @@ This project has no unit test runner for frontend components. After each task:
   export default ProofBlockPreview;
   ```
 
-- [ ] **Step 2: Type check**
+- [x] **Step 2: Type check**
 
   ```bash
   cd frontend && npx tsc --noEmit
@@ -202,7 +202,7 @@ This project has no unit test runner for frontend components. After each task:
 
   Expected: no errors. If you see "getProofMetadata is not a module" errors, confirm `frontend/src/lib/proof-metadata.ts` exports `getProofMetadata` as a named export (it does — line 37).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   cd frontend && git add src/components/proof/proof-block-preview.tsx
@@ -216,7 +216,7 @@ This project has no unit test runner for frontend components. After each task:
 **Files:**
 - Modify: `frontend/src/app/app/app-experience.tsx` (line 242)
 
-- [ ] **Step 1: Update the ProofBlockPreview call**
+- [x] **Step 1: Update the ProofBlockPreview call**
 
   Find line 242 in `app-experience.tsx`:
   ```tsx
@@ -233,7 +233,7 @@ This project has no unit test runner for frontend components. After each task:
 
   `milestones.credentialStatus` is typed as `CertificateStatus | undefined` (line 41 of `app-experience.tsx`), which matches the optional `certStatus?: CertificateStatus` prop.
 
-- [ ] **Step 2: Type check**
+- [x] **Step 2: Type check**
 
   ```bash
   cd frontend && npx tsc --noEmit
@@ -241,7 +241,7 @@ This project has no unit test runner for frontend components. After each task:
 
   Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   cd frontend && git add src/app/app/app-experience.tsx
@@ -257,7 +257,7 @@ This is the largest change. The helper functions `statusMeta` and `issuerMeta` a
 **Files:**
 - Modify: `frontend/src/components/proof/proof-card.tsx`
 
-- [ ] **Step 1: Replace the ProofCard JSX**
+- [x] **Step 1: Replace the ProofCard JSX**
 
   Keep everything above line 150 (the two helper functions) exactly as-is. Replace only the `ProofCard` function body with:
 
@@ -520,7 +520,7 @@ This is the largest change. The helper functions `statusMeta` and `issuerMeta` a
   }
   ```
 
-- [ ] **Step 2: Type check**
+- [x] **Step 2: Type check**
 
   ```bash
   cd frontend && npx tsc --noEmit
@@ -528,7 +528,7 @@ This is the largest change. The helper functions `statusMeta` and `issuerMeta` a
 
   Expected: no errors. Common issue to watch: if `status.tone` produces a value not in Badge's `toneClasses` record, TypeScript will not catch it (it's `Record<string, string>`), but the badge will fall back to "neutral" at runtime — that's fine.
 
-- [ ] **Step 3: Lint**
+- [x] **Step 3: Lint**
 
   ```bash
   cd frontend && npm run lint
@@ -536,7 +536,7 @@ This is the largest change. The helper functions `statusMeta` and `issuerMeta` a
 
   Expected: no errors.
 
-- [ ] **Step 4: Visual check**
+- [x] **Step 4: Visual check**
 
   ```bash
   cd frontend && npm run dev
@@ -551,7 +551,7 @@ This is the largest change. The helper functions `statusMeta` and `issuerMeta` a
   - Share buttons appear at the bottom
   - Open `http://localhost:3000/app` and verify the preview card shows a title and status badge (or graceful fallback)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
   ```bash
   cd frontend && git add src/components/proof/proof-card.tsx
