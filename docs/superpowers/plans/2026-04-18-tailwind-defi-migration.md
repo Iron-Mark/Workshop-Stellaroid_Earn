@@ -1,6 +1,6 @@
 # Tailwind v4 + DeFi Redesign Migration — Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Migrate all 28 CSS Module files to Tailwind CSS v4 while upgrading the visual design to a DeFi glassmorphism aesthetic with Framer Motion animations, shadcn/ui primitives, Lucide React icons, and an Orbitron/Exo 2 font swap.
 
@@ -32,20 +32,20 @@ Every component listed in Phases 2–5 below.
 
 **Files:** `frontend/package.json`
 
-- [ ] **Step 1: Install Tailwind v4 + PostCSS**
+- [x] **Step 1: Install Tailwind v4 + PostCSS**
 
 ```bash
 cd frontend
 npm install tailwindcss@latest @tailwindcss/postcss@latest
 ```
 
-- [ ] **Step 2: Install Framer Motion + Lucide React**
+- [x] **Step 2: Install Framer Motion + Lucide React**
 
 ```bash
 npm install framer-motion lucide-react
 ```
 
-- [ ] **Step 3: Verify no peer-dep errors**
+- [x] **Step 3: Verify no peer-dep errors**
 
 ```bash
 npm ls 2>&1 | grep -i "peer\|invalid" || echo "OK"
@@ -53,7 +53,7 @@ npm ls 2>&1 | grep -i "peer\|invalid" || echo "OK"
 
 Expected: `OK` or no peer errors blocking build.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add package.json package-lock.json
@@ -68,7 +68,7 @@ git commit -m "chore: install tailwindcss v4, framer-motion, lucide-react"
 
 - Create: `frontend/postcss.config.mjs`
 
-- [ ] **Step 1: Create the file**
+- [x] **Step 1: Create the file**
 
 ```js
 // frontend/postcss.config.mjs
@@ -79,7 +79,7 @@ export default {
 };
 ```
 
-- [ ] **Step 2: Verify dev server starts**
+- [x] **Step 2: Verify dev server starts**
 
 ```bash
 npm run dev
@@ -87,7 +87,7 @@ npm run dev
 
 Expected: server starts on `http://localhost:3000` with no PostCSS errors. CSS Modules still work.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add postcss.config.mjs
@@ -102,7 +102,7 @@ git commit -m "chore: add tailwind v4 postcss config"
 
 - Modify: `frontend/src/styles/globals.css`
 
-- [ ] **Step 1: Replace `:root` with `@import "tailwindcss"` + `@theme` block**
+- [x] **Step 1: Replace `:root` with `@import "tailwindcss"` + `@theme` block**
 
 Replace the entire file contents with:
 
@@ -317,7 +317,7 @@ a:hover {
 }
 ```
 
-- [ ] **Step 2: Verify build**
+- [x] **Step 2: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -20
@@ -325,7 +325,7 @@ npm run build 2>&1 | tail -20
 
 Expected: build succeeds. CSS Modules still work (they don't use `@theme`).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/styles/globals.css
@@ -340,7 +340,7 @@ git commit -m "feat: migrate globals.css to tailwind v4 @theme with DeFi tokens"
 
 - Modify: `frontend/src/app/layout.tsx`
 
-- [ ] **Step 1: Update layout.tsx to use next/font/google**
+- [x] **Step 1: Update layout.tsx to use next/font/google**
 
 ```tsx
 // frontend/src/app/layout.tsx
@@ -462,7 +462,7 @@ export default async function RootLayout({
 }
 ```
 
-- [ ] **Step 2: Remove the Google Fonts `@import` from globals.css** (next/font replaces it)
+- [x] **Step 2: Remove the Google Fonts `@import` from globals.css** (next/font replaces it)
 
 In `globals.css`, delete the line:
 
@@ -470,7 +470,7 @@ In `globals.css`, delete the line:
 @import url("https://fonts.googleapis.com/css2?family=Orbitron...");
 ```
 
-- [ ] **Step 3: Verify build + fonts load**
+- [x] **Step 3: Verify build + fonts load**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -478,7 +478,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds. Fonts switch to Orbitron/Exo 2 in browser.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/app/layout.tsx src/styles/globals.css
@@ -494,13 +494,13 @@ git commit -m "feat: swap fonts to Orbitron + Exo 2 via next/font"
 - Create: `frontend/components.json` (auto-generated)
 - Modify: `frontend/src/components/ui/` (scaffolded)
 
-- [ ] **Step 1: Install shadcn peer deps**
+- [x] **Step 1: Install shadcn peer deps**
 
 ```bash
 npm install class-variance-authority clsx tailwind-merge
 ```
 
-- [ ] **Step 2: Run shadcn init**
+- [x] **Step 2: Run shadcn init**
 
 ```bash
 npx shadcn@latest init
@@ -515,19 +515,19 @@ Answer the prompts:
 - Components path: `src/components/ui`
 - Utils path: `src/lib/utils`
 
-- [ ] **Step 3: Install required shadcn components**
+- [x] **Step 3: Install required shadcn components**
 
 ```bash
 npx shadcn@latest add button badge input skeleton separator dialog tooltip
 ```
 
-- [ ] **Step 4: Install Sonner (toast)**
+- [x] **Step 4: Install Sonner (toast)**
 
 ```bash
 npm install sonner
 ```
 
-- [ ] **Step 5: Verify shadcn lib/utils.ts was created**
+- [x] **Step 5: Verify shadcn lib/utils.ts was created**
 
 ```bash
 cat src/lib/utils.ts
@@ -544,7 +544,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 ```
 
-- [ ] **Step 6: Verify build**
+- [x] **Step 6: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -552,7 +552,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add .
@@ -567,7 +567,7 @@ git commit -m "feat: init shadcn/ui with DeFi theme mapping"
 
 - Create: `frontend/src/lib/motion.ts`
 
-- [ ] **Step 1: Create motion.ts**
+- [x] **Step 1: Create motion.ts**
 
 ```ts
 // frontend/src/lib/motion.ts
@@ -627,7 +627,7 @@ export const ctaHover = {
 };
 ```
 
-- [ ] **Step 2: Verify TypeScript compiles**
+- [x] **Step 2: Verify TypeScript compiles**
 
 ```bash
 npx tsc --noEmit 2>&1 | head -20
@@ -635,7 +635,7 @@ npx tsc --noEmit 2>&1 | head -20
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/lib/motion.ts
@@ -653,7 +653,7 @@ git commit -m "feat: add framer motion variants library"
 
 The shadcn `button.tsx` uses `cva` (class-variance-authority). We extend it with DeFi pill shape, gradient primary, and glow hover via Framer Motion.
 
-- [ ] **Step 1: Replace button.tsx**
+- [x] **Step 1: Replace button.tsx**
 
 ```tsx
 // frontend/src/components/ui/button.tsx
@@ -765,13 +765,13 @@ Button.displayName = "Button";
 export { Button, buttonVariants };
 ```
 
-- [ ] **Step 2: Delete the old CSS module**
+- [x] **Step 2: Delete the old CSS module**
 
 ```bash
 rm src/components/ui/button.module.css
 ```
 
-- [ ] **Step 3: Verify build**
+- [x] **Step 3: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -779,7 +779,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/ui/button.tsx
@@ -796,7 +796,7 @@ git commit -m "feat: rewrite Button with Tailwind v4 + DeFi pill + Framer Motion
 - Modify: `frontend/src/components/ui/badge.tsx`
 - Delete: `frontend/src/components/ui/badge.module.css`
 
-- [ ] **Step 1: Replace badge.tsx**
+- [x] **Step 1: Replace badge.tsx**
 
 ```tsx
 // frontend/src/components/ui/badge.tsx
@@ -862,13 +862,13 @@ export function Badge({
 }
 ```
 
-- [ ] **Step 2: Delete old CSS module**
+- [x] **Step 2: Delete old CSS module**
 
 ```bash
 rm src/components/ui/badge.module.css
 ```
 
-- [ ] **Step 3: Verify build**
+- [x] **Step 3: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -876,7 +876,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/ui/badge.tsx
@@ -897,7 +897,7 @@ git commit -m "feat: rewrite Badge with Tailwind v4 + DeFi tones"
 - Delete: `input.module.css`, `skeleton.module.css`, `copy-button.module.css`, `hash-reveal.module.css`, `toast.module.css`
 - Modify: `frontend/src/components/ui/index.ts` (replace ToastProvider with Sonner)
 
-- [ ] **Step 1: Rewrite input.tsx**
+- [x] **Step 1: Rewrite input.tsx**
 
 ```tsx
 // frontend/src/components/ui/input.tsx
@@ -933,7 +933,7 @@ Input.displayName = "Input";
 export { Input };
 ```
 
-- [ ] **Step 2: Rewrite skeleton.tsx**
+- [x] **Step 2: Rewrite skeleton.tsx**
 
 ```tsx
 // frontend/src/components/ui/skeleton.tsx
@@ -958,7 +958,7 @@ export function Skeleton({
 }
 ```
 
-- [ ] **Step 3: Rewrite copy-button.tsx**
+- [x] **Step 3: Rewrite copy-button.tsx**
 
 ```tsx
 // frontend/src/components/ui/copy-button.tsx
@@ -1011,7 +1011,7 @@ export function CopyButton({
 }
 ```
 
-- [ ] **Step 4: Rewrite hash-reveal.tsx**
+- [x] **Step 4: Rewrite hash-reveal.tsx**
 
 ```tsx
 // frontend/src/components/ui/hash-reveal.tsx
@@ -1055,7 +1055,7 @@ export function HashReveal({ hash, short, className }: HashRevealProps) {
 }
 ```
 
-- [ ] **Step 5: Update ui/index.ts — replace ToastProvider with Sonner**
+- [x] **Step 5: Update ui/index.ts — replace ToastProvider with Sonner**
 
 ```ts
 // frontend/src/components/ui/index.ts
@@ -1087,7 +1087,7 @@ export { Toaster as ToastProvider } from "sonner";
 export { toast } from "sonner";
 ```
 
-- [ ] **Step 6: Delete old CSS modules**
+- [x] **Step 6: Delete old CSS modules**
 
 ```bash
 rm src/components/ui/input.module.css
@@ -1097,7 +1097,7 @@ rm src/components/ui/hash-reveal.module.css
 rm src/components/ui/toast.module.css
 ```
 
-- [ ] **Step 7: Verify build**
+- [x] **Step 7: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -1105,7 +1105,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/components/ui/
@@ -1121,13 +1121,13 @@ git commit -m "feat: rewrite UI primitives + swap to Sonner toast"
 - Modify: `frontend/src/components/layout/site-nav.tsx`
 - Delete: `frontend/src/components/layout/site-nav.module.css`
 
-- [ ] **Step 1: Read current site-nav.tsx**
+- [x] **Step 1: Read current site-nav.tsx**
 
 ```bash
 cat src/components/layout/site-nav.tsx
 ```
 
-- [ ] **Step 2: Rewrite site-nav.tsx**
+- [x] **Step 2: Rewrite site-nav.tsx**
 
 ```tsx
 // frontend/src/components/layout/site-nav.tsx
@@ -1253,13 +1253,13 @@ export function SiteNav() {
 }
 ```
 
-- [ ] **Step 3: Delete old CSS module**
+- [x] **Step 3: Delete old CSS module**
 
 ```bash
 rm src/components/layout/site-nav.module.css
 ```
 
-- [ ] **Step 4: Verify build**
+- [x] **Step 4: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -1267,7 +1267,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/components/layout/site-nav.tsx
@@ -1286,7 +1286,7 @@ git commit -m "feat: rewrite SiteNav with glassmorphism + amber hairline"
 - Modify: `frontend/src/components/layout/locale-toggle.tsx`
 - Delete: `site-footer.module.css`, `app-shell.module.css`, `locale-toggle.module.css`
 
-- [ ] **Step 1: Read current files**
+- [x] **Step 1: Read current files**
 
 ```bash
 cat src/components/layout/site-footer.tsx
@@ -1294,7 +1294,7 @@ cat src/components/layout/app-shell.tsx
 cat src/components/layout/locale-toggle.tsx
 ```
 
-- [ ] **Step 2: Rewrite site-footer.tsx**
+- [x] **Step 2: Rewrite site-footer.tsx**
 
 Keep the same content structure but replace all `styles.*` class references with Tailwind utilities. Key classes:
 
@@ -1362,7 +1362,7 @@ export function SiteFooter() {
 }
 ```
 
-- [ ] **Step 3: Rewrite app-shell.tsx**
+- [x] **Step 3: Rewrite app-shell.tsx**
 
 ```tsx
 // frontend/src/components/layout/app-shell.tsx
@@ -1382,7 +1382,7 @@ export function AppShell({ children, className }: AppShellProps) {
 }
 ```
 
-- [ ] **Step 4: Read and rewrite locale-toggle.tsx** (keep existing locale logic, swap CSS Module to Tailwind)
+- [x] **Step 4: Read and rewrite locale-toggle.tsx** (keep existing locale logic, swap CSS Module to Tailwind)
 
 ```bash
 cat src/components/layout/locale-toggle.tsx
@@ -1390,7 +1390,7 @@ cat src/components/layout/locale-toggle.tsx
 
 Replace `styles.*` with inline Tailwind classes on the existing toggle logic. The toggle renders two buttons — active gets `text-primary font-semibold`, inactive gets `text-text-muted`.
 
-- [ ] **Step 5: Delete old CSS modules**
+- [x] **Step 5: Delete old CSS modules**
 
 ```bash
 rm src/components/layout/site-footer.module.css
@@ -1398,7 +1398,7 @@ rm src/components/layout/app-shell.module.css
 rm src/components/layout/locale-toggle.module.css
 ```
 
-- [ ] **Step 6: Verify build**
+- [x] **Step 6: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -1406,7 +1406,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/components/layout/
@@ -1424,7 +1424,7 @@ git commit -m "feat: rewrite layout shell components with Tailwind + glass foote
 - Modify: `frontend/src/components/proof/share-buttons.tsx`
 - Delete: `proof-card.module.css`, `proof-block-preview.module.css`
 
-- [ ] **Step 1: Read current files**
+- [x] **Step 1: Read current files**
 
 ```bash
 cat src/components/proof/proof-card.tsx
@@ -1432,7 +1432,7 @@ cat src/components/proof/proof-block-preview.tsx
 cat src/components/proof/share-buttons.tsx
 ```
 
-- [ ] **Step 2: Rewrite proof-card.tsx**
+- [x] **Step 2: Rewrite proof-card.tsx**
 
 Replace all `styles.*` references with Tailwind utilities. Key DeFi card pattern:
 
@@ -1449,15 +1449,15 @@ Replace all `styles.*` references with Tailwind utilities. Key DeFi card pattern
 
 Keep all existing prop types and data rendering logic. Only replace the className sources from CSS Module to Tailwind. Import `motion` from `framer-motion`, `cardHover` from `@/lib/motion`, `cn` from `@/lib/utils`. Replace any inline SVG icons with Lucide equivalents (`CheckCircle`, `Clock`, `Hash`, `User`, etc.).
 
-- [ ] **Step 3: Rewrite proof-block-preview.tsx**
+- [x] **Step 3: Rewrite proof-block-preview.tsx**
 
 Replace CSS Module with Tailwind. Key classes: `rounded-2xl bg-surface border border-border overflow-hidden`. Keep all existing logic.
 
-- [ ] **Step 4: Rewrite share-buttons.tsx**
+- [x] **Step 4: Rewrite share-buttons.tsx**
 
 Replace CSS Module with Tailwind. Buttons use `Button` component from `@/components/ui`. LinkedIn/copy share buttons stay functionally identical. Replace any inline SVGs with Lucide (`Linkedin`, `Link2`, `Share2`).
 
-- [ ] **Step 5: Delete old CSS modules**
+- [x] **Step 5: Delete old CSS modules**
 
 ```bash
 rm src/components/proof/proof-card.module.css
@@ -1466,7 +1466,7 @@ rm src/components/proof/proof-block-preview.module.css
 
 (`share-buttons` had no module — nothing to delete.)
 
-- [ ] **Step 6: Verify build**
+- [x] **Step 6: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -1474,7 +1474,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/components/proof/
@@ -1491,14 +1491,14 @@ git commit -m "feat: rewrite proof components with DeFi glass cards"
 - Modify: `frontend/src/components/activity/activity-snackbar.tsx`
 - Delete: `recent-activity.module.css`, `activity-snackbar.module.css`
 
-- [ ] **Step 1: Read current files**
+- [x] **Step 1: Read current files**
 
 ```bash
 cat src/components/activity/recent-activity.tsx
 cat src/components/activity/activity-snackbar.tsx
 ```
 
-- [ ] **Step 2: Rewrite recent-activity.tsx**
+- [x] **Step 2: Rewrite recent-activity.tsx**
 
 Replace all `styles.*` with Tailwind. Key patterns:
 
@@ -1507,19 +1507,19 @@ Replace all `styles.*` with Tailwind. Key patterns:
 - Hash: `font-mono text-[13px] text-text-muted`
 - Verified dot: use `<motion.span>` with `glowPulse` from `@/lib/motion` for the status dot
 
-- [ ] **Step 3: Rewrite activity-snackbar.tsx**
+- [x] **Step 3: Rewrite activity-snackbar.tsx**
 
 Replace CSS Module with Tailwind. The snackbar is a fixed sidebar panel on desktop:
 `fixed right-4 top-24 z-20 w-72 rounded-2xl bg-surface-glass border border-border-glass backdrop-blur-md p-4 hidden xl:block`
 
-- [ ] **Step 4: Delete old CSS modules**
+- [x] **Step 4: Delete old CSS modules**
 
 ```bash
 rm src/components/activity/recent-activity.module.css
 rm src/components/activity/activity-snackbar.module.css
 ```
 
-- [ ] **Step 5: Verify build**
+- [x] **Step 5: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
@@ -1527,7 +1527,7 @@ npm run build 2>&1 | tail -10
 
 Expected: build succeeds.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/components/activity/
@@ -1544,14 +1544,14 @@ git commit -m "feat: rewrite activity components with Tailwind + glass snackbar"
 - Modify: `frontend/src/components/actions/actions.module.css` (replace + delete)
 - Delete: `next-action-card.module.css`, `actions.module.css`
 
-- [ ] **Step 1: Read current files**
+- [x] **Step 1: Read current files**
 
 ```bash
 cat src/components/actions/next-action-card.tsx
 cat src/components/actions/verify-form.tsx
 ```
 
-- [ ] **Step 2: Rewrite next-action-card.tsx**
+- [x] **Step 2: Rewrite next-action-card.tsx**
 
 Replace CSS Module. DeFi card with gradient top-bar:
 
@@ -1571,7 +1571,7 @@ Replace CSS Module. DeFi card with gradient top-bar:
 
 Replace inline SVG icons with Lucide equivalents. Keep all action logic.
 
-- [ ] **Step 3: Update any remaining component in `actions/` that imports CSS modules**
+- [x] **Step 3: Update any remaining component in `actions/` that imports CSS modules**
 
 ```bash
 grep -r "module.css" src/components/actions/ --include="*.tsx"
@@ -1579,20 +1579,20 @@ grep -r "module.css" src/components/actions/ --include="*.tsx"
 
 For each match, replace with Tailwind utilities.
 
-- [ ] **Step 4: Delete old CSS modules**
+- [x] **Step 4: Delete old CSS modules**
 
 ```bash
 rm src/components/actions/next-action-card.module.css
 rm src/components/actions/actions.module.css
 ```
 
-- [ ] **Step 5: Verify build**
+- [x] **Step 5: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/components/actions/
@@ -1610,7 +1610,7 @@ git commit -m "feat: rewrite action components with DeFi cards"
 - Modify: `frontend/src/components/app/network-banner.tsx`
 - Delete: `wallet-connect-button.module.css`, `wallet-empty-state.module.css`, `network-banner.module.css`
 
-- [ ] **Step 1: Read current files**
+- [x] **Step 1: Read current files**
 
 ```bash
 cat src/components/wallet/wallet-connect-button.tsx
@@ -1618,11 +1618,11 @@ cat src/components/app/wallet-empty-state.tsx
 cat src/components/app/network-banner.tsx
 ```
 
-- [ ] **Step 2: Rewrite wallet-connect-button.tsx**
+- [x] **Step 2: Rewrite wallet-connect-button.tsx**
 
 Replace CSS Module. Use `Button` component with `variant="outline"` or `variant="primary"` based on connected state. Connected state shows truncated address in `font-mono text-[13px]`.
 
-- [ ] **Step 3: Rewrite wallet-empty-state.tsx**
+- [x] **Step 3: Rewrite wallet-empty-state.tsx**
 
 Replace CSS Module with Tailwind. Empty state pattern:
 
@@ -1637,7 +1637,7 @@ Replace CSS Module with Tailwind. Empty state pattern:
 </div>
 ```
 
-- [ ] **Step 4: Rewrite network-banner.tsx**
+- [x] **Step 4: Rewrite network-banner.tsx**
 
 Replace CSS Module. Warning banner pattern:
 
@@ -1648,7 +1648,7 @@ Replace CSS Module. Warning banner pattern:
 </div>
 ```
 
-- [ ] **Step 5: Delete old CSS modules**
+- [x] **Step 5: Delete old CSS modules**
 
 ```bash
 rm src/components/wallet/wallet-connect-button.module.css
@@ -1656,13 +1656,13 @@ rm src/components/app/wallet-empty-state.module.css
 rm src/components/app/network-banner.module.css
 ```
 
-- [ ] **Step 6: Verify build**
+- [x] **Step 6: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/components/wallet/ src/components/app/
@@ -1680,7 +1680,7 @@ git commit -m "feat: rewrite wallet + network components with Tailwind"
 - Modify: `frontend/src/components/demo/demo-autofill-button.tsx`
 - Delete: `milestone-rail.module.css`, `freighter-welcome.module.css`, `demo-autofill-button.module.css`
 
-- [ ] **Step 1: Read current files**
+- [x] **Step 1: Read current files**
 
 ```bash
 cat src/components/milestones/milestone-rail.tsx
@@ -1688,7 +1688,7 @@ cat src/components/onboarding/freighter-welcome.tsx
 cat src/components/demo/demo-autofill-button.tsx
 ```
 
-- [ ] **Step 2: Rewrite milestone-rail.tsx**
+- [x] **Step 2: Rewrite milestone-rail.tsx**
 
 Replace CSS Module with Tailwind. Milestone steps use a vertical timeline pattern:
 
@@ -1697,15 +1697,15 @@ Replace CSS Module with Tailwind. Milestone steps use a vertical timeline patter
 - Completed: `bg-primary/15 border border-primary/30 text-primary`
 - Pending: `bg-surface-2 border border-border text-text-muted`
 
-- [ ] **Step 3: Rewrite freighter-welcome.tsx**
+- [x] **Step 3: Rewrite freighter-welcome.tsx**
 
 Replace CSS Module. Onboarding card with DeFi glass treatment. Keep existing step-by-step onboarding logic. Replace any inline SVGs with Lucide icons (`Download`, `Chrome`, `Key`, `CheckCircle`).
 
-- [ ] **Step 4: Rewrite demo-autofill-button.tsx**
+- [x] **Step 4: Rewrite demo-autofill-button.tsx**
 
 Replace CSS Module. Small utility button — use `Button` with `variant="ghost"` and `size="sm"`.
 
-- [ ] **Step 5: Delete old CSS modules**
+- [x] **Step 5: Delete old CSS modules**
 
 ```bash
 rm src/components/milestones/milestone-rail.module.css
@@ -1713,13 +1713,13 @@ rm src/components/onboarding/freighter-welcome.module.css
 rm src/components/demo/demo-autofill-button.module.css
 ```
 
-- [ ] **Step 6: Verify build**
+- [x] **Step 6: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/components/milestones/ src/components/onboarding/ src/components/demo/
@@ -1737,14 +1737,14 @@ git commit -m "feat: rewrite milestone + onboarding + demo components"
 
 (Neither has its own module CSS currently — they use classes injected from parent pages. This task migrates any remaining inline style references and confirms they accept Tailwind className props cleanly.)
 
-- [ ] **Step 1: Read current files**
+- [x] **Step 1: Read current files**
 
 ```bash
 cat src/components/landing/localized-hero.tsx
 cat src/components/about/localized-about-copy.tsx
 ```
 
-- [ ] **Step 2: Confirm className passthrough works**
+- [x] **Step 2: Confirm className passthrough works**
 
 Both components render a single element and accept a `className` prop. Verify they use `cn()` or direct className passthrough so parent pages can apply Tailwind classes:
 
@@ -1755,13 +1755,13 @@ import { cn } from "@/lib/utils";
 <p className={cn("text-text-muted text-[17px] leading-relaxed", className)}>
 ```
 
-- [ ] **Step 3: Verify build**
+- [x] **Step 3: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/landing/ src/components/about/
@@ -1777,13 +1777,13 @@ git commit -m "feat: confirm localized components use cn() for Tailwind passthro
 - Modify: `frontend/src/app/page.tsx`
 - Delete: `frontend/src/app/page.module.css`
 
-- [ ] **Step 1: Read current page.tsx**
+- [x] **Step 1: Read current page.tsx**
 
 ```bash
 cat src/app/page.tsx
 ```
 
-- [ ] **Step 2: Add hero orb component at top of page.tsx**
+- [x] **Step 2: Add hero orb component at top of page.tsx**
 
 ```tsx
 // Floating blur orbs for DeFi hero atmosphere
@@ -1823,7 +1823,7 @@ function HeroOrbs() {
 }
 ```
 
-- [ ] **Step 3: Rewrite page.tsx layout with Tailwind**
+- [x] **Step 3: Rewrite page.tsx layout with Tailwind**
 
 Replace all `styles.*` references. Key layout patterns:
 
@@ -1858,19 +1858,19 @@ Replace all `styles.*` references. Key layout patterns:
 
 Wrap page sections in `<motion.div variants={staggerContainer} initial="hidden" animate="visible">` for stagger entrance. Import `staggerContainer`, `fadeUp` from `@/lib/motion`.
 
-- [ ] **Step 4: Delete old CSS module**
+- [x] **Step 4: Delete old CSS module**
 
 ```bash
 rm src/app/page.module.css
 ```
 
-- [ ] **Step 5: Verify build**
+- [x] **Step 5: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/app/page.tsx
@@ -1887,7 +1887,7 @@ git commit -m "feat: rewrite home page with DeFi hero orbs + stagger entrance"
 - Modify: `frontend/src/app/about/page.tsx`
 - Delete: `frontend/src/app/about/page.module.css`
 
-- [ ] **Step 1: Rewrite about/page.tsx with Tailwind**
+- [x] **Step 1: Rewrite about/page.tsx with Tailwind**
 
 Replace all `styles.*` references. Key patterns:
 
@@ -1924,19 +1924,19 @@ Replace all `styles.*` references. Key patterns:
 
 Wrap each major section in `<motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>`.
 
-- [ ] **Step 2: Delete old CSS module**
+- [x] **Step 2: Delete old CSS module**
 
 ```bash
 rm src/app/about/page.module.css
 ```
 
-- [ ] **Step 3: Verify build**
+- [x] **Step 3: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/app/about/
@@ -1954,14 +1954,14 @@ git commit -m "feat: rewrite about page with Tailwind + DeFi centered hero"
 - Modify: `frontend/src/app/proof/[hash]/loading.tsx`
 - Delete: `frontend/src/app/proof/[hash]/loading.module.css`
 
-- [ ] **Step 1: Read current files**
+- [x] **Step 1: Read current files**
 
 ```bash
 cat src/app/app/page.tsx
 cat src/app/proof/\[hash\]/loading.tsx
 ```
 
-- [ ] **Step 2: Rewrite app/page.tsx**
+- [x] **Step 2: Rewrite app/page.tsx**
 
 Replace all `styles.*` with Tailwind. The app page is primarily a layout for the wallet + actions components. Key wrapper:
 
@@ -1978,7 +1978,7 @@ Replace all `styles.*` with Tailwind. The app page is primarily a layout for the
 </div>
 ```
 
-- [ ] **Step 3: Rewrite proof/[hash]/loading.tsx**
+- [x] **Step 3: Rewrite proof/[hash]/loading.tsx**
 
 ```tsx
 // frontend/src/app/proof/[hash]/loading.tsx
@@ -2001,20 +2001,20 @@ export default function ProofLoading() {
 }
 ```
 
-- [ ] **Step 4: Delete old CSS modules**
+- [x] **Step 4: Delete old CSS modules**
 
 ```bash
 rm src/app/app/page.module.css
 rm src/app/proof/\[hash\]/loading.module.css
 ```
 
-- [ ] **Step 5: Verify build**
+- [x] **Step 5: Verify build**
 
 ```bash
 npm run build 2>&1 | tail -10
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/app/app/ src/app/proof/
@@ -2031,7 +2031,7 @@ git commit -m "feat: rewrite app page + loading skeleton with Tailwind"
 - Modify: `frontend/src/app/proof/page.tsx` (check for any remaining module imports)
 - Modify: `frontend/src/app/proof/[hash]/page.tsx` (check for any remaining module imports)
 
-- [ ] **Step 1: Confirm zero CSS module files remain**
+- [x] **Step 1: Confirm zero CSS module files remain**
 
 ```bash
 find src -name "*.module.css" | sort
@@ -2039,7 +2039,7 @@ find src -name "*.module.css" | sort
 
 Expected: empty output (no files).
 
-- [ ] **Step 2: Check for any remaining CSS module imports**
+- [x] **Step 2: Check for any remaining CSS module imports**
 
 ```bash
 grep -r "\.module\.css" src/ --include="*.tsx" --include="*.ts"
@@ -2047,7 +2047,7 @@ grep -r "\.module\.css" src/ --include="*.tsx" --include="*.ts"
 
 Expected: no matches. If any found, replace with Tailwind utilities.
 
-- [ ] **Step 3: Check proof pages for module imports**
+- [x] **Step 3: Check proof pages for module imports**
 
 ```bash
 cat src/app/proof/page.tsx | grep -E "import|styles\."
@@ -2056,7 +2056,7 @@ cat src/app/proof/\[hash\]/page.tsx | grep -E "import|styles\."
 
 Replace any remaining `styles.*` with Tailwind classes.
 
-- [ ] **Step 4: Run lint**
+- [x] **Step 4: Run lint**
 
 ```bash
 npm run lint 2>&1 | tail -20
@@ -2064,7 +2064,7 @@ npm run lint 2>&1 | tail -20
 
 Fix any warnings/errors reported.
 
-- [ ] **Step 5: Full production build**
+- [x] **Step 5: Full production build**
 
 ```bash
 npm run build
@@ -2072,7 +2072,7 @@ npm run build
 
 Expected: ✓ build completes with no errors.
 
-- [ ] **Step 6: Check bundle size**
+- [x] **Step 6: Check bundle size**
 
 ```bash
 npm run build 2>&1 | grep -E "First Load|Page"
@@ -2080,7 +2080,7 @@ npm run build 2>&1 | grep -E "First Load|Page"
 
 Note the First Load JS sizes — Framer Motion adds ~40KB gzipped, acceptable for a DeFi dApp.
 
-- [ ] **Step 7: Commit cleanup**
+- [x] **Step 7: Commit cleanup**
 
 ```bash
 git add -A
@@ -2091,17 +2091,17 @@ git commit -m "feat: final cleanup — zero CSS modules, full Tailwind v4 + DeFi
 
 ## Task 22 — Push and Wrap Up
 
-- [ ] **Step 1: Push dev branch**
+- [x] **Step 1: Push dev branch**
 
 ```bash
 git push origin dev
 ```
 
-- [ ] **Step 2: Verify Vercel preview build passes** (if configured)
+- [x] **Step 2: Verify Vercel preview build passes** (if configured)
 
 Check the Vercel dashboard for the dev branch preview URL. Confirm fonts, glass effects, and glow CTAs render correctly.
 
-- [ ] **Step 3: Mark migration complete**
+- [x] **Step 3: Mark migration complete**
 
 All 28 CSS module files deleted. shadcn/ui primitives installed and themed. Framer Motion entrance animations on all pages. Lucide icons throughout. Orbitron + Exo 2 fonts active.
 
