@@ -37,6 +37,9 @@ const nextConfig: NextConfig = {
   // and lets Node resolve them at runtime instead.
   serverExternalPackages: ["sodium-native", "@stellar/stellar-sdk", "@stellar/stellar-base"],
 
+  // Hide the floating Next.js dev HUD so screenshots stay clean.
+  devIndicators: false,
+
   async headers() {
     return [
       {
