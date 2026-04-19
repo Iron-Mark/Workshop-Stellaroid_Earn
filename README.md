@@ -143,12 +143,12 @@ Explorer: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7U
 | `approve_issuer(admin, issuer)` | Admin | Approve an issuer to register credentials |
 | `suspend_issuer(admin, issuer)` | Admin | Suspend a misbehaving issuer |
 | `get_issuer(issuer)` | Anyone | Read issuer record and status |
-| `register_certificate(issuer, owner, hash, title, cohort, metadata_uri, expires_at)` | Approved issuer | Register a credential hash for a graduate |
+| `register_certificate(issuer, student, hash, title, cohort, metadata_uri)` | Approved issuer | Register a credential hash for a graduate |
 | `verify_certificate(issuer, cert_hash)` | Admin or approved issuer | Mark a credential Verified |
 | `revoke_certificate(issuer, cert_hash)` | Admin or approved issuer | Permanently revoke a credential |
 | `suspend_certificate(issuer, cert_hash)` | Admin or approved issuer | Temporarily suspend a credential |
-| `reward_student(employer, cert_hash, amount)` | Employer | Pay graduate in XLM, linked to credential |
-| `link_payment(payer, cert_hash, amount)` | Anyone | Record a payment reference on a credential |
+| `reward_student(student, cert_hash, amount)` | Admin | Admin-initiated XLM payment to a graduate |
+| `link_payment(employer, student, cert_hash, amount)` | Employer | Employer pays graduate in XLM, linked to credential |
 | `get_certificate(cert_hash)` | Anyone | Read full credential record and status |
 
 ### Credential Status Lifecycle
