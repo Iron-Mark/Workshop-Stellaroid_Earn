@@ -9,9 +9,10 @@ import { linkPayment } from "@/lib/contract-client";
 import { appConfig, hasRequiredConfig } from "@/lib/config";
 import { parseAmountToInt } from "@/lib/format";
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
-import styles from "./actions.module.css";
 
 export interface PayFormProps {
+  initialHash?: string;
+  initialStudent?: string;
   onPaid?: (hash: string, txHash?: string) => void;
 }
 
@@ -29,18 +30,30 @@ function isValidAmount(amount: string): boolean {
   return Number.isFinite(n) && n > 0;
 }
 
-export function PayForm({ onPaid }: PayFormProps) {
+export function PayForm({ initialHash, initialStudent, onPaid }: PayFormProps) {
   const { wallet } = useFreighterWallet();
   const { toast } = useToast();
 
-  const [studentAddr, setStudentAddr] = useState("");
-  const [certHash, setCertHash] = useState("");
+  const [studentAddr, setStudentAddr] = useState(initialStudent ?? "");
+  const [certHash, setCertHash] = useState(initialHash ?? "");
   const [payAmount, setPayAmount] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const [studentTouched, setStudentTouched] = useState(false);
   const [hashTouched, setHashTouched] = useState(false);
   const [amountTouched, setAmountTouched] = useState(false);
+
+  useEffect(() => {
+    if (initialStudent) {
+      setStudentAddr((current) => current || initialStudent);
+    }
+  }, [initialStudent]);
+
+  useEffect(() => {
+    if (initialHash) {
+      setCertHash((current) => current || initialHash);
+    }
+  }, [initialHash]);
 
   useEffect(() => {
     function onAutofill(e: Event) {
@@ -120,8 +133,8 @@ export function PayForm({ onPaid }: PayFormProps) {
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      <div className={styles.fieldRow}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+      <div className="flex flex-col gap-4">
         <Input
           mono
           label="Student wallet (G...)"
@@ -158,14 +171,14 @@ export function PayForm({ onPaid }: PayFormProps) {
           helper={
             amountTouched || payAmount
               ? undefined
-              : `Testnet pays in ${appConfig.assetCode}. USDC-on-Stellar lands in v2 — same flow, stable value.`
+              : `Testnet pays in ${appConfig.assetCode}. USDC-on-Stellar lands in v2, same flow, stable value.`
           }
           placeholder="10"
           autoComplete="off"
         />
       </div>
 
-      <div className={styles.submitRow}>
+      <div className="flex gap-2 pt-1 max-sm:flex-col [&>*]:max-sm:w-full">
         <Button
           type="submit"
           variant="primary"

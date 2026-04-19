@@ -4,7 +4,7 @@ import { SiteNav } from "@/components/layout/site-nav";
 export const metadata: Metadata = {
   title: "Look Up a Certificate",
   description:
-    "Paste a SHA-256 hash to view its on-chain record — owner wallet, issuer, and verification status. No wallet required.",
+    "Paste a SHA-256 hash to view its on-chain record, issuer trust status, and any attached credential evidence. No wallet required.",
 };
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ProofIndexForm } from "@/components/proof/proof-index-form";
@@ -34,10 +34,11 @@ export default async function ProofIndex() {
           margin: "0 auto",
           padding: "72px 24px",
           color: "var(--color-text)",
+          textAlign: "center",
         }}
       >
         <img
-          src="/illust-lookup.svg"
+          src="/illust/illust-lookup.svg"
           alt=""
           width={192}
           height={128}
@@ -70,8 +71,9 @@ export default async function ProofIndex() {
             marginBottom: 32,
           }}
         >
-          Paste a 64-character SHA-256 hash to view its on-chain record — owner wallet,
-          issuer, verification status. No wallet required.
+          Paste a 64-character SHA-256 hash to view its on-chain record, issuer
+          trust status, and any attached credential evidence. No wallet
+          required.
         </p>
         <ProofIndexForm sampleHashes={sampleHashes} />
       </main>

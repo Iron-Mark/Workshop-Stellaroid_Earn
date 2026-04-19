@@ -15,7 +15,10 @@ cp .env.example .env.local
 Then in `.env.local`:
 
 1. Set `NEXT_PUBLIC_SOROBAN_CONTRACT_ID` to your deployed testnet contract ID.
-2. Set `NEXT_PUBLIC_STELLAR_READ_ADDRESS` to a funded testnet `G...` account (fund at https://friendbot.stellar.org/).
+2. Set `NEXT_PUBLIC_STELLAR_ADMIN_ADDRESS` to the admin `G...` address used when calling `init`.
+3. Set `NEXT_PUBLIC_STELLAR_READ_ADDRESS` to a funded testnet `G...` account used only for read-only simulation (fund at https://friendbot.stellar.org/).
+
+If you pulled the new trust-layer frontend bindings, the old demo contract ID is no longer ABI-compatible. Rebuild and redeploy the contract before testing register / verify / issuer approval flows. The step-by-step checklist lives in `../docs/superpowers/plans/2026-04-18-trust-layer-redeploy-checklist.md`.
 
 ## Run
 
@@ -32,8 +35,10 @@ Open http://localhost:3000. Install [Freighter](https://www.freighter.app/) and 
 | `/` | Dashboard — Next Action card + Milestone rail + Register / Verify / Pay forms + Proof Block preview |
 | `/about` | About page |
 | `/proof` | Proof lookup form — enter any cert hash to check status |
-| `/proof/[hash]` | Public proof page — shareable, no wallet required. Cached 60 s at CDN; invalid hashes return instant 404. |
+| `/proof/[hash]` | Public proof page — shareable, no wallet required. Cached 60 s at CDN; invalid hashes return instant 404. Transitional off-chain metadata/evidence can be shown here while the contract still stores trust-critical state only. |
 | `/proof/[hash]/embed` | Compact iframe embed — for portfolios, Notion, blogs. `frame-ancestors *` CSP allows all hosts. |
+| `/issuer` | Issuer dashboard — wallet-aware issuer status plus admin-only issuer approval/suspension controls |
+| `/issuer/register` | Register the connected wallet as a pending issuer |
 
 ## Design system
 

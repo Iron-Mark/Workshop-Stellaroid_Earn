@@ -19,6 +19,7 @@ export const appConfig = {
     process.env.NEXT_PUBLIC_STELLAR_EXPLORER_URL ??
     "https://stellar.expert/explorer/testnet",
   readAddress: process.env.NEXT_PUBLIC_STELLAR_READ_ADDRESS ?? "",
+  adminAddress: process.env.NEXT_PUBLIC_STELLAR_ADMIN_ADDRESS ?? "",
 };
 
 const networkPassphraseByName: Record<string, string> = {

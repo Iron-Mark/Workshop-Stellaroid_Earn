@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AlertTriangle } from "lucide-react";
 import type { WalletSnapshot } from "@/lib/types";
 import { appConfig, getExpectedNetworkLabel } from "@/lib/config";
-import styles from "./network-banner.module.css";
 
 interface NetworkBannerProps {
   wallet: WalletSnapshot;
@@ -41,18 +41,25 @@ export function NetworkBanner({ wallet }: NetworkBannerProps) {
       }
     : {
         title: `You're connected to ${normalizeConnectedNetwork(wallet)}.`,
-        detail: `This demo is on ${getExpectedNetworkLabel()} — switch networks in Freighter to continue.`,
+        detail: `This app is on ${getExpectedNetworkLabel()}. Switch networks in Freighter to continue.`,
       };
 
   return (
-    <div className={styles.banner} role="status" aria-live="polite">
-      <div>
-        <p className={styles.title}>{copy.title}</p>
-        <p className={styles.detail}>{copy.detail}</p>
+    <div
+      className="flex items-start justify-between gap-4 px-4 py-3.5 rounded-xl border border-warning/35 bg-warning/[0.12] max-sm:flex-col"
+      role="status"
+      aria-live="polite"
+    >
+      <div className="flex items-start gap-3">
+        <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-warning" aria-hidden="true" />
+        <div>
+          <p className="m-0 mb-1 text-[0.9375rem] font-semibold text-foreground">{copy.title}</p>
+          <p className="m-0 text-sm leading-relaxed text-muted-foreground">{copy.detail}</p>
+        </div>
       </div>
       <button
         type="button"
-        className={styles.dismiss}
+        className="min-h-9 px-3 rounded-md border border-warning/35 bg-background/25 text-foreground text-sm whitespace-nowrap cursor-pointer font-[inherit] hover:bg-background/40 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
         onClick={() => setDismissedKey(bannerKey)}
         aria-label="Dismiss app warning"
       >

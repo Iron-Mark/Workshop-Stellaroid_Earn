@@ -1,0 +1,17 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release-stellaroid-earn:
+    uses: stellar-expert/soroban-build-workflow/.github/workflows/release.yml@main
+    with:
+      release_name: ${{ github.ref_name }}
+      release_description: 'Stellaroid Earn — on-chain credential registry for Stellar PH Bootcamp'
+      relative_path: '["contract"]'
+      package: 'stellaroid_earn'
+    secrets:
+      release_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,9 +1,39 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import { Orbitron, Exo_2, JetBrains_Mono, Share_Tech_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { ToastProvider } from "@/components/ui";
 import { JsonLd } from "@/components/ui/json-ld";
 import "../styles/globals.css";
+import { cn } from "@/lib/utils";
+
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
+const exo2 = Exo_2({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+const shareTechMono = Share_Tech_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-pixel",
+  display: "swap",
+});
 
 const BASE_URL = "https://stellaroid-earn-demo.vercel.app";
 
@@ -11,13 +41,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
     default: "Stellaroid Earn",
-    template: "%s — Stellaroid Earn",
+    template: "%s | Stellaroid Earn",
   },
   description:
     "Stellaroid Earn links proof and payment on Stellar so teams can check the record and pay with confidence.",
-  alternates: {
-    canonical: BASE_URL,
-  },
+  alternates: { canonical: BASE_URL },
   icons: {
     icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
     apple: [{ url: "/logo.svg", type: "image/svg+xml" }],
@@ -25,19 +53,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
+    siteName: "Stellaroid Earn",
     title: "Stellaroid Earn",
-    description:
-      "Check the record and pay with confidence on Stellar.",
+    description: "Check the record and pay with confidence on Stellar.",
     locale: "en_US",
     alternateLocale: "tl_PH",
-    // Dynamic PNG rendered by src/app/opengraph-image.tsx — renders reliably on
-    // Facebook, iMessage, WhatsApp, Telegram, LinkedIn, X, Slack, Discord.
   },
   twitter: {
     card: "summary_large_image",
     title: "Stellaroid Earn",
-    description:
-      "Check the record and pay with confidence on Stellar.",
+    description: "Check the record and pay with confidence on Stellar.",
   },
 };
 
@@ -65,15 +90,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const lang = cookieStore.get("stellaroid:locale")?.value === "tl" ? "tl" : "en";
 
   return (
-    <html lang={lang}>
+    <html
+      lang={lang}
+      className={cn(orbitron.variable, exo2.variable, jetbrainsMono.variable, shareTechMono.variable, "font-sans")}
+    >
       <body suppressHydrationWarning>
         {webAppJsonLd.map((schema, i) => (
           <JsonLd key={i} data={schema} />
         ))}
-        <ToastProvider>
-          {children}
-          <Analytics />
-        </ToastProvider>
+        {children}
+        <Analytics />
+        <ToastProvider />
       </body>
     </html>
   );

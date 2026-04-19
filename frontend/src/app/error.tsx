@@ -15,84 +15,108 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <main
-      id="main"
+    <div
       style={{
-        maxWidth: 640,
-        margin: "0 auto",
-        padding: "96px 24px",
-        textAlign: "center",
+        minHeight: "100dvh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "48px 24px",
         color: "var(--color-text)",
       }}
     >
-      <img
-        src="/illust-error.svg"
-        alt=""
-        width={224}
-        height={150}
-        style={{ marginBottom: 24, imageRendering: "pixelated" }}
-      />
-      <h1 style={{ fontSize: 40, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
-        Something fell off the ledger.
-      </h1>
-      <p
+      <main
+        id="main"
         style={{
-          color: "var(--color-text-muted)",
-          fontSize: 16,
-          lineHeight: 1.55,
-          marginBottom: 32,
+          width: "100%",
+          maxWidth: 560,
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        Testnet RPC or a runtime hiccup. The on-chain state is unaffected — only this
-        render failed. Try again, or head back.
-      </p>
-      {error.digest && (
+        <img
+          src="/illust/illust-error.svg"
+          alt=""
+          width={120}
+          height={120}
+          style={{ marginBottom: 28, imageRendering: "pixelated" }}
+        />
+        <h1
+          style={{
+            fontSize: "clamp(28px, 5vw, 40px)",
+            margin: "0 0 12px",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.2,
+          }}
+        >
+          Something fell off the ledger.
+        </h1>
         <p
           style={{
-            fontFamily: "var(--font-mono)",
             color: "var(--color-text-muted)",
-            fontSize: 12,
+            fontSize: 15,
+            lineHeight: 1.6,
             marginBottom: 32,
+            maxWidth: 420,
           }}
         >
-          digest: {error.digest}
+          Testnet RPC or a runtime hiccup. The on-chain state is unaffected. Only this
+          render failed. Try again, or head back.
         </p>
-      )}
-      <div
-        style={{
-          display: "flex",
-          gap: 12,
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        <button
-          onClick={reset}
+        {error.digest && (
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              color: "var(--color-text-muted)",
+              fontSize: 12,
+              marginBottom: 32,
+            }}
+          >
+            digest: {error.digest}
+          </p>
+        )}
+        <div
           style={{
-            padding: "10px 20px",
-            borderRadius: 6,
-            background: "var(--color-primary)",
-            color: "var(--color-on-primary)",
-            border: "1px solid var(--color-primary)",
-            fontWeight: 600,
-            cursor: "pointer",
+            display: "flex",
+            gap: 12,
+            justifyContent: "center",
+            flexWrap: "wrap",
           }}
         >
-          Try again
-        </button>
-        <Link
-          href="/"
-          style={{
-            padding: "10px 20px",
-            borderRadius: 6,
-            border: "1px solid var(--color-border)",
-            color: "var(--color-text)",
-            textDecoration: "none",
-          }}
-        >
-          Back to home
-        </Link>
-      </div>
-    </main>
+          <button
+            onClick={reset}
+            style={{
+              padding: "10px 20px",
+              borderRadius: 6,
+              background: "var(--color-primary)",
+              color: "var(--color-on-primary)",
+              border: "1px solid var(--color-primary)",
+              fontWeight: 600,
+              cursor: "pointer",
+              minHeight: 44,
+            }}
+          >
+            Try again
+          </button>
+          <Link
+            href="/"
+            style={{
+              padding: "10px 20px",
+              borderRadius: 6,
+              border: "1px solid var(--color-border)",
+              color: "var(--color-text)",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              minHeight: 44,
+            }}
+          >
+            Back to home
+          </Link>
+        </div>
+      </main>
+    </div>
   );
 }

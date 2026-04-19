@@ -104,7 +104,7 @@ export function ProofIndexForm({ sampleHashes }: ProofIndexFormProps) {
               textDecoration: "none",
             }}
           >
-            Don&rsquo;t have a hash? Try the demo
+            Don&rsquo;t have a hash? Try the app
           </Link>
         </div>
       </form>

@@ -1,97 +1,115 @@
+// frontend/src/components/layout/site-nav.tsx
 "use client";
 
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
-import styles from "./site-nav.module.css";
+import Image from "next/image";
+import { Menu, X, GitFork } from "lucide-react";
+import { Button } from "@/components/ui";
+import { cn } from "@/lib/utils";
 
-interface SiteNavProps {
-  right?: React.ReactNode;
-}
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/proof", label: "Verify" },
+  { href: "/issuer", label: "Issuer" },
+  { href: "/app", label: "App" },
+];
 
-const GH_URL = "https://github.com/Iron-Mark/Stellar-Bootcamp-2026";
-
-function GithubIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-    </svg>
-  );
-}
-
-export function SiteNav({ right }: SiteNavProps) {
+export function SiteNav() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-
-  // Close drawer when route changes
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
-  // Lock body scroll while drawer is open
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
-  }, [open]);
 
   return (
-    <nav className={styles.nav} aria-label="Primary">
-      <a href="#main" className={styles.skipLink}>
+    <>
+      <a
+        href="#main"
+        className="absolute left-4 -top-12 z-[11] focus:top-3 px-3 py-2 rounded-md bg-primary text-on-primary font-semibold text-sm transition-[top] no-underline"
+      >
         Skip to content
       </a>
-      <div className={styles.inner}>
-        <Link href="/" className={styles.brand}>
-          <img src="/logo.svg" alt="" width={28} height={28} />
-          <span>Stellaroid Earn</span>
-        </Link>
-        <div className={styles.links}>
-          <Link href="/">Home</Link>
-          <Link href="/app">Demo</Link>
-          <Link href="/about">About</Link>
-        </div>
-        <div className={styles.right}>
-          {right}
-          <a href={GH_URL} target="_blank" rel="noreferrer" className={styles.ghBtn}>
-            <GithubIcon />
-            GitHub
-          </a>
+
+      {/* Glassmorphism nav */}
+      <nav
+        className={cn(
+          "sticky top-0 z-10",
+          "border-b border-border-glass",
+          "backdrop-blur-xl bg-surface-glass",
+          /* amber hairline top edge */
+          "before:absolute before:inset-x-0 before:top-0 before:h-px",
+          "before:bg-gradient-to-r before:from-transparent before:via-primary/60 before:to-transparent",
+          "relative"
+        )}
+        aria-label="Main navigation"
+      >
+        <div className="flex items-center justify-between max-w-[1040px] mx-auto px-7 py-4 gap-4">
+          {/* Brand */}
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2.5 text-text no-underline font-bold text-[17px] tracking-[-0.2px] shrink-0 hover:opacity-80 transition-opacity focus-visible:outline-primary"
+          >
+            <Image src="/logo.svg" alt="" width={28} height={28} />
+            <span className="font-heading">Stellaroid Earn</span>
+          </Link>
+
+          {/* Desktop links */}
+          <div className="hidden md:flex gap-6 text-sm flex-1 ml-6">
+            {navLinks.map(l => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="text-text-muted hover:text-text no-underline transition-colors focus-visible:outline-primary rounded-sm"
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Right actions */}
+          <div className="hidden md:flex items-center gap-2.5 shrink-0">
+            <Button
+              href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026"
+              variant="outline"
+              size="sm"
+            >
+              <GitFork className="w-3.5 h-3.5" />
+              GitHub
+            </Button>
+          </div>
+
+          {/* Mobile burger */}
           <button
             type="button"
-            className={styles.burger}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            onClick={() => setOpen(o => !o)}
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-border text-text bg-transparent cursor-pointer hover:bg-surface-2 transition-colors"
           >
-            <span />
-            <span />
-            <span />
+            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
-      </div>
+      </nav>
 
-      <div
-        id="mobile-menu"
-        className={`${styles.drawer} ${open ? styles.drawerOpen : ""}`}
-        hidden={!open}
-      >
-        <Link href="/" className={styles.drawerLink}>Home</Link>
-        <Link href="/app" className={styles.drawerLink}>Demo</Link>
-        <Link href="/about" className={styles.drawerLink}>About</Link>
-        <Link href="/proof" className={styles.drawerLink}>Look up a proof</Link>
-        <a
-          href={GH_URL}
-          target="_blank"
-          rel="noreferrer"
-          className={`${styles.drawerLink} ${styles.drawerGh}`}
-        >
-          <GithubIcon /> GitHub ↗
-        </a>
-      </div>
-    </nav>
+      {/* Mobile drawer */}
+      {open && (
+        <div className="fixed inset-x-0 top-[65px] bottom-0 z-20 bg-bg flex flex-col gap-1 p-6 md:hidden">
+          {navLinks.map(l => (
+            <Link
+              key={l.href}
+              href={l.href}
+              onClick={() => setOpen(false)}
+              className="px-4 py-3.5 text-text text-[17px] border-b border-border no-underline hover:text-primary transition-colors"
+            >
+              {l.label}
+            </Link>
+          ))}
+          <div className="mt-3 flex flex-col gap-2">
+            <Button href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" variant="outline" size="sm">
+              <GitFork className="w-3.5 h-3.5" />
+              GitHub
+            </Button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

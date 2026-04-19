@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import styles from "./share-buttons.module.css";
 
 interface ShareButtonsProps {
   hash: string;
@@ -18,7 +18,7 @@ export function ShareButtons({ hash }: ShareButtonsProps) {
     }
   }, []);
 
-  const tweetText = `I just got verified proof of work — on-chain, instantly settled on @StellarOrg. Sub-cent fees. 5-second finality. No platform take rate.
+  const tweetText = `I just got verified proof of work, on-chain, instantly settled on @StellarOrg. Sub-cent fees. 5-second finality. No platform take rate.
 
 Hash: ${hash}
 
@@ -27,7 +27,7 @@ Proof: ${url}
 #Stellar #Soroban #ProofOfWork`;
   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
 
-  const linkedInText = `I just got verified proof of work — anchored on-chain with SHA-256 and settled atomically on Stellar. No 30-day invoice wait. No 20% platform fee. Just a link anyone can verify.
+  const linkedInText = `I just got verified proof of work, anchored on-chain with SHA-256 and settled atomically on Stellar. No 30-day invoice wait. No 20% platform fee. Just a link anyone can verify.
 
 Hash: ${hash}
 
@@ -52,7 +52,7 @@ Built on Stellar + Soroban. #Stellar #Soroban #ProofOfWork #FreelanceEconomy`;
   }
 
   return (
-    <div className={styles.row}>
+    <div className="flex flex-wrap gap-2">
       {/* Share on X */}
       <Button
         variant="secondary"
@@ -60,14 +60,13 @@ Built on Stellar + Soroban. #Stellar #Soroban #ProofOfWork #FreelanceEconomy`;
         onClick={() => openInNewTab(tweetUrl)}
         aria-label="Share on X (Twitter)"
       >
-        {/* X (Twitter) mark */}
+        {/* X (Twitter) mark — brand SVG, no Lucide equivalent */}
         <svg
           width="16"
           height="16"
           viewBox="0 0 16 16"
           fill="none"
           aria-hidden="true"
-          className={styles.btnIcon}
         >
           <path
             d="M12.5 2.5L3.5 13.5M3.5 2.5L12.5 13.5"
@@ -86,14 +85,13 @@ Built on Stellar + Soroban. #Stellar #Soroban #ProofOfWork #FreelanceEconomy`;
         onClick={() => openInNewTab(linkedInUrl)}
         aria-label="Share on LinkedIn"
       >
-        {/* LinkedIn "in" mark */}
+        {/* LinkedIn "in" mark — brand SVG, no Lucide equivalent */}
         <svg
           width="16"
           height="16"
           viewBox="0 0 16 16"
           fill="none"
           aria-hidden="true"
-          className={styles.btnIcon}
         >
           <rect x="2" y="2" width="4" height="12" rx="0.5" fill="currentColor" />
           <circle cx="4" cy="2" r="1.5" fill="currentColor" />
@@ -116,41 +114,9 @@ Built on Stellar + Soroban. #Stellar #Soroban #ProofOfWork #FreelanceEconomy`;
         aria-label="Copy share link"
       >
         {copied ? (
-          /* Check icon on success */
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-            className={styles.btnIcon}
-          >
-            <path
-              d="M2.5 8.5L6.5 12.5L13.5 5"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <Check width={16} height={16} aria-hidden="true" />
         ) : (
-          /* Copy two-squares icon */
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-            className={styles.btnIcon}
-          >
-            <rect x="5" y="5" width="8" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-            <path
-              d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5V9.5A1.5 1.5 0 0 0 3.5 11H5"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+          <Copy width={16} height={16} aria-hidden="true" />
         )}
         {copied ? "Copied ✓" : "Copy share link"}
       </Button>
