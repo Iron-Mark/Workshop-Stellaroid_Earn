@@ -233,9 +233,13 @@ fn t6_issuer_events_emit() {
     register_issuer(&ctx, &issuer);
     approve_issuer(&ctx, &issuer);
 
-    let events = ctx.env.events().all();
-    assert!(
-        events.len() >= 3,
-        "expected init + issuer registration + issuer approval events"
+    let e = &ctx.env;
+    assert_eq!(
+        ctx.env.events().all(),
+        vec![
+            (false, (symbol_short!("init"),).into_val(e), ctx.admin.into_val(e)),
+            (false, (symbol_short!("iss_reg"),).into_val(e), issuer.into_val(e)),
+            (false, (symbol_short!("iss_appr"),).into_val(e), issuer.into_val(e)),
+        ]
     );
 }
