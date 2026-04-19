@@ -28,17 +28,56 @@ Stellaroid Earn stores credential hashes on a Soroban smart contract. An approve
 ## Architecture
 
 ```
-Browser (Next.js 15 + React 19)
-  |-- Freighter Wallet API      (signing)
-  |-- @stellar/stellar-sdk      (transaction building, RPC)
-  |-- Soroban RPC               (on-chain reads and writes)
-
-Stellar Testnet
-  |-- Stellaroid Earn Contract  (credential registry + payment rail)
-  |-- Native XLM SAC            (payment token, CDLZFC3S…)
+┌─────────────────────────────────────────────────────────────────┐
+│  Next.js 15 App Router (frontend/)                              │
+│                                                                 │
+│  Server Components (RSC)          Client Components             │
+│  ┌────────────────────────┐       ┌────────────────────────┐   │
+│  │ /proof/[hash]          │       │ /app   (dashboard)      │   │
+│  │ /proof/[hash]/embed    │       │ /issuer (management)    │   │
+│  │ revalidate=60 (ISR)    │       │ /issuer/register        │   │
+│  │                        │       │                         │   │
+│  │ contract-read-server   │       │ contract-client.ts      │   │
+│  │ simulateTransaction    │       │ simulateTransaction      │   │
+│  │ (read address, no sig) │       │ (reads, no wallet)      │   │
+│  └──────────┬─────────────┘       │ signWithFreighter       │   │
+│             │                     │ (writes, wallet sign)   │   │
+│             │                     └──────────┬──────────────┘   │
+│             │                                │                  │
+│  ┌──────────▼────────────────────────────────▼──────────────┐  │
+│  │  @stellar/stellar-sdk  (TransactionBuilder, rpc.Server)  │  │
+│  │  CSP: connect-src restricted to *.stellar.org only       │  │
+│  └──────────────────────────────┬───────────────────────────┘  │
+└─────────────────────────────────┼───────────────────────────────┘
+                                  │ HTTPS / Soroban RPC
+                    ┌─────────────▼──────────────────┐
+                    │  Stellar Testnet               │
+                    │                                │
+                    │  Stellaroid Earn Contract      │
+                    │  CBNSOFNX…WEHI2DX2Y            │
+                    │  (credential registry +        │
+                    │   issuer trust layer +         │
+                    │   employer payment rail)       │
+                    │                                │
+                    │  Native XLM SAC                │
+                    │  CDLZFC3S…HI2HHGCYSC           │
+                    │  (payment token)               │
+                    └────────────────────────────────┘
 ```
 
-No backend server. All credential state lives on-chain. Read-only proof lookups use a funded read address so visitors never need a wallet.
+**Two read paths, one write path:**
+
+| Path | Where | How | Who triggers |
+|---|---|---|---|
+| Server read | RSC on `/proof/[hash]` | `simulateTransaction` with funded read address, no wallet | Anyone visiting a proof URL |
+| Client read | Browser components | `simulateTransaction` with read address via `contract-client.ts` | UI state loading |
+| Write | Client components | Freighter signs → `sendTransaction` → poll for result | Connected wallet user |
+
+**Key design decisions:**
+- `/proof/[hash]` is server-rendered with `revalidate=60` — proof pages are CDN-cached, load instantly, require no wallet
+- Hash format is validated before any RPC call to avoid wasting network requests on bad inputs
+- CSP blocks all `connect-src` except `*.stellar.org` — no third-party data leaks
+- No backend server — all state is on-chain, read address is a funded testnet account used only for gas-free simulation
 
 ---
 
