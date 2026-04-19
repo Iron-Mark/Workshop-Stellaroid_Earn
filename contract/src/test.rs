@@ -60,7 +60,7 @@ fn register_certificate(
         student,
         hash,
         &text(&ctx.env, "Stellar Smart Contract Bootcamp Completion"),
-        &text(&ctx.env, "Stellar Philippines UniTour 2026"),
+        &text(&ctx.env, "Stellar PH Bootcamp 2026"),
         &text(
             &ctx.env,
             "https://stellaroid-earn-demo.vercel.app/proof-metadata/sample.json",
@@ -118,7 +118,7 @@ fn t2_unapproved_issuer_cannot_issue() {
             &student,
             &hash,
             &text(&ctx.env, "Stellar Smart Contract Bootcamp Completion"),
-            &text(&ctx.env, "Stellar Philippines UniTour 2026"),
+            &text(&ctx.env, "Stellar PH Bootcamp 2026"),
             &text(
                 &ctx.env,
                 "https://stellaroid-earn-demo.vercel.app/proof-metadata/sample.json",
@@ -152,7 +152,7 @@ fn t3_suspended_issuer_cannot_issue() {
             &student,
             &hash,
             &text(&ctx.env, "Stellar Smart Contract Bootcamp Completion"),
-            &text(&ctx.env, "Stellar Philippines UniTour 2026"),
+            &text(&ctx.env, "Stellar PH Bootcamp 2026"),
             &text(
                 &ctx.env,
                 "https://stellaroid-earn-demo.vercel.app/proof-metadata/sample.json",

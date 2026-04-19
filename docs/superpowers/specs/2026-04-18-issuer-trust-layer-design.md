@@ -54,7 +54,7 @@ Already complete. No Rust changes required.
 1. `cargo clean && stellar contract build` — force rebuild from current source
 2. `stellar contract deploy --wasm target/wasm32v1-none/release/stellaroid_earn.wasm --source my-key --network testnet`
 3. `stellar contract invoke -- init --admin <ADMIN_G_ADDR> --token <ASSET_CONTRACT_ID>`
-4. `stellar contract invoke -- register_issuer --issuer <ADMIN_G_ADDR> --name "Stellar Philippines UniTour" --website "stellaroid.dev" --category "bootcamp"`
+4. `stellar contract invoke -- register_issuer --issuer <ADMIN_G_ADDR> --name "Stellar PH Bootcamp" --website "stellaroid.dev" --category "bootcamp"`
 5. `stellar contract invoke -- approve_issuer --admin <ADMIN_G_ADDR> --issuer <ADMIN_G_ADDR>`
 6. Update `NEXT_PUBLIC_SOROBAN_CONTRACT_ID` in `frontend/.env.local`
 

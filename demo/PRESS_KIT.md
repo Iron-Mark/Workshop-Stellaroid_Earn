@@ -26,7 +26,7 @@
 >
 > We didn't pick a vertical. We picked a shape of transaction — *prove → get paid → share* — and encoded it in 32 bytes. Which vertical it runs in (freelance, bootcamps, bounties, grant DAOs) is a GTM decision, not a technical one.
 >
-> No backend. No database. No middleman. Sub-cent fees. Five-second finality. Built during the Stellar Philippines UniTour 2026 bootcamp.
+> No backend. No database. No middleman. Sub-cent fees. Five-second finality. Built during the Stellar PH Bootcamp 2026 bootcamp.
 
 ## Elevator pitch (spoken, 20 seconds)
 
@@ -44,7 +44,7 @@
 >
 > The certificate was real. Proving it cost more than hiring around it.
 >
-> We built Stellaroid Earn during the Stellar Philippines UniTour 2026 to fix that. Issuers anchor a SHA-256 hash on Stellar, employers verify in five seconds, and payment settles in the same flow — directly to Maria's wallet. Every completed cycle produces a public Proof Block URL anyone can open.
+> We built Stellaroid Earn during the Stellar PH Bootcamp 2026 to fix that. Issuers anchor a SHA-256 hash on Stellar, employers verify in five seconds, and payment settles in the same flow — directly to Maria's wallet. Every completed cycle produces a public Proof Block URL anyone can open.
 >
 > We didn't pick a vertical. We picked a shape of transaction — prove, verify, pay, share — and encoded it in 32 bytes. Freelance, bootcamps, bounties, grant DAOs all use the same four fields.
 >
@@ -62,7 +62,7 @@
 
 ## Credits
 
-- Built for the **Stellar Philippines UniTour 2026** bootcamp.
+- Built for the **Stellar PH Bootcamp 2026** bootcamp.
 - Powered by **Stellar** and **Soroban**.
 - Wallet integration via **Freighter**.
 

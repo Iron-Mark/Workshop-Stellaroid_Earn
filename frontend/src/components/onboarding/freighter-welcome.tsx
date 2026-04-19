@@ -54,9 +54,7 @@ export function FreighterWelcome() {
 
         <ul className="mb-6 p-0 list-none flex flex-col gap-3.5">
           <li className="flex gap-3 items-start">
-            <span className="shrink-0 w-[26px] h-[26px] rounded-full bg-[rgba(245,158,11,0.14)] text-primary flex items-center justify-center text-[13px] font-bold">
-              1
-            </span>
+            <img src="/illust/illust-step-install.svg" alt="" className="shrink-0 w-[26px] h-[26px]" aria-hidden="true" style={{ imageRendering: "pixelated" }} />
             <span className="text-[14px] leading-normal text-text [&_strong]:text-text [&_strong]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:[text-underline-offset:2px]">
               Install{" "}
               <a href="https://www.freighter.app/" target="_blank" rel="noreferrer">
@@ -67,9 +65,7 @@ export function FreighterWelcome() {
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="shrink-0 w-[26px] h-[26px] rounded-full bg-[rgba(245,158,11,0.14)] text-primary flex items-center justify-center text-[13px] font-bold">
-              2
-            </span>
+            <img src="/illust/illust-step-fund.svg" alt="" className="shrink-0 w-[26px] h-[26px]" aria-hidden="true" style={{ imageRendering: "pixelated" }} />
             <span className="text-[14px] leading-normal text-text [&_strong]:text-text [&_strong]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:[text-underline-offset:2px]">
               Fund your testnet account with free XLM via{" "}
               <a href="https://friendbot.stellar.org/" target="_blank" rel="noreferrer">
@@ -79,9 +75,7 @@ export function FreighterWelcome() {
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <span className="shrink-0 w-[26px] h-[26px] rounded-full bg-[rgba(245,158,11,0.14)] text-primary flex items-center justify-center text-[13px] font-bold">
-              3
-            </span>
+            <img src="/illust/illust-step-connect.svg" alt="" className="shrink-0 w-[26px] h-[26px]" aria-hidden="true" style={{ imageRendering: "pixelated" }} />
             <span className="text-[14px] leading-normal text-text [&_strong]:text-text [&_strong]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:[text-underline-offset:2px]">
               Click <strong>Connect wallet</strong> above. Sign register / verify / pay
               with one tap each. Every transaction costs a fraction of a cent and
