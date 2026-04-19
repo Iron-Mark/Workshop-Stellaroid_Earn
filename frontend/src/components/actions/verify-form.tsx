@@ -459,7 +459,7 @@ export function VerifyForm({
           onClick={handleLookup}
           disabled={!canLookup}
           loading={currentLookup.status === "loading"}
-          icon={<img src="/ui-icons/icon-lookup.svg" width="16" height="16" aria-hidden="true" />}
+          icon={<img src="/ui-icons/icon-lookup.svg" alt="" width="16" height="16" aria-hidden="true" />}
         >
           Look up
         </Button>
@@ -471,7 +471,7 @@ export function VerifyForm({
               onClick={() => void handleAction("verify")}
               disabled={!canVerify}
               loading={pendingAction === "verify"}
-              icon={<img src="/ui-icons/icon-approve-cred.svg" width="16" height="16" aria-hidden="true" />}
+              icon={<img src="/ui-icons/icon-approve-cred.svg" alt="" width="16" height="16" aria-hidden="true" />}
             >
               Approve credential
             </Button>
@@ -481,7 +481,7 @@ export function VerifyForm({
               onClick={() => void handleAction("suspend")}
               disabled={!canSuspend}
               loading={pendingAction === "suspend"}
-              icon={<img src="/ui-icons/icon-suspend-cred.svg" width="16" height="16" aria-hidden="true" />}
+              icon={<img src="/ui-icons/icon-suspend-cred.svg" alt="" width="16" height="16" aria-hidden="true" />}
             >
               Suspend credential
             </Button>
@@ -491,7 +491,7 @@ export function VerifyForm({
               onClick={() => void handleAction("revoke")}
               disabled={!canRevoke}
               loading={pendingAction === "revoke"}
-              icon={<img src="/ui-icons/icon-revoke-cred.svg" width="16" height="16" aria-hidden="true" />}
+              icon={<img src="/ui-icons/icon-revoke-cred.svg" alt="" width="16" height="16" aria-hidden="true" />}
             >
               Revoke credential
             </Button>
