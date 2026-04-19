@@ -174,9 +174,13 @@ export function WalletConnectButton({ sidebar = false }: WalletConnectButtonProp
           className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-3 text-center bg-surface-2"
           style={{ aspectRatio: "1.586", padding: "20px" }}
         >
-          <div className="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center">
-            <Wallet className="w-4.5 h-4.5 text-text-muted" aria-hidden="true" />
-          </div>
+          <img
+            src="/illust/illust-wallet-setup.svg"
+            alt=""
+            className="w-16 h-auto opacity-80"
+            aria-hidden="true"
+            style={{ imageRendering: "pixelated" }}
+          />
           <div>
             <p className="text-[13px] font-semibold text-text">
               {isUnsupported ? "Freighter not found" : "No wallet connected"}
