@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
+
+export const metadata: Metadata = {
+  title: "Stellaroid Earn — Proof & Payment on Stellar",
+  description:
+    "Bind certificate hashes on-chain, verify credentials, and pay graduates directly on Stellar testnet.",
+  alternates: { canonical: "/" },
+};
 import { ActivitySnackbar } from "@/components/activity/activity-snackbar";
 import { RecentActivity } from "@/components/activity/recent-activity";
 import { SiteNav } from "@/components/layout/site-nav";

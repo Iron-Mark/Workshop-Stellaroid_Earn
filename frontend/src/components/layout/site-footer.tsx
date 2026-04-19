@@ -66,7 +66,7 @@ export function SiteFooter() {
 
             {/* On-chain */}
             <nav aria-label="On-chain links" className="flex flex-col text-[13px]">
-              <h2 className="font-pixel text-[11px] font-medium text-text-muted uppercase tracking-widest mb-3">On-chain</h2>
+              <h2 className="font-pixel text-[11px] font-medium text-primary uppercase tracking-widest mb-3">On-chain</h2>
               <a href={contractUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 py-1.5 text-text-muted hover:text-primary transition-colors no-underline">
                 Contract on stellar.expert
                 <span className="visually-hidden"> (opens in new tab)</span>
@@ -86,7 +86,7 @@ export function SiteFooter() {
 
             {/* Source */}
             <nav aria-label="Source links" className="flex flex-col text-[13px]">
-              <h2 className="font-pixel text-[11px] font-medium text-text-muted uppercase tracking-widest mb-3">Source</h2>
+              <h2 className="font-pixel text-[11px] font-medium text-primary uppercase tracking-widest mb-3">Source</h2>
               <a href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 py-1.5 text-text-muted hover:text-text transition-colors no-underline">
                 GitHub
                 <span className="visually-hidden"> (opens in new tab)</span>

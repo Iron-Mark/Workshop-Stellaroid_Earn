@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
 import { Orbitron, Exo_2, JetBrains_Mono, Share_Tech_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import { ToastProvider } from "@/components/ui";
 import { JsonLd } from "@/components/ui/json-ld";
 import "../styles/globals.css";
@@ -36,6 +36,10 @@ const shareTechMono = Share_Tech_Mono({
 });
 
 const BASE_URL = "https://stellaroid-earn-demo.vercel.app";
+
+export const viewport: Viewport = {
+  themeColor: "#f59e0b",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

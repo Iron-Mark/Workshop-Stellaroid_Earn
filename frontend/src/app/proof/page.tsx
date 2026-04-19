@@ -42,7 +42,7 @@ export default async function ProofIndex() {
           alt=""
           width={192}
           height={128}
-          style={{ marginBottom: 20, imageRendering: "pixelated" }}
+          style={{ display: "block", margin: "0 auto 20px", imageRendering: "pixelated" }}
         />
         <span
           style={{

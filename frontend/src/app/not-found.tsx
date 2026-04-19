@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteNav } from "@/components/layout/site-nav";
 import { SiteFooter } from "@/components/layout/site-footer";
+
+export const metadata: Metadata = {
+  title: "404 — Not Found",
+  description: "This page does not exist on Stellaroid Earn.",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (
@@ -20,7 +27,7 @@ export default function NotFound() {
           alt=""
           width={128}
           height={128}
-          style={{ marginBottom: 24, imageRendering: "pixelated" }}
+          style={{ display: "block", margin: "0 auto 24px", imageRendering: "pixelated" }}
         />
         <h1
           style={{
