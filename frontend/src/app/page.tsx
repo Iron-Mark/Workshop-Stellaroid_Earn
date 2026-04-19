@@ -6,6 +6,7 @@ import { RecentActivity } from "@/components/activity/recent-activity";
 import { SiteNav } from "@/components/layout/site-nav";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { LocalizedHero } from "@/components/landing/localized-hero";
+import { HeroBg } from "@/components/landing/hero-bg";
 import { HeroOrbs } from "@/components/landing/hero-orbs";
 
 export default function Landing() {
@@ -18,6 +19,7 @@ export default function Landing() {
 
   return (
     <div className="relative min-h-dvh">
+      <HeroBg />
       <HeroOrbs />
       <SiteNav />
       <ActivitySnackbar>
