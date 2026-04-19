@@ -30,6 +30,21 @@ This folder is the **marketing + demo hub** for Stellaroid Earn. It is aimed at 
 - **Contract ID:** `CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`
 - **Wallet:** [Freighter](https://www.freighter.app/) (testnet mode)
 
+## Registered certificates (testnet archive)
+
+All certificates registered on contract `CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y` since deploy.
+
+| # | Hash (full) | Title | Cohort | Registered | Status |
+|---|---|---|---|---|---|
+| 1 | `b7c433bad95373ba4ef70815eb72665b9bc37dd6190df204f7b1cc794096a254` | Stellar Bootcamp Completion | UniTour 2026 | 2026-04-18 | Verified |
+| 2 | `35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e` | Stellar Smart Contract Bootcamp Completion | Stellar Philippines UniTour 2026 | 2026-04-18 | Verified |
+| 3 | `c02ce1602d5bbb6ddfe93c6603d7f4e3dae3b2fb571ea4e70669ccd5a359aea3` | Stellar Smart Contract Bootcamp Completion | Stellar PH Bootcamp 2026 | 2026-04-19 | Verified |
+
+Proof pages (no wallet required):
+- https://stellaroid-earn-demo.vercel.app/proof/b7c433bad95373ba4ef70815eb72665b9bc37dd6190df204f7b1cc794096a254
+- https://stellaroid-earn-demo.vercel.app/proof/35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e
+- https://stellaroid-earn-demo.vercel.app/proof/c02ce1602d5bbb6ddfe93c6603d7f4e3dae3b2fb571ea4e70669ccd5a359aea3
+
 ## Run it locally
 
 ```bash
