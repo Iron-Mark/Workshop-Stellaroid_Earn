@@ -50,7 +50,7 @@ Issue, verify, and pay graduates on Stellar testnet — Soroban + Freighter, end
 <b>Issue &amp; Pay</b> — Dual-role dashboard for issuers and employers
 </td>
 <td width="50%" align="center">
-<img src="images/mobile-proof-card.png" alt="Mobile proof card" width="100%"/><br/>
+<img src="images/mobile-proof-card.png" alt="Mobile proof card" width="240"/><br/>
 <b>Share</b> — QR-scannable proof card on any mobile browser
 </td>
 </tr>
