@@ -25,7 +25,4 @@ next-env.d.ts
 .vercel
 
 # Superpowers brainstorm runtime files
-.superpowers/brainstorm/**/state/
-.superpowers/brainstorm/**/*.html
-.superpowers/brainstorm/**/*.log
-.superpowers/brainstorm/**/*.pid
+.superpowers/

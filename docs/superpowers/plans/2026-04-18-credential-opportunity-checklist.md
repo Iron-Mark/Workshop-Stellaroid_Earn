@@ -43,13 +43,13 @@
 **Files:**
 - `contract/src/lib.rs`
 
-- [ ] Add `IssuerStatus`
-- [ ] Add `CredentialStatus`
-- [ ] Add `Issuer` struct
-- [ ] Replace the old `Certificate` struct with a richer `Credential` struct
+- [x] Add `IssuerStatus`
+- [x] Add `CredentialStatus`
+- [x] Add `Issuer` struct
+- [x] Replace the old `Certificate` struct with a richer `Credential` struct
 - [ ] Add `NextOpportunityId` storage key
-- [ ] Add `Issuer(Address)` storage key
-- [ ] Confirm TTL handling still applies to trust-critical records
+- [x] Add `Issuer(Address)` storage key
+- [x] Confirm TTL handling still applies to trust-critical records
 
 **Definition of done**
 - Contract compiles
@@ -63,12 +63,12 @@
 **Files:**
 - `contract/src/lib.rs`
 
-- [ ] Add `register_issuer`
-- [ ] Add `approve_issuer`
-- [ ] Add `suspend_issuer`
-- [ ] Add `get_issuer`
-- [ ] Require admin auth for issuer approval/suspension
-- [ ] Emit `issuer_reg`, `issuer_appr`, `issuer_susp` events
+- [x] Add `register_issuer`
+- [x] Add `approve_issuer`
+- [x] Add `suspend_issuer`
+- [x] Add `get_issuer`
+- [x] Require admin auth for issuer approval/suspension
+- [x] Emit `issuer_reg`, `issuer_appr`, `issuer_susp` events
 
 **Definition of done**
 - Unapproved issuer can exist on-chain
@@ -83,11 +83,11 @@
 - `contract/src/lib.rs`
 - `frontend/src/components/actions/verify-form.tsx`
 
-- [ ] Replace public `verify_certificate` behavior with auth-gated `verify_credential`
-- [ ] Only allow admin or approved issuer/verifier to verify
-- [ ] Update event name if needed to stay semantically clear
-- [ ] Update frontend copy to reflect trusted verification
-- [ ] Remove any assumptions in UI that "anyone can verify"
+- [x] Replace public `verify_certificate` behavior with auth-gated `verify_credential`
+- [x] Only allow admin or approved issuer/verifier to verify
+- [x] Update event name if needed to stay semantically clear
+- [x] Update frontend copy to reflect trusted verification
+- [x] Remove any assumptions in UI that "anyone can verify"
 
 **Definition of done**
 - Verification without proper role fails
@@ -102,11 +102,11 @@
 - `frontend/src/lib/contract-client.ts`
 - `frontend/src/lib/contract-read-server.ts`
 
-- [ ] Add `revoke_credential`
-- [ ] Add `suspend_credential`
-- [ ] Update credential status transitions
-- [ ] Emit revocation/suspension events
-- [ ] Normalize status values in client/server read helpers
+- [x] Add `revoke_credential`
+- [x] Add `suspend_credential`
+- [x] Update credential status transitions
+- [x] Emit revocation/suspension events
+- [x] Normalize status values in client/server read helpers
 
 **Definition of done**
 - Revoked credential reads back with revoked status
@@ -120,12 +120,12 @@
 **Files:**
 - `contract/src/test.rs`
 
-- [ ] Test unapproved issuer cannot issue
-- [ ] Test suspended issuer cannot issue
-- [ ] Test unauthorized verifier fails
-- [ ] Test revoked credential status persists
-- [ ] Test issuer events emit
-- [ ] Update snapshots if needed
+- [x] Test unapproved issuer cannot issue
+- [x] Test suspended issuer cannot issue
+- [x] Test unauthorized verifier fails
+- [x] Test revoked credential status persists
+- [x] Test issuer events emit
+- [x] Update snapshots if needed
 
 **Definition of done**
 - `cargo test` passes
@@ -140,11 +140,11 @@
 **Files:**
 - `frontend/src/lib/types.ts`
 
-- [ ] Add `IssuerStatus`
-- [ ] Add `CredentialStatus`
+- [x] Add `IssuerStatus`
+- [x] Add `CredentialStatus`
 - [ ] Add `OpportunityStatus`
-- [ ] Add `IssuerRecord`
-- [ ] Add richer `CredentialRecord`
+- [x] Add `IssuerRecord`
+- [x] Add richer `CredentialRecord`
 - [ ] Add `OpportunityRecord`
 
 **Definition of done**
@@ -157,12 +157,12 @@
 **Files:**
 - `frontend/src/lib/contract-client.ts`
 
-- [ ] Add issuer write bindings
-- [ ] Add issuer read bindings
-- [ ] Replace `getCertificate` model with `getCredential`
-- [ ] Replace `verifyCertificate` with `verifyCredential`
-- [ ] Add revoke/suspend credential bindings
-- [ ] Keep existing compatibility only if needed during transition
+- [x] Add issuer write bindings
+- [x] Add issuer read bindings
+- [x] Replace `getCertificate` model with `getCredential`
+- [x] Replace `verifyCertificate` with `verifyCredential`
+- [x] Add revoke/suspend credential bindings
+- [x] Keep existing compatibility only if needed during transition
 
 **Definition of done**
 - Client API mirrors the new contract surface
@@ -175,10 +175,10 @@
 **Files:**
 - `frontend/src/lib/contract-read-server.ts`
 
-- [ ] Add `getIssuerServer`
-- [ ] Add `getCredentialServer`
+- [x] Add `getIssuerServer`
+- [x] Add `getCredentialServer`
 - [ ] Add `getOpportunityServer` scaffold if contract methods exist
-- [ ] Share normalization helpers between client and server where practical
+- [x] Share normalization helpers between client and server where practical
 
 **Definition of done**
 - Proof and dashboard pages can be rendered from server reads without client-only fetches
@@ -210,10 +210,10 @@
 **Files:**
 - `frontend/src/app/proof/[hash]/page.tsx`
 
-- [ ] Replace `CertificateRecord` dependency with richer credential record
-- [ ] Load issuer data server-side
-- [ ] Load metadata payload if available
-- [ ] Pass issuer + metadata + status to the proof UI
+- [x] Replace `CertificateRecord` dependency with richer credential record
+- [x] Load issuer data server-side
+- [x] Load metadata payload if available
+- [x] Pass issuer + metadata + status to the proof UI
 
 **Definition of done**
 - Proof route has enough data to render issuer trust and evidence sections
@@ -225,13 +225,13 @@
 **Files:**
 - `frontend/src/components/proof/proof-card.tsx`
 
-- [ ] Replace "verified bool" UX with status-driven UX
-- [ ] Show issuer profile/trust badge
-- [ ] Show credential title and cohort
-- [ ] Show status title/body for revoked/suspended/expired
-- [ ] Add evidence/project links
-- [ ] Add recruiter CTA panel
-- [ ] Keep explorer/hash actions as supporting UI
+- [x] Replace "verified bool" UX with status-driven UX
+- [x] Show issuer profile/trust badge
+- [x] Show credential title and cohort
+- [x] Show status title/body for revoked/suspended/expired
+- [x] Add evidence/project links
+- [x] Add recruiter CTA panel
+- [x] Keep explorer/hash actions as supporting UI
 
 **Definition of done**
 - A recruiter can understand the credential without knowing Stellar
@@ -247,7 +247,7 @@
 - `frontend/src/components/proof/recruiter-cta-panel.tsx`
 
 - [ ] Create issuer trust card
-- [ ] Create metadata panel
+- [x] Create metadata panel
 - [ ] Create status timeline
 - [ ] Create recruiter CTA panel
 
@@ -347,11 +347,11 @@
 - `frontend/src/app/issuer/page.tsx`
 - `frontend/src/app/issuer/register/page.tsx`
 
-- [ ] Create issuer dashboard page
-- [ ] Create issuer register page
-- [ ] Show issuer status
-- [ ] Show credentials issued
-- [ ] Add revoke/suspend actions
+- [x] Create issuer dashboard page
+- [x] Create issuer register page
+- [x] Show issuer status
+- [x] Show credentials issued
+- [x] Add revoke/suspend actions
 
 **Definition of done**
 - An issuer can manage trust and credential lifecycle from dedicated routes
@@ -414,8 +414,8 @@
 - `frontend/src/components/issuer/issuer-approval-panel.tsx`
 - `frontend/src/components/issuer/issuer-credential-table.tsx`
 
-- [ ] Create issuer profile card
-- [ ] Create issuer registration form
+- [x] Create issuer profile card
+- [x] Create issuer registration form
 - [ ] Create issuer approval panel
 - [ ] Create issuer credential table
 
@@ -528,10 +528,10 @@
 
 If time runs short, stop after these:
 
-- [ ] issuer registry on-chain
-- [ ] role-based verification
-- [ ] credential revocation/suspension
-- [ ] rich proof page
+- [x] issuer registry on-chain
+- [x] role-based verification
+- [x] credential revocation/suspension
+- [x] rich proof page
 - [ ] opportunity create/fund/release flow
 
 That is the minimum strong demo set.

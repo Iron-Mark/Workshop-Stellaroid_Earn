@@ -77,7 +77,7 @@ export default function Landing() {
           </div>
         </section>
 
-        <section className="my-16 mx-auto max-w-[1040px] px-8 py-8 bg-gradient-to-br from-[rgba(245,158,11,0.08)] to-[rgba(139,92,246,0.06)] border border-border rounded-xl grid gap-5">
+        <section className="my-16 mx-auto max-w-7xl px-8 py-8 bg-linear-to-br from-[rgba(245,158,11,0.08)] to-[rgba(139,92,246,0.06)] border border-border rounded-xl grid gap-5">
           <div>
             <h2 className="mb-2 text-[1.375rem]">Proof block</h2>
             <p className="m-0 text-text-muted">

@@ -36,7 +36,7 @@ export function SiteNav() {
           "backdrop-blur-xl bg-surface-glass",
           /* amber hairline top edge */
           "before:absolute before:inset-x-0 before:top-0 before:h-px",
-          "before:bg-gradient-to-r before:from-transparent before:via-primary/60 before:to-transparent",
+          "before:bg-linear-to-r before:from-transparent before:via-primary/60 before:to-transparent",
           "relative"
         )}
         aria-label="Main navigation"
