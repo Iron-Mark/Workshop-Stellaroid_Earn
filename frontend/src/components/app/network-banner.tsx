@@ -46,15 +46,22 @@ export function NetworkBanner({ wallet }: NetworkBannerProps) {
 
   return (
     <div
-      className="flex items-start justify-between gap-4 px-4 py-3.5 rounded-xl border border-warning/35 bg-warning/[0.12] max-sm:flex-col"
+      className="flex items-start justify-between gap-4 px-4 py-3.5 rounded-xl border border-warning/35 bg-warning/12 max-sm:flex-col"
       role="status"
       aria-live="polite"
     >
       <div className="flex items-start gap-3">
-        <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-warning" aria-hidden="true" />
+        <AlertTriangle
+          className="w-4 h-4 shrink-0 mt-0.5 text-warning"
+          aria-hidden="true"
+        />
         <div>
-          <p className="m-0 mb-1 text-[0.9375rem] font-semibold text-foreground">{copy.title}</p>
-          <p className="m-0 text-sm leading-relaxed text-muted-foreground">{copy.detail}</p>
+          <p className="m-0 mb-1 text-[0.9375rem] font-semibold text-foreground">
+            {copy.title}
+          </p>
+          <p className="m-0 text-sm leading-relaxed text-muted-foreground">
+            {copy.detail}
+          </p>
         </div>
       </div>
       <button
