@@ -13,7 +13,7 @@
 | | |
 |---|---|
 | **Live demo** | https://stellaroid-earn-demo.vercel.app/ |
-| **Contract ID** | [`CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`](https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ) |
+| **Contract ID** | [`CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`](https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y) |
 | **Contract crate** | [`contract/`](./contract) — `stellaroid_earn`, `soroban-sdk 22`, trust-layer tests included |
 | **Frontend** | [`frontend/`](./frontend) — Next.js 15 + React 19 + Freighter |
 | **Proof txs** | [init](https://stellar.expert/explorer/testnet/tx/c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721) · [register](https://stellar.expert/explorer/testnet/tx/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22) · [verify](https://stellar.expert/explorer/testnet/tx/2215e08ecc935b6f31d5c335c3aaea3e3742f07ef993d8ca947d1711ad5199d9) · [payment](https://stellar.expert/explorer/testnet/tx/5bed652b3725a6826cd4a99e8c750cdd2dc4625f7e3a4a82661680ada50cb435) |
@@ -31,8 +31,6 @@ cd ../frontend && npm install && npm run dev
 ```
 
 See [`contract/README.md`](./contract/README.md) for the full Proof Block and the [About page](https://stellaroid-earn-demo.vercel.app/about) for the story.
-
-Current note: the repo has moved to the issuer trust-layer ABI. The historical testnet contract ID and tx hashes above are still useful as demo references, but the latest frontend bindings require a fresh contract redeploy before Phase 1 issuer approval and trusted verification flows will work end to end. Use [`docs/superpowers/plans/2026-04-18-trust-layer-redeploy-checklist.md`](./docs/superpowers/plans/2026-04-18-trust-layer-redeploy-checklist.md).
 
 ---
 
