@@ -26,15 +26,23 @@ export function SiteFooter() {
         aria-hidden="true"
       />
 
-      <div className="relative max-w-[1040px] mx-auto px-6 py-12">
-        {/* Columns */}
-        <div className="flex flex-wrap gap-10 justify-between">
+      <div className="relative max-w-7xl mx-auto px-6 py-12">
+        {/*
+          Responsive column layout:
+          xs (< 640px)   — flex-col: brand full-width, nav groups in 2-col grid below
+          sm (640–1023px) — flex-col: brand full-width, nav groups in 3-col flex row below
+          lg (1024px+)   — flex-row justify-between: all 4 columns in one row
+                           (lg:contents dissolves the nav wrapper so the 3 navs join the
+                            outer flex row as direct siblings of the brand column)
+        */}
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
 
           {/* Brand */}
-          <div className="flex flex-col gap-4 min-w-[200px] max-w-[280px]">
+          <div className="flex flex-col gap-4 max-w-[280px] lg:shrink-0">
             <Link
               href="/"
-              className="inline-flex items-center gap-2.5 no-underline hover:opacity-80 transition-opacity"
+              aria-label="Stellaroid Earn — home"
+              className="inline-flex items-center gap-2.5 no-underline hover:opacity-80 transition-opacity w-fit"
             >
               <Image src="/logo.svg" alt="" width={26} height={26} />
               <span className="font-heading text-text font-semibold text-[15px]">Stellaroid Earn</span>
@@ -44,48 +52,64 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Site */}
-          <nav aria-label="Site links" className="flex flex-col gap-2.5 text-[13px]">
-            <p className="font-pixel text-[10px] font-medium text-text-muted uppercase tracking-widest mb-0.5">Site</p>
-            <Link href="/"      className="text-text-muted hover:text-text transition-colors no-underline">Home</Link>
-            <Link href="/app"   className="text-text-muted hover:text-text transition-colors no-underline">App</Link>
-            <Link href="/proof" className="text-text-muted hover:text-text transition-colors no-underline">Verify</Link>
-            <Link href="/about" className="text-text-muted hover:text-text transition-colors no-underline">About</Link>
-          </nav>
+          {/* Nav wrapper — 2-col grid on xs, 3-col flex row on sm, dissolves at lg */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:flex sm:flex-row sm:gap-10 lg:contents">
 
-          {/* On-chain */}
-          <div className="flex flex-col gap-2.5 text-[13px]">
-            <p className="font-pixel text-[10px] font-medium text-text-muted uppercase tracking-widest mb-0.5">On-chain</p>
-            <a href={contractUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-text-muted hover:text-primary transition-colors no-underline">
-              Contract on stellar.expert <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
-            </a>
-            <a href="https://stellar.expert/explorer/testnet" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-text-muted hover:text-primary transition-colors no-underline">
-              Testnet explorer <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
-            </a>
-            <a href="https://developers.stellar.org" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-text-muted hover:text-primary transition-colors no-underline">
-              Stellar docs <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
-            </a>
+            {/* Site */}
+            <nav aria-label="Site links" className="flex flex-col text-[13px]">
+              <h2 className="font-pixel text-[11px] font-medium text-text-muted uppercase tracking-widest mb-3">Site</h2>
+              <Link href="/"      className="py-1.5 text-text-muted hover:text-text transition-colors no-underline">Home</Link>
+              <Link href="/app"   className="py-1.5 text-text-muted hover:text-text transition-colors no-underline">App</Link>
+              <Link href="/proof" className="py-1.5 text-text-muted hover:text-text transition-colors no-underline">Verify</Link>
+              <Link href="/about" className="py-1.5 text-text-muted hover:text-text transition-colors no-underline">About</Link>
+            </nav>
+
+            {/* On-chain */}
+            <nav aria-label="On-chain links" className="flex flex-col text-[13px]">
+              <h2 className="font-pixel text-[11px] font-medium text-text-muted uppercase tracking-widest mb-3">On-chain</h2>
+              <a href={contractUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 py-1.5 text-text-muted hover:text-primary transition-colors no-underline">
+                Contract on stellar.expert
+                <span className="visually-hidden"> (opens in new tab)</span>
+                <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
+              </a>
+              <a href="https://stellar.expert/explorer/testnet" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 py-1.5 text-text-muted hover:text-primary transition-colors no-underline">
+                Testnet explorer
+                <span className="visually-hidden"> (opens in new tab)</span>
+                <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
+              </a>
+              <a href="https://developers.stellar.org" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 py-1.5 text-text-muted hover:text-primary transition-colors no-underline">
+                Stellar docs
+                <span className="visually-hidden"> (opens in new tab)</span>
+                <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
+              </a>
+            </nav>
+
+            {/* Source */}
+            <nav aria-label="Source links" className="flex flex-col text-[13px]">
+              <h2 className="font-pixel text-[11px] font-medium text-text-muted uppercase tracking-widest mb-3">Source</h2>
+              <a href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 py-1.5 text-text-muted hover:text-text transition-colors no-underline">
+                GitHub
+                <span className="visually-hidden"> (opens in new tab)</span>
+                <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
+              </a>
+              <a href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026/tree/main/contract" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 py-1.5 text-text-muted hover:text-text transition-colors no-underline">
+                Contract crate
+                <span className="visually-hidden"> (opens in new tab)</span>
+                <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
+              </a>
+              <a href="https://risein.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 py-1.5 text-text-muted hover:text-text transition-colors no-underline">
+                Rise In
+                <span className="visually-hidden"> (opens in new tab)</span>
+                <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
+              </a>
+            </nav>
+
           </div>
-
-          {/* Source */}
-          <div className="flex flex-col gap-2.5 text-[13px]">
-            <p className="font-pixel text-[10px] font-medium text-text-muted uppercase tracking-widest mb-0.5">Source</p>
-            <a href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-text-muted hover:text-text transition-colors no-underline">
-              GitHub <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
-            </a>
-            <a href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026/tree/main/contract" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-text-muted hover:text-text transition-colors no-underline">
-              Contract crate <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
-            </a>
-            <a href="https://risein.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-text-muted hover:text-text transition-colors no-underline">
-              Rise In <ExternalLink className="w-3 h-3 shrink-0 opacity-50" aria-hidden="true" />
-            </a>
-          </div>
-
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-10 pt-5 border-t border-border-glass flex flex-wrap items-center justify-between gap-3">
-          <span className="text-[11px] text-text-muted/60 font-mono tracking-wide">
+        {/* Bottom bar — stacked on mobile, single row on sm+ */}
+        <div className="mt-10 pt-5 border-t border-border-glass flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+          <span className="text-xs text-text-muted font-mono tracking-wide">
             © Stellar PH Bootcamp · {new Date().getFullYear()}
           </span>
           <div className="flex items-center gap-4 flex-wrap">
@@ -93,7 +117,7 @@ export function SiteFooter() {
               href="https://www.linkedin.com/in/mark-siazon/"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-[11px] text-text-muted/60 hover:text-primary transition-colors no-underline"
+              className="inline-flex items-center gap-1.5 py-1 text-xs text-text-muted hover:text-primary transition-colors no-underline"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="shrink-0">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
@@ -101,8 +125,9 @@ export function SiteFooter() {
                 <circle cx="4" cy="4" r="2"/>
               </svg>
               Developed by Mark Siazon
+              <span className="visually-hidden"> (opens in new tab)</span>
             </a>
-            <span className="font-pixel text-[10px] text-text-muted/40 uppercase tracking-widest">
+            <span className="font-pixel text-[10px] text-text-muted/40 uppercase tracking-widest select-none" aria-hidden="true">
               Built on Stellar testnet
             </span>
             <LocaleToggle />

@@ -550,7 +550,7 @@ export default function About() {
                   </li>
                   <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
                     <span
-                      className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-4.5 [&_[&_svg]:h-4.5problemBeatIconClass}`}
+                      className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1 bg-surface border [&_svg]:w-4.5 [&_svg]:h-4.5 ${problemBeatIconClass}`}
                       aria-hidden="true"
                     >
                       <svg
@@ -577,7 +577,7 @@ export default function About() {
                   </li>
                   <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
                     <span
-                      className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-4.5 [&_svg]:h-4.5 ${problemBeatIconClass}`}
+                      className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1 bg-surface border [&_svg]:w-4.5 [&_svg]:h-4.5 ${problemBeatIconClass}`}
                       aria-hidden="true"
                     >
                       <svg
@@ -650,7 +650,7 @@ export default function About() {
                   </li>
                   <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
                     <span
-                      className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-4.5 [&_svg]:h-4.5 ${approachBeatIconClass}`}
+                      className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1 bg-surface border [&_svg]:w-4.5 [&_svg]:h-4.5 ${approachBeatIconClass}`}
                       aria-hidden="true"
                     >
                       <svg
@@ -676,7 +676,7 @@ export default function About() {
                   </li>
                   <li className="grid grid-cols-[36px_1fr] gap-3.5 items-start relative">
                     <span
-                      className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1bg-surface border [&_svg]:w-4.5 [&_svg]:h-4.5 ${approachBeatIconClass}`}
+                      className={`w-9 h-9 rounded-[10px] inline-flex items-center justify-center shrink-0 relative z-1 bg-surface border [&_svg]:w-4.5 [&_svg]:h-4.5 ${approachBeatIconClass}`}
                       aria-hidden="true"
                     >
                       <svg
@@ -757,7 +757,7 @@ export default function About() {
                 {stack.map((s) => (
                   <div
                     key={s.title}
-                    className="flex flex-col gap-3.5 items-start p-5.5 bg-surface border border-border rounded-lg transition-[border-color,transform,box-shadow] duration-150 relative overflow-hidden min-h-35 hover:border-primary hover:-translate-y-0.5 hover:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.25)] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:opacity-0 hover:before:opacity-100 motion-reduce:hover:translate-y-0"
+                    className="flex flex-col gap-3.5 items-start p-5.5 bg-surface border border-border rounded-lg transition-[border-color,transform,box-shadow] duration-150 relative overflow-hidden min-h-35 hover:border-primary hover:-translate-y-0.5 hover:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.25)] before:absolute before:top-0 before:left-0 before:right-0 before:h-0.5 before:bg-linear-to-r before:from-transparent before:via-primary/60 before:to-transparent before:opacity-0 hover:before:opacity-100 motion-reduce:hover:translate-y-0"
                   >
                     <div
                       className="w-11 h-11 rounded-[10px] bg-[rgba(245,158,11,0.12)] text-primary inline-flex items-center justify-center shrink-0 [&_svg]:w-5.5 [&_svg]:h-5.5"
