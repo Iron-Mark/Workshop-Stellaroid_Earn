@@ -1,8 +1,9 @@
 #![cfg(test)]
 use super::*;
 use soroban_sdk::{
+    symbol_short,
     testutils::{Address as _, Events},
-    token, Address, BytesN, Env, String,
+    token, vec, Address, BytesN, Env, IntoVal, String,
 };
 
 struct Ctx<'a> {
@@ -227,19 +228,34 @@ fn t5_revoked_credential_blocks_payment() {
 fn t6_issuer_events_emit() {
     let ctx = setup();
     ctx.env.mock_all_auths();
-    ctx.client.init(&ctx.admin, &ctx.token_addr);
-
-    let issuer = Address::generate(&ctx.env);
-    register_issuer(&ctx, &issuer);
-    approve_issuer(&ctx, &issuer);
-
     let e = &ctx.env;
+    let contract_id = ctx.client.address.clone();
+
+    ctx.client.init(&ctx.admin, &ctx.token_addr);
     assert_eq!(
         ctx.env.events().all(),
         vec![
-            (false, (symbol_short!("init"),).into_val(e), ctx.admin.into_val(e)),
-            (false, (symbol_short!("iss_reg"),).into_val(e), issuer.into_val(e)),
-            (false, (symbol_short!("iss_appr"),).into_val(e), issuer.into_val(e)),
+            e,
+            (contract_id.clone(), (symbol_short!("init"),).into_val(e), ctx.admin.into_val(e)),
+        ]
+    );
+
+    let issuer = Address::generate(&ctx.env);
+    register_issuer(&ctx, &issuer);
+    assert_eq!(
+        ctx.env.events().all(),
+        vec![
+            e,
+            (contract_id.clone(), (symbol_short!("iss_reg"),).into_val(e), issuer.into_val(e)),
+        ]
+    );
+
+    approve_issuer(&ctx, &issuer);
+    assert_eq!(
+        ctx.env.events().all(),
+        vec![
+            e,
+            (contract_id.clone(), (symbol_short!("iss_appr"),).into_val(e), issuer.into_val(e)),
         ]
     );
 }
