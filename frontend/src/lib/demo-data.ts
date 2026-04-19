@@ -1,4 +1,5 @@
 export const FALLBACK_SAMPLE_PROOF_HASHES = [
+  "c02ce1602d5bbb6ddfe93c6603d7f4e3dae3b2fb571ea4e70669ccd5a359aea3",
   "35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e",
 ];
 

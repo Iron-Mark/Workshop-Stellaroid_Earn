@@ -13,7 +13,7 @@ const REGISTRY: Record<string, IssuerInfo> = {
   // and registered the sample certificates showcased on the landing page.
   // Keyed by uppercase G-address for exact match.
   GAWIOVGFSPJDEIJJZUSVRFPVP3D5VNO2LGCU47KEHJD6MV277QKNR34D: {
-    name: "Stellaroid Academy",
+    name: "Stellar Philippines UniTour",
     category: "bootcamp",
     url: "https://stellaroid-earn-demo.vercel.app",
   },
