@@ -28,7 +28,7 @@ const PROOF_METADATA: Record<string, ProofMetadata> = {
       },
       {
         label: "Bootcamp contract proof block",
-        href: "https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ",
+        href: "https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y",
       },
     ],
   },
