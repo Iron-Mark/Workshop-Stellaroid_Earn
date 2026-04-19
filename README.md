@@ -132,7 +132,7 @@ CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
 
 Explorer: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
 
-![Contract on Stellar Expert](images/stellar-expert-contract.png)
+![Contract on Stellar Expert](images/stellar-expert.png)
 
 ### Contract Functions
 
