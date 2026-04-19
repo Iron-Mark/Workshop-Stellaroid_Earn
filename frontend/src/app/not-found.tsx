@@ -16,9 +16,9 @@ export default function NotFound() {
         }}
       >
         <img
-          src="/illust-404.svg"
+          src="/illust/illust-404.svg"
           alt=""
-          width={256}
+          width={128}
           height={128}
           style={{ marginBottom: 24, imageRendering: "pixelated" }}
         />
@@ -30,7 +30,7 @@ export default function NotFound() {
             color: "var(--color-text)",
           }}
         >
-          404 —{" "}
+          404 ·{" "}
           <em
             style={{
               fontStyle: "normal",
@@ -86,7 +86,7 @@ export default function NotFound() {
               textDecoration: "none",
             }}
           >
-            Open the demo →
+            Open the app →
           </Link>
         </div>
       </main>

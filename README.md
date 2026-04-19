@@ -1,4 +1,4 @@
-# Stellar Philippines UniTour — University Campus Bootcamp Tour
+# Stellar PH Bootcamp — University Campus Bootcamp Tour
 
 **Platform:** [Rise In](https://www.risein.com/programs)  
 **Track:** Stellar Smart Contract Bootcamp  
@@ -8,13 +8,13 @@
 
 ## This fork — Stellaroid Earn
 
-> On-chain credential registry: issuer registers a cert hash, employer verifies and pays the grad in XLM — all via Freighter on Stellar testnet.
+> On-chain credential registry: issuer registers a cert hash, an approved issuer or admin verifies it, and employers can pay the graduate in XLM — all via Freighter on Stellar testnet.
 
 | | |
 |---|---|
 | **Live demo** | https://stellaroid-earn-demo.vercel.app/ |
 | **Contract ID** | [`CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`](https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ) |
-| **Contract crate** | [`contract/`](./contract) — `stellaroid_earn`, `soroban-sdk 22`, 5/5 tests passing |
+| **Contract crate** | [`contract/`](./contract) — `stellaroid_earn`, `soroban-sdk 22`, trust-layer tests included |
 | **Frontend** | [`frontend/`](./frontend) — Next.js 15 + React 19 + Freighter |
 | **Proof txs** | [init](https://stellar.expert/explorer/testnet/tx/c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721) · [register](https://stellar.expert/explorer/testnet/tx/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22) · [verify](https://stellar.expert/explorer/testnet/tx/2215e08ecc935b6f31d5c335c3aaea3e3742f07ef993d8ca947d1711ad5199d9) · [payment](https://stellar.expert/explorer/testnet/tx/5bed652b3725a6826cd4a99e8c750cdd2dc4625f7e3a4a82661680ada50cb435) |
 
@@ -32,11 +32,13 @@ cd ../frontend && npm install && npm run dev
 
 See [`contract/README.md`](./contract/README.md) for the full Proof Block and the [About page](https://stellaroid-earn-demo.vercel.app/about) for the story.
 
+Current note: the repo has moved to the issuer trust-layer ABI. The historical testnet contract ID and tx hashes above are still useful as demo references, but the latest frontend bindings require a fresh contract redeploy before Phase 1 issuer approval and trusted verification flows will work end to end. Use [`docs/superpowers/plans/2026-04-18-trust-layer-redeploy-checklist.md`](./docs/superpowers/plans/2026-04-18-trust-layer-redeploy-checklist.md).
+
 ---
 
 ## Overview
 
-Welcome to the **Stellar Philippines UniTour**—a **university-wide campus bootcamp tour** that brings Soroban and Stellar to students across Philippine campuses. In this session, you’ll receive an assigned Soroban smart contract, complete it, deploy to Stellar **testnet**, then submit your work on Rise In for certification.
+Welcome to the **Stellar PH Bootcamp**—a **university-wide campus bootcamp tour** that brings Soroban and Stellar to students across Philippine campuses. In this session, you’ll receive an assigned Soroban smart contract, complete it, deploy to Stellar **testnet**, then submit your work on Rise In for certification.
 
 No prior Web3 experience needed—follow the steps below.
 
@@ -430,7 +432,7 @@ For **Prize Pool Joiner Submission**:
 
 ---
 
-## 🇵🇭 About Stellar Philippines UniTour
+## 🇵🇭 About Stellar PH Bootcamp
 
 The Stellar UniTour is a **multi-campus roadshow**: the same Stellar Smart Contract Bootcamp format travels to universities across the Philippines so more students can build and deploy on **testnet** with guided support. It is run in partnership with [Rise In](https://risein.com).
 

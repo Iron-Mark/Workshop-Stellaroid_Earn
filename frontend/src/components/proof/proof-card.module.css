@@ -267,11 +267,9 @@
   content: "";
   flex: 1;
   height: 1px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--color-border) 0 6px,
-    transparent 6px 10px
-  );
+  background: repeating-linear-gradient(90deg,
+      var(--color-border) 0 6px,
+      transparent 6px 10px);
   max-width: 80px;
 }
 
@@ -307,17 +305,53 @@
 }
 
 @media (max-width: 480px) {
-  .shell { padding: var(--space-3); }
-  .card { padding: var(--space-4); gap: var(--space-4); border-radius: var(--radius-md); }
-  .pitch { font-size: 1.0625rem; }
-  .statusSummary { padding: var(--space-3); }
-  .metaRow, .certRow { gap: 6px; }
-  .metaCode { font-size: 0.75rem; word-break: break-all; }
-  .metaLink { white-space: normal; }
-  .qrBlock { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-  .footer::before, .footer::after { display: none; }
+  .shell {
+    padding: var(--space-3);
+  }
+
+  .card {
+    padding: var(--space-4);
+    gap: var(--space-4);
+    border-radius: var(--radius-md);
+  }
+
+  .pitch {
+    font-size: 1.0625rem;
+  }
+
+  .statusSummary {
+    padding: var(--space-3);
+  }
+
+  .metaRow,
+  .certRow {
+    gap: 6px;
+  }
+
+  .metaCode {
+    font-size: 0.75rem;
+    word-break: break-all;
+  }
+
+  .metaLink {
+    white-space: normal;
+  }
+
+  .qrBlock {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .footer::before,
+  .footer::after {
+    display: none;
+  }
+
   /* Hide decorative tear line on mobile — reflow makes its position drift */
-  .card::after { display: none; }
+  .card::after {
+    display: none;
+  }
 }
 
 @media print {

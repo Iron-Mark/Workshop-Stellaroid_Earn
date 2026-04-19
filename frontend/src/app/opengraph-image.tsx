@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
-export const alt = "Stellaroid Earn — Bind the hash. Pay the wallet. Prove the work.";
+export const alt = "Stellaroid Earn: Bind the hash. Pay the wallet. Prove the work.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -78,6 +77,8 @@ export default async function OpengraphImage() {
               letterSpacing: "-0.035em",
               lineHeight: 1.02,
               color: "#F8FAFC",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             Bind the hash.
@@ -95,7 +96,7 @@ export default async function OpengraphImage() {
               maxWidth: "900px",
             }}
           >
-            Verify a credential and pay directly in XLM — no invoice, no platform, no wait.
+            Verify a credential and pay directly in XLM, no invoice, no platform, no wait.
           </div>
         </div>
 

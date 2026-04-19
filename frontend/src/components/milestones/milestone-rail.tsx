@@ -1,5 +1,3 @@
-import styles from "./milestone-rail.module.css";
-
 export interface MilestoneState {
   registered: boolean;
   verified: boolean;
@@ -8,6 +6,7 @@ export interface MilestoneState {
 
 export interface MilestoneRailProps {
   state: MilestoneState;
+  orientation?: "horizontal" | "vertical";
 }
 
 function CheckIcon() {
@@ -86,72 +85,84 @@ function getStepStatus(
 interface StepProps {
   label: string;
   status: StepStatus;
+  vertical?: boolean;
 }
 
-function Step({ label, status }: StepProps) {
-  const iconClass =
+function Step({ label, status, vertical }: StepProps) {
+  const iconColorClass =
     status === "done"
-      ? styles.iconDone
+      ? "text-verified [animation:pixelPop_280ms_cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:animate-none"
       : status === "active"
-        ? styles.iconActive
-        : styles.iconPending;
+        ? "text-primary [animation:pulseRing_1.6s_ease-in-out_infinite] motion-reduce:animate-none"
+        : "text-text-muted";
 
-  const labelClass =
+  const labelColorClass =
     status === "done"
-      ? styles.labelDone
+      ? "text-verified"
       : status === "active"
-        ? styles.labelActive
-        : styles.labelPending;
+        ? "text-primary"
+        : "text-text-muted";
 
-  const srStatus =
-    status === "done" ? " (complete)" : status === "active" ? " (in progress)" : " (pending)";
+  const statusHint =
+    status === "done" ? "complete" : status === "active" ? "in progress" : "pending";
 
   return (
-    <div className={styles.step}>
-      <div className={`${styles.icon} ${iconClass}`}>
-        {status === "done" ? (
-          <CheckIcon />
-        ) : status === "active" ? (
-          <ActiveCircleIcon />
-        ) : (
-          <EmptyCircleIcon />
-        )}
+    <div className={vertical ? "flex flex-row items-center gap-3 shrink-0" : "flex flex-col items-center gap-2 shrink-0 max-sm:flex-row max-sm:gap-3"}>
+      <div key={status} className={["w-11 h-11 flex items-center justify-center rounded-full shrink-0", iconColorClass].join(" ")}>
+        {status === "done" ? <CheckIcon /> : status === "active" ? <ActiveCircleIcon /> : <EmptyCircleIcon />}
       </div>
-      <span className={`${styles.label} ${labelClass}`}>
-        {label}
-        <span className={styles.srOnly}>{srStatus}</span>
-      </span>
+      <div className={vertical ? "flex flex-col min-w-0" : undefined}>
+        <span className={["font-mono text-[13px] font-medium", vertical ? "" : "text-center", labelColorClass].join(" ")}>
+          {label}
+        </span>
+        {vertical && (
+          <span className="text-[11px] text-text-muted capitalize">{statusHint}</span>
+        )}
+        {!vertical && <span className="sr-only"> ({statusHint})</span>}
+      </div>
     </div>
   );
 }
 
 interface ConnectorProps {
   filled: boolean;
+  vertical?: boolean;
 }
 
-function Connector({ filled }: ConnectorProps) {
+function Connector({ filled, vertical }: ConnectorProps) {
   return (
     <div
-      className={`${styles.connector} ${filled ? styles.connectorFilled : styles.connectorEmpty}`}
+      className={[
+        vertical
+          ? "w-0.5 h-6 ml-[21px]"
+          : "flex-1 h-0.5 min-w-6 mb-5 max-sm:w-0.5 max-sm:h-6 max-sm:min-w-0 max-sm:mb-0 max-sm:ml-[21px]",
+        filled
+          ? vertical ? "bg-linear-to-b from-verified to-verified-strong" : "bg-linear-to-r from-verified to-verified-strong max-sm:bg-linear-to-b"
+          : "bg-border",
+      ].join(" ")}
       aria-hidden="true"
     />
   );
 }
 
-export function MilestoneRail({ state }: MilestoneRailProps) {
+export function MilestoneRail({ state, orientation = "horizontal" }: MilestoneRailProps) {
   const stepDone = [state.registered, state.verified, state.paid];
+  const vertical = orientation === "vertical";
 
   const registeredStatus = getStepStatus(0, stepDone);
   const verifiedStatus = getStepStatus(1, stepDone);
   const paidStatus = getStepStatus(2, stepDone);
 
   return (
-    <nav className={styles.rail} aria-label="Progress">
-      <Step label="Registered" status={registeredStatus} />
-      <Connector filled={state.registered} />
-      <Step label="Verified" status={verifiedStatus} />
-      <Connector filled={state.verified} />
-      <Step label="Paid" status={paidStatus} />
+    <nav
+      className={vertical ? "flex flex-col gap-0" : "flex flex-row items-center gap-0 py-4 max-sm:flex-col max-sm:items-start"}
+      aria-label="Progress"
+    >
+      <Step label="Registered" status={registeredStatus} vertical={vertical} />
+      <Connector filled={state.registered} vertical={vertical} />
+      <Step label="Verified" status={verifiedStatus} vertical={vertical} />
+      <Connector filled={state.verified} vertical={vertical} />
+      <Step label="Paid" status={paidStatus} vertical={vertical} />
     </nav>
   );
 }

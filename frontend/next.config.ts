@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 // Directives that are safe to send on every route.
 const BASE_CSP_DIRECTIVES = [
   "default-src 'self'",
@@ -7,7 +9,8 @@ const BASE_CSP_DIRECTIVES = [
   // required until nonce-based CSP is wired up via middleware.
   // connect-src still limits what JS can actually fetch, which is the
   // most valuable XSS mitigation for a wallet dApp.
-  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+  // unsafe-eval is required in dev for React Fast Refresh (webpack HMR).
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://va.vercel-scripts.com`,
   // IBM Plex Sans/Mono load as @import from Google Fonts.
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   // Font files served from Google's CDN.

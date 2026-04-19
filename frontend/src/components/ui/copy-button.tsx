@@ -1,17 +1,22 @@
+// frontend/src/components/ui/copy-button.tsx
 "use client";
 
 import { useState } from "react";
-import styles from "./copy-button.module.css";
+import { Copy, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export interface CopyButtonProps {
   value: string;
   ariaLabel?: string;
+  className?: string;
+  /** When provided, renders as an inline code pill with this label + copy icon */
+  label?: string;
 }
 
-export function CopyButton({ value, ariaLabel = "Copy" }: CopyButtonProps) {
+export function CopyButton({ value, ariaLabel = "Copy", className, label }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
-  async function handleClick() {
+  async function handleCopy() {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(true);
@@ -21,64 +26,58 @@ export function CopyButton({ value, ariaLabel = "Copy" }: CopyButtonProps) {
     }
   }
 
+  if (label) {
+    return (
+      <>
+        <button
+          type="button"
+          onClick={handleCopy}
+          aria-label={copied ? "Copied!" : ariaLabel}
+          className={cn(
+            "inline-flex items-center gap-2",
+            "font-mono text-[13px] font-medium tracking-wide text-primary",
+            "bg-primary/8 hover:bg-primary/14",
+            "border border-primary/25 hover:border-primary/40",
+            "px-3 py-1.5 rounded-md",
+            "transition-colors duration-150 cursor-pointer",
+            copied && "text-success border-success/30 bg-success/8",
+            className
+          )}
+        >
+          {label}
+          {copied
+            ? <Check className="w-3 h-3 shrink-0" />
+            : <Copy className="w-3 h-3 opacity-50 shrink-0" />
+          }
+        </button>
+        <span className="sr-only" aria-live="polite" aria-atomic="true">
+          {copied ? "Copied" : ""}
+        </span>
+      </>
+    );
+  }
+
   return (
     <>
       <button
         type="button"
-        className={styles.button}
-        onClick={handleClick}
-        aria-label={copied ? "Copied" : ariaLabel}
-        title={copied ? "Copied!" : ariaLabel}
-      >
-        {copied ? (
-          /* Check icon */
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M2.5 8.5L6.5 12.5L13.5 5"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        ) : (
-          /* Copy icon: two overlapping rounded squares */
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-          >
-            <rect
-              x="5"
-              y="5"
-              width="8"
-              height="8"
-              rx="1.5"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5V9.5A1.5 1.5 0 0 0 3.5 11H5"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+        onClick={handleCopy}
+        aria-label={copied ? "Copied!" : ariaLabel}
+        className={cn(
+          "inline-flex items-center justify-center",
+          "w-7 h-7 rounded-md",
+          "text-text-muted hover:text-primary",
+          "bg-transparent hover:bg-primary/10",
+          "transition-colors duration-150 cursor-pointer",
+          className
         )}
-      </button>
-      <span
-        className={styles.liveRegion}
-        aria-live="polite"
-        aria-atomic="true"
       >
+        {copied
+          ? <Check className="w-3.5 h-3.5 text-success" />
+          : <Copy className="w-3.5 h-3.5" />
+        }
+      </button>
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
         {copied ? "Copied" : ""}
       </span>
     </>

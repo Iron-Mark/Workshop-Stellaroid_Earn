@@ -59,10 +59,10 @@ export function RpcStatusPill() {
   }
 
   if (state === "healthy") {
-    return <Badge tone="success" dot>RPC healthy</Badge>;
+    return <Badge tone="success" dot>Testnet · live</Badge>;
   }
 
-  return <Badge tone="warning" dot>RPC slow — up to 15s</Badge>;
+  return <Badge tone="warning" dot>Testnet · slow</Badge>;
 }
 
 export default RpcStatusPill;

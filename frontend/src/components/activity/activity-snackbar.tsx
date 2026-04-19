@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import styles from "./activity-snackbar.module.css";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ActivitySnackbarProps {
   children: ReactNode;
@@ -23,9 +24,7 @@ export function ActivitySnackbar({
   const hideTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (dismissed || hasShown) {
-      return;
-    }
+    if (dismissed || hasShown) return;
 
     function clearRevealTimer() {
       if (revealTimerRef.current != null) {
@@ -39,7 +38,6 @@ export function ActivitySnackbar({
         clearRevealTimer();
         return;
       }
-
       if (revealTimerRef.current == null) {
         revealTimerRef.current = window.setTimeout(() => {
           setVisible(true);
@@ -51,7 +49,6 @@ export function ActivitySnackbar({
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
       clearRevealTimer();
@@ -59,15 +56,11 @@ export function ActivitySnackbar({
   }, [dismissed, hasShown, revealDelayMs, scrollOffsetPx]);
 
   useEffect(() => {
-    if (!visible || dismissed) {
-      return;
-    }
-
+    if (!visible || dismissed) return;
     hideTimerRef.current = window.setTimeout(() => {
       setVisible(false);
       setDismissed(true);
     }, autoHideMs);
-
     return () => {
       if (hideTimerRef.current != null) {
         window.clearTimeout(hideTimerRef.current);
@@ -76,26 +69,28 @@ export function ActivitySnackbar({
     };
   }, [autoHideMs, dismissed, visible]);
 
-  if (dismissed) {
-    return null;
-  }
+  if (dismissed) return null;
 
   return (
     <div
-      className={`${styles.shell} ${visible ? styles.visible : ""}`}
+      className={cn(
+        "fixed right-4 bottom-6 z-50 w-80 max-sm:right-3 max-sm:left-3 max-sm:w-auto",
+        "rounded-2xl bg-surface-glass border border-border-glass backdrop-blur-md shadow-glow-accent",
+        "overflow-hidden",
+        "transition-all duration-300",
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+      )}
       aria-hidden={visible ? "false" : "true"}
     >
-      <div className={styles.inner}>
-        <button
-          type="button"
-          className={styles.close}
-          aria-label="Dismiss live activity"
-          onClick={() => setDismissed(true)}
-        >
-          ×
-        </button>
-        {children}
-      </div>
+      <button
+        type="button"
+        className="absolute top-3 right-3 z-10 flex items-center justify-center w-6 h-6 rounded-md text-text-muted hover:text-text hover:bg-surface-2 transition-colors cursor-pointer"
+        aria-label="Dismiss live activity"
+        onClick={() => setDismissed(true)}
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+      {children}
     </div>
   );
 }

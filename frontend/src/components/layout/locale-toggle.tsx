@@ -1,22 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./locale-toggle.module.css";
 
 export type Locale = "en" | "tl";
-
 export const LOCALE_STORAGE_KEY = "stellaroid:locale";
 export const LOCALE_CHANGE_EVENT = "stellaroid:locale-change";
 
 function PhFlag() {
   return (
-    <svg
-      className={styles.flag}
-      viewBox="0 0 24 16"
-      width="20"
-      height="14"
-      aria-hidden="true"
-    >
+    <svg viewBox="0 0 24 16" width="20" height="14" aria-hidden="true">
       <rect width="24" height="8" fill="#0038A8" />
       <rect y="8" width="24" height="8" fill="#CE1126" />
       <polygon points="0,0 10,8 0,16" fill="#FFFFFF" />
@@ -27,13 +19,7 @@ function PhFlag() {
 
 function GbFlag() {
   return (
-    <svg
-      className={styles.flag}
-      viewBox="0 0 24 16"
-      width="20"
-      height="14"
-      aria-hidden="true"
-    >
+    <svg viewBox="0 0 24 16" width="20" height="14" aria-hidden="true">
       <rect width="24" height="16" fill="#012169" />
       <path d="M0,0 L24,16 M24,0 L0,16" stroke="#FFFFFF" strokeWidth="2.4" />
       <path d="M0,0 L24,16 M24,0 L0,16" stroke="#C8102E" strokeWidth="1.2" />
@@ -50,9 +36,8 @@ export function LocaleToggle() {
     try {
       const saved = localStorage.getItem(LOCALE_STORAGE_KEY) as Locale | null;
       if (saved === "en" || saved === "tl") setLocale(saved);
-    } catch {
-      // ignore
-    }
+    } catch { /* ignore */ }
+
     function onChange(e: Event) {
       const next = (e as CustomEvent<Locale>).detail;
       if (next === "en" || next === "tl") setLocale(next);
@@ -66,9 +51,7 @@ export function LocaleToggle() {
     setLocale(next);
     try {
       localStorage.setItem(LOCALE_STORAGE_KEY, next);
-    } catch {
-      // ignore
-    }
+    } catch { /* ignore */ }
     document.cookie = `${LOCALE_STORAGE_KEY}=${next}; path=/; max-age=31536000; SameSite=Lax`;
     window.dispatchEvent(new CustomEvent<Locale>(LOCALE_CHANGE_EVENT, { detail: next }));
   }
@@ -80,12 +63,10 @@ export function LocaleToggle() {
       type="button"
       onClick={toggle}
       aria-label={`Switch language to ${nextLabel}`}
-      className={styles.toggle}
+      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-[13px] text-text-muted hover:text-text hover:bg-surface-2 transition-colors cursor-pointer border border-transparent hover:border-border"
     >
       {locale === "en" ? <PhFlag /> : <GbFlag />}
-      <span className={styles.label}>
-        {locale === "en" ? "Tagalog" : "English"}
-      </span>
+      <span>{locale === "en" ? "Tagalog" : "English"}</span>
     </button>
   );
 }

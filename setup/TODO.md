@@ -40,11 +40,21 @@ Facilitator update: skip C1–C2 (no facilitator repo). Built own contract `stel
 - [x] **C6.** Deployed via `stellar contract deploy --source my-key --network testnet`
 - [x] **C7.** Contract ID: `CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`
 - [x] **C8.** Verify: https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ
+- [x] **C9.** Trust-layer rebuild + redeploy (2026-04-19): full 12-fn contract from `lib.rs` (433 lines)
+  - New Contract ID: `CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`
+  - WASM hash: `bfee3c47c08e788ebbd3743324c35783f66afe4f34a9fe62b70de11c183cbc02`
+  - Verify: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
+  - Seeded: issuer `GAWIO…` → Approved · cert `35a19276…` → Verified
 
 ## D. Rise In Submission (Step 5)
 - [x] **D1.** Pushed to https://github.com/Iron-Mark/Stellar-Bootcamp-2026 (dev merged to main as PR #1)
 - [x] **D1b.** Live demo deployed to Vercel: https://stellaroid-earn-demo.vercel.app/
 - [ ] **D2.** Submit on Rise In: GitHub link, Contract ID, Stellar Expert link, Vercel link, short description
+  - GitHub: https://github.com/Iron-Mark/Workshop-Stellaroid_Earn (repo renamed)
+  - Contract ID: `CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`
+  - Stellar Expert: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
+  - Live demo: https://stellaroid-earn-demo.vercel.app/
+  - ⚠️  Also update Vercel env var `NEXT_PUBLIC_SOROBAN_CONTRACT_ID` → `CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y` then redeploy
 
 ## E. Phase 2 — Fullstack (after Contract ID is verified)
 Use the Stellar-provided template prompt to generate a project idea + Soroban contract files, then build the fullstack on top.

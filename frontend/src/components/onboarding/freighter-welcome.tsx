@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui";
-import styles from "./freighter-welcome.module.css";
 
 const STORAGE_KEY = "stellaroid:freighter-welcome-dismissed";
 
@@ -30,7 +29,7 @@ export function FreighterWelcome() {
 
   return (
     <div
-      className={styles.backdrop}
+      className="fixed inset-0 bg-[rgba(2,6,23,0.72)] backdrop-blur-[8px] z-[9000] flex items-center justify-center p-4 overflow-y-auto [animation:modalFade_180ms_ease-out] motion-reduce:animate-none"
       role="dialog"
       aria-modal="true"
       aria-labelledby="freighter-welcome-title"
@@ -38,41 +37,52 @@ export function FreighterWelcome() {
         if (e.target === e.currentTarget) dismiss();
       }}
     >
-      <div className={styles.modal}>
-        <p className={styles.eyebrow}>New to Stellar?</p>
-        <h2 id="freighter-welcome-title" className={styles.title}>
+      <div className="max-w-[480px] w-full max-h-[calc(100dvh-32px)] overflow-y-auto bg-surface border border-border rounded-[20px] p-8 shadow-[0_24px_64px_rgba(0,0,0,0.5)] [animation:modalRise_220ms_ease-out] motion-reduce:animate-none max-sm:p-5 max-sm:rounded-2xl">
+        <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-accent mb-2">
+          New to Stellar?
+        </p>
+        <h2
+          id="freighter-welcome-title"
+          className="mb-4 text-[22px] font-bold text-text tracking-[-0.01em] max-sm:text-[19px]"
+        >
           You&rsquo;ll need a wallet to sign. Here&rsquo;s the 90-second version.
         </h2>
-        <p className={styles.intro}>
+        <p className="mb-5 text-text-muted text-[15px] leading-[1.55] max-sm:text-[14px]">
           Stellaroid Earn runs on Stellar testnet. Every action is signed by your
-          own wallet — no email, no password, no KYC.
+          own wallet, no email, no password, no KYC.
         </p>
 
-        <ul className={styles.list}>
-          <li className={styles.item}>
-            <span className={styles.bullet}>1</span>
-            <span className={styles.itemBody}>
+        <ul className="mb-6 p-0 list-none flex flex-col gap-3.5">
+          <li className="flex gap-3 items-start">
+            <span className="shrink-0 w-[26px] h-[26px] rounded-full bg-[rgba(245,158,11,0.14)] text-primary flex items-center justify-center text-[13px] font-bold">
+              1
+            </span>
+            <span className="text-[14px] leading-normal text-text [&_strong]:text-text [&_strong]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:[text-underline-offset:2px]">
               Install{" "}
               <a href="https://www.freighter.app/" target="_blank" rel="noreferrer">
                 Freighter
               </a>{" "}
-              — the Stellar wallet browser extension. <strong>Switch it to
+              , the Stellar wallet browser extension. <strong>Switch it to
               testnet</strong> after install.
             </span>
           </li>
-          <li className={styles.item}>
-            <span className={styles.bullet}>2</span>
-            <span className={styles.itemBody}>
+          <li className="flex gap-3 items-start">
+            <span className="shrink-0 w-[26px] h-[26px] rounded-full bg-[rgba(245,158,11,0.14)] text-primary flex items-center justify-center text-[13px] font-bold">
+              2
+            </span>
+            <span className="text-[14px] leading-normal text-text [&_strong]:text-text [&_strong]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:[text-underline-offset:2px]">
               Fund your testnet account with free XLM via{" "}
               <a href="https://friendbot.stellar.org/" target="_blank" rel="noreferrer">
                 friendbot
               </a>{" "}
-              — one click, no signup.
+              , no signup.
             </span>
           </li>
-          <li className={styles.item}>
-            <span className={styles.bullet}>3</span>
-            <span className={styles.itemBody}>
+          <li className="flex gap-3 items-start">
+            <span className="shrink-0 w-[26px] h-[26px] rounded-full bg-[rgba(245,158,11,0.14)] text-primary flex items-center justify-center text-[13px] font-bold">
+              3
+            </span>
+            <span className="text-[14px] leading-normal text-text [&_strong]:text-text [&_strong]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:[text-underline-offset:2px]">
               Click <strong>Connect wallet</strong> above. Sign register / verify / pay
               with one tap each. Every transaction costs a fraction of a cent and
               settles in ~5 seconds.
@@ -80,7 +90,7 @@ export function FreighterWelcome() {
           </li>
         </ul>
 
-        <div className={styles.actions}>
+        <div className="flex gap-3 justify-end flex-wrap max-sm:justify-stretch max-sm:[&>*]:flex-1 max-sm:[&>*]:min-w-0">
           <Button
             variant="secondary"
             size="sm"
@@ -91,7 +101,7 @@ export function FreighterWelcome() {
             Get Freighter
           </Button>
           <Button variant="primary" size="sm" onClick={dismiss}>
-            Got it — let&rsquo;s go
+            Let&rsquo;s go
           </Button>
         </div>
       </div>

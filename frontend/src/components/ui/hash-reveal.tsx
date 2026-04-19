@@ -1,46 +1,38 @@
+// frontend/src/components/ui/hash-reveal.tsx
 "use client";
 
-import { useEffect, useState } from "react";
-import styles from "./hash-reveal.module.css";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-interface HashRevealProps {
+export interface HashRevealProps {
   hash: string;
-  /** characters per frame; default 4 */
-  speed?: number;
-  /** show short form (first8...last6) instead of full */
-  short?: boolean;
+  /** Pre-computed short display string. If omitted, first8…last8 is used. */
+  short?: string;
+  className?: string;
 }
 
-export function HashReveal({ hash, speed = 4, short = false }: HashRevealProps) {
-  const target = short && hash.length > 20
-    ? `${hash.slice(0, 8)}…${hash.slice(-6)}`
-    : hash;
-
-  const [shown, setShown] = useState("");
-
-  useEffect(() => {
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      setShown(target);
-      return;
-    }
-    setShown("");
-    let i = 0;
-    const id = window.setInterval(() => {
-      i += speed;
-      setShown(target.slice(0, i));
-      if (i >= target.length) window.clearInterval(id);
-    }, 24);
-    return () => window.clearInterval(id);
-  }, [target, speed]);
+export function HashReveal({ hash, short, className }: HashRevealProps) {
+  const [revealed, setRevealed] = useState(false);
+  const display = revealed ? hash : (short ?? `${hash.slice(0, 8)}…${hash.slice(-8)}`);
 
   return (
-    <code className={styles.hash} aria-label={`hash ${target}`}>
-      {shown}
-      {shown.length < target.length && <span className={styles.caret} aria-hidden="true" />}
-    </code>
+    <span className={cn("inline-flex items-center gap-1.5", className)}>
+      <code className="font-mono text-[13px] text-primary [text-shadow:0_0_8px_rgba(245,158,11,0.35)]">
+        {display}
+      </code>
+      <button
+        type="button"
+        onClick={() => setRevealed(r => !r)}
+        aria-label={revealed ? "Hide full hash" : "Show full hash"}
+        className="inline-flex items-center justify-center w-5 h-5 text-text-muted hover:text-primary transition-colors cursor-pointer"
+      >
+        {revealed
+          ? <EyeOff className="w-3.5 h-3.5" />
+          : <Eye className="w-3.5 h-3.5" />
+        }
+      </button>
+    </span>
   );
 }
 
