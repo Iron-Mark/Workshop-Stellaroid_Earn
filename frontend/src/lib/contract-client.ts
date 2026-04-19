@@ -480,6 +480,9 @@ function normalizeStatusKey(value: unknown): string {
     if (typeof record.tag === "string") return record.tag.toLowerCase();
     if (typeof record.name === "string") return record.name.toLowerCase();
     if (typeof record.value === "string") return record.value.toLowerCase();
+    // scValToNative serializes Soroban enums as { "VariantName": null }
+    const keys = Object.keys(record);
+    if (keys.length >= 1) return keys[0].toLowerCase();
   }
   return "";
 }

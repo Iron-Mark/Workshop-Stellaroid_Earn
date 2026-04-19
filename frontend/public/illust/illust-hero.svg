@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" shape-rendering="crispEdges" role="img" aria-label="Register to Verify to Pay flow">
   <defs>
     <linearGradient id="flow" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#F59E0B"/>
-      <stop offset="100%" stop-color="#8B5CF6"/>
+      <stop offset="0%" stop-color="#B45309"/>
+      <stop offset="100%" stop-color="#FBBF24"/>
     </linearGradient>
     <style>
       .sh{fill:#78350F}.md{fill:#B45309}.hi{fill:#FBBF24}.gl{fill:#FEF3C7}
       .doc{fill:#1E293B}.doc2{fill:#334155}.docline{fill:#475569}
-      .chk{fill:#2DD4BF}.chk2{fill:#14B8A6}
+      .chk{fill:#F59E0B}.chk2{fill:#D97706}
       .coin{fill:#FBBF24}.coin2{fill:#B45309}
       .bg{fill:#0F172A}.bgborder{fill:#334155}
       .flow{fill:url(#flow)}

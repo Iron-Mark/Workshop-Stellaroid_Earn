@@ -57,6 +57,15 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
+    if (message.includes("not currently connected to freighter")) {
+      return {
+        title: "Freighter not connected",
+        detail:
+          "Click 'Connect Freighter' and approve the connection for this site, then try again.",
+        recoverable: true,
+      };
+    }
+
     if (
       message.includes("freighter is not available") ||
       message.includes("could not establish connection to freighter") ||

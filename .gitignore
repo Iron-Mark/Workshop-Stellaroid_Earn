@@ -23,3 +23,9 @@ next-env.d.ts
 # Claude Code local state
 .claude/scheduled_tasks.lock
 .vercel
+
+# Superpowers brainstorm runtime files
+.superpowers/brainstorm/**/state/
+.superpowers/brainstorm/**/*.html
+.superpowers/brainstorm/**/*.log
+.superpowers/brainstorm/**/*.pid

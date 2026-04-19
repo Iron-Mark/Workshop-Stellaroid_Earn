@@ -234,10 +234,19 @@ export function IssuerDashboard() {
                   </div>
                 </div>
               ) : (
-                <p className="mt-4 text-sm text-text-muted">
-                  No issuer record exists yet for the connected wallet. Register it first, then
-                  ask the admin wallet to approve it.
-                </p>
+                <div className="mt-4 flex items-center gap-3">
+                  <img
+                    src="/illust/illust-issuer-empty.svg"
+                    alt=""
+                    className="w-10 h-auto shrink-0 opacity-85"
+                    aria-hidden="true"
+                    style={{ imageRendering: "pixelated" }}
+                  />
+                  <p className="text-sm text-text-muted">
+                    No issuer record exists yet for the connected wallet. Register it first, then
+                    ask the admin wallet to approve it.
+                  </p>
+                </div>
               )}
             </div>
           </div>

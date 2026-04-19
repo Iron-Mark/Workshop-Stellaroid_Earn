@@ -20,10 +20,18 @@ export function ProofBlockPreview({ hash }: ProofBlockPreviewProps) {
           <ArrowRight width={14} height={14} aria-hidden="true" />
         </Link>
       ) : (
-        <span className="inline-flex items-center gap-1.5 text-sm text-text-muted opacity-50 cursor-not-allowed" aria-disabled="true">
-          <Lock width={13} height={13} aria-hidden="true" />
-          Proof Block unlocks after registration
-        </span>
+        <div className="flex items-center gap-3 opacity-55">
+          <img
+            src="/illust/illust-proof-locked.svg"
+            alt=""
+            className="w-10 h-auto shrink-0"
+            aria-hidden="true"
+            style={{ imageRendering: "pixelated" }}
+          />
+          <span className="text-sm text-text-muted cursor-not-allowed" aria-disabled="true">
+            Proof Block unlocks after registration
+          </span>
+        </div>
       )}
     </div>
   );
