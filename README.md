@@ -1,439 +1,298 @@
-# Stellar PH Bootcamp — University Campus Bootcamp Tour
+# Stellaroid Earn
 
-**Platform:** [Rise In](https://www.risein.com/programs)  
-**Track:** Stellar Smart Contract Bootcamp  
-**Duration:** 4 Hours | 4:00 PM - 8:00 PM
+On-chain credential registry and employer payment rail for bootcamp graduates, built on Stellar.
 
 ---
 
-## This fork — Stellaroid Earn
+## Problem
 
-> On-chain credential registry: issuer registers a cert hash, an approved issuer or admin verifies it, and employers can pay the graduate in XLM — all via Freighter on Stellar testnet.
+A bootcamp graduate has no way to prove their skills to an employer without trusting a third party to vouch for them. Paper certificates and PDF badges are easy to fake and impossible to verify independently. Employers either skip verification or pay for a background check service. The graduate's achievement lives on someone else's server.
 
-| | |
+## Solution
+
+Stellaroid Earn stores credential hashes on a Soroban smart contract. An approved issuer (bootcamp organizer) registers and verifies the certificate on-chain. Anyone — recruiter, employer, or peer — can verify the credential at a public URL with no login required. Employers can pay the graduate directly in XLM through the same contract, turning a credential into a payment rail.
+
+---
+
+## Demo Flow (2 minutes)
+
+1. Connect Freighter wallet (testnet)
+2. Issuer applies and gets approved by admin on-chain
+3. Issuer registers a certificate hash for a graduate
+4. Admin or issuer verifies the credential — status changes to **Verified**
+5. Anyone scans the QR or visits `/proof/[hash]` — no wallet or login needed
+6. Employer pays graduate in XLM directly through the contract
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  Next.js 15 App Router (frontend/)                              │
+│                                                                 │
+│  Server Components (RSC)          Client Components             │
+│  ┌────────────────────────┐       ┌────────────────────────┐   │
+│  │ /proof/[hash]          │       │ /app   (dashboard)      │   │
+│  │ /proof/[hash]/embed    │       │ /issuer (management)    │   │
+│  │ revalidate=60 (ISR)    │       │ /issuer/register        │   │
+│  │                        │       │                         │   │
+│  │ contract-read-server   │       │ contract-client.ts      │   │
+│  │ simulateTransaction    │       │ simulateTransaction      │   │
+│  │ (read address, no sig) │       │ (reads, no wallet)      │   │
+│  └──────────┬─────────────┘       │ signWithFreighter       │   │
+│             │                     │ (writes, wallet sign)   │   │
+│             │                     └──────────┬──────────────┘   │
+│             │                                │                  │
+│  ┌──────────▼────────────────────────────────▼──────────────┐  │
+│  │  @stellar/stellar-sdk  (TransactionBuilder, rpc.Server)  │  │
+│  │  CSP: connect-src restricted to *.stellar.org only       │  │
+│  └──────────────────────────────┬───────────────────────────┘  │
+└─────────────────────────────────┼───────────────────────────────┘
+                                  │ HTTPS / Soroban RPC
+                    ┌─────────────▼──────────────────┐
+                    │  Stellar Testnet               │
+                    │                                │
+                    │  Stellaroid Earn Contract      │
+                    │  CBNSOFNX…WEHI2DX2Y            │
+                    │  (credential registry +        │
+                    │   issuer trust layer +         │
+                    │   employer payment rail)       │
+                    │                                │
+                    │  Native XLM SAC                │
+                    │  CDLZFC3S…HI2HHGCYSC           │
+                    │  (payment token)               │
+                    └────────────────────────────────┘
+```
+
+**Two read paths, one write path:**
+
+| Path | Where | How | Who triggers |
+|---|---|---|---|
+| Server read | RSC on `/proof/[hash]` | `simulateTransaction` with funded read address, no wallet | Anyone visiting a proof URL |
+| Client read | Browser components | `simulateTransaction` with read address via `contract-client.ts` | UI state loading |
+| Write | Client components | Freighter signs → `sendTransaction` → poll for result | Connected wallet user |
+
+**Key design decisions:**
+- `/proof/[hash]` is server-rendered with `revalidate=60` — proof pages are CDN-cached, load instantly, require no wallet
+- Hash format is validated before any RPC call to avoid wasting network requests on bad inputs
+- CSP blocks all `connect-src` except `*.stellar.org` — no third-party data leaks
+- No backend server — all state is on-chain, read address is a funded testnet account used only for gas-free simulation
+
+---
+
+## Project Structure
+
+```
+Workshop-Stellaroid_Earn/
+├── contract/
+│   ├── src/
+│   │   ├── lib.rs              # Soroban credential + payment contract (433 lines)
+│   │   └── test.rs             # 5 contract tests
+│   └── Cargo.toml
+├── frontend/
+│   ├── src/
+│   │   ├── app/                # Next.js App Router pages
+│   │   │   ├── app/            # Participant dashboard
+│   │   │   ├── issuer/         # Issuer registration + management
+│   │   │   └── proof/[hash]/   # Public shareable proof card
+│   │   ├── components/         # UI components (proof card, wallet, badges)
+│   │   ├── hooks/              # Freighter wallet state
+│   │   └── lib/                # Contract client, RPC helpers, types
+│   ├── public/                 # Illustrations, OG images
+│   └── .env.example            # Environment variable template
+├── demo/                       # Demo script, FAQ, press kit
+├── docs/                       # Specs and implementation plans
+└── README.md
+```
+
+---
+
+## Stellar Features Used
+
+| Feature | Usage |
 |---|---|
-| **Live demo** | https://stellaroid-earn-demo.vercel.app/ |
-| **Contract ID** | [`CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`](https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y) |
-| **Contract crate** | [`contract/`](./contract) — `stellaroid_earn`, `soroban-sdk 22`, trust-layer tests included |
-| **Frontend** | [`frontend/`](./frontend) — Next.js 15 + React 19 + Freighter |
-| **Proof txs** | [init](https://stellar.expert/explorer/testnet/tx/c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721) · [register](https://stellar.expert/explorer/testnet/tx/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22) · [verify](https://stellar.expert/explorer/testnet/tx/2215e08ecc935b6f31d5c335c3aaea3e3742f07ef993d8ca947d1711ad5199d9) · [payment](https://stellar.expert/explorer/testnet/tx/5bed652b3725a6826cd4a99e8c750cdd2dc4625f7e3a4a82661680ada50cb435) |
+| Soroban smart contracts | Credential registry — register, verify, revoke, suspend, expire |
+| Issuer trust layer | On-chain issuer approval and suspension by admin |
+| Native XLM | Direct employer-to-graduate payments via `reward_student` |
+| Native XLM SAC | Token interface for XLM in contract payment calls |
+| Freighter Wallet | Browser signing for all write transactions |
+| Soroban RPC | Read-only credential lookups — no wallet needed for verification |
+| `simulateTransaction` | Gas-free reads using a funded read address |
 
-### Quick start
+---
+
+## Smart Contract
+
+Deployed on Stellar testnet:
+
+```
+CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
+```
+
+Explorer: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
+
+![Contract on Stellar Expert](images/stellar-expert-contract.png)
+
+### Contract Functions
+
+| Function | Caller | Description |
+|---|---|---|
+| `init(admin, token)` | Deployer | Initialize contract with admin address and XLM token |
+| `register_issuer(address, name, website, category)` | Anyone | Submit issuer application (Pending status) |
+| `approve_issuer(admin, issuer)` | Admin | Approve an issuer to register credentials |
+| `suspend_issuer(admin, issuer)` | Admin | Suspend a misbehaving issuer |
+| `get_issuer(issuer)` | Anyone | Read issuer record and status |
+| `register_certificate(issuer, owner, hash, title, cohort, metadata_uri, expires_at)` | Approved issuer | Register a credential hash for a graduate |
+| `verify_certificate(issuer, cert_hash)` | Admin or approved issuer | Mark a credential Verified |
+| `revoke_certificate(issuer, cert_hash)` | Admin or approved issuer | Permanently revoke a credential |
+| `suspend_certificate(issuer, cert_hash)` | Admin or approved issuer | Temporarily suspend a credential |
+| `reward_student(employer, cert_hash, amount)` | Employer | Pay graduate in XLM, linked to credential |
+| `link_payment(payer, cert_hash, amount)` | Anyone | Record a payment reference on a credential |
+| `get_certificate(cert_hash)` | Anyone | Read full credential record and status |
+
+### Credential Status Lifecycle
+
+```
+Issued --> Verified  (issuer or admin calls verify_certificate)
+       --> Revoked   (issuer or admin calls revoke_certificate)
+       --> Suspended (issuer or admin calls suspend_certificate)
+       --> Expired   (automatically after expires_at ledger sequence)
+```
+
+![Proof card — verified state](images/proof-card-verified.png)
+![Proof card — locked state](images/proof-card-locked.png)
+
+---
+
+## Prerequisites
+
+**Smart contract:**
+- Rust (latest stable)
+- Stellar CLI v26+
+- `wasm32v1-none` WASM target
+- Testnet account funded via Friendbot
+
+**Frontend:**
+- Node.js 18+
+- Freighter browser extension set to Testnet
+- Testnet XLM for gas
+
+---
+
+## Setup
+
+### Smart Contract
 
 ```bash
-# Contract
+# Test
 cd contract && cargo test
+
+# Build
 stellar contract build
 
-# Frontend (needs Freighter on Testnet)
-cd ../frontend && npm install && npm run dev
-# open http://localhost:3000
-```
-
-See [`contract/README.md`](./contract/README.md) for the full Proof Block and the [About page](https://stellaroid-earn-demo.vercel.app/about) for the story.
-
----
-
-## Overview
-
-Welcome to the **Stellar PH Bootcamp**—a **university-wide campus bootcamp tour** that brings Soroban and Stellar to students across Philippine campuses. In this session, you’ll receive an assigned Soroban smart contract, complete it, deploy to Stellar **testnet**, then submit your work on Rise In for certification.
-
-No prior Web3 experience needed—follow the steps below.
-
----
-
-## Your Goal
-
-1. **Receive** your assigned Soroban smart contract
-2. **Complete** the contract code as instructed
-3. **Test** it locally using `cargo test` (with **3+** passing tests)
-4. **Deploy** it to the Stellar testnet
-5. **Submit** your Contract ID + GitHub repo on Rise In
-
----
-
-## Step-by-Step Guide
-
-### Step 1 - Set Up Your Environment
-
-For full installation instructions and troubleshooting, use the local guide:
-
-- `setup/[ENG] Pre-Workshop Setup Guide.pdf`
-
-Install the following before or at the start of the session:
-
-- [Rust](https://rustup.rs/)
-- Add WASM target:
-
-- **macOS (Terminal):**
-
-```bash
-rustup target add wasm32-unknown-unknown
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-rustup target add wasm32-unknown-unknown
-```
-
-- [Stellar CLI](https://developers.stellar.org/docs/tools/stellar-cli):
-
-- **macOS (Terminal):**
-
-```bash
-cargo install --locked stellar-cli
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-cargo install --locked stellar-cli
-```
-
-- [Freighter Wallet](https://freighter.app) (browser extension), set to **Testnet**
-
-### Step 2 - Get Your Assigned Contract
-
-Your facilitator will share the assigned smart contract during the session.
-
-- **macOS (Terminal):**
-
-```bash
-git clone <facilitator-provided-repo-link>
-cd <contract-folder>
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-git clone <facilitator-provided-repo-link>
-Set-Location <contract-folder>
-```
-
-### Step 3 - Complete the Contract
-
-Open `src/lib.rs` and complete the contract logic as instructed.
-
-Make sure you have at least **3 passing unit tests** in `src/test.rs`.
-
-- **macOS (Terminal):**
-
-```bash
-cargo test
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-cargo test
-```
-
-### Step 4 - Deploy to Stellar Testnet
-
-**Create an identity (first time only):**
-
-- **macOS (Terminal):**
-
-```bash
-stellar keys generate --global my-key --network testnet
-stellar keys address my-key
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-stellar keys generate --global my-key --network testnet
-stellar keys address my-key
-```
-
-**Fund your testnet account:**
-
-- **macOS (Terminal):**
-
-```bash
-stellar keys fund my-key --network testnet
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-stellar keys fund my-key --network testnet
-```
-
-**Fund XLM to your Freighter Testnet wallet (macOS + Windows):**
-
-1. Open Freighter and switch network to **Testnet**.
-2. Copy your wallet public address (starts with `G...`).
-3. Open Friendbot and fund your address:
-   - [https://friendbot.stellar.org](https://friendbot.stellar.org)
-4. Paste your `G...` address and submit.
-5. Wait a few seconds, then refresh Freighter to see test XLM.
-
-If Friendbot UI is unavailable, use this CLI fallback:
-
-- **macOS (Terminal):**
-
-```bash
-curl "https://friendbot.stellar.org?addr=<YOUR_FREIGHTER_TESTNET_ADDRESS>"
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-Invoke-WebRequest "https://friendbot.stellar.org?addr=<YOUR_FREIGHTER_TESTNET_ADDRESS>"
-```
-
-**Build your contract:**
-
-- **macOS (Terminal):**
-
-```bash
-cargo build --target wasm32-unknown-unknown --release
-ls target/wasm32-unknown-unknown/release/*.wasm
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-cargo build --target wasm32-unknown-unknown --release
-Get-ChildItem target\wasm32-unknown-unknown\release\*.wasm
-```
-
-If you do not see a `.wasm` file, confirm your contract crate name and retry the build command.
-
-**Deploy to testnet:**
-
-- **macOS (Terminal):**
-
-```bash
+# Deploy to testnet
+stellar keys generate my-key --network testnet --fund
 stellar contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/soroban_community_treasury.wasm \
+  --wasm target/wasm32v1-none/release/stellaroid_earn.wasm \
   --source my-key \
   --network testnet
 ```
 
-- **Windows (PowerShell):**
-
-```powershell
-stellar contract deploy `
-  --wasm target/wasm32-unknown-unknown/release/soroban_community_treasury.wasm `
-  --source my-key `
-  --network testnet
-```
-
-Copy the **Contract ID** from the output (starts with `C...`).
-
-Verify on Stellar Expert:
-
-```text
-https://stellar.expert/explorer/testnet/contract/<YOUR_CONTRACT_ID>
-```
-
-### Step 5 - Submit on Rise In
-
-Submit the following on your Rise In program page:
-
-| Field | What to Submit |
-|-------|----------------|
-| **GitHub Repository** | Public repo link with your contract source code |
-| **Contract ID** | Your deployed testnet contract address |
-| **Stellar Expert Link** | `https://stellar.expert/explorer/testnet/contract/<CONTRACT_ID>` |
-| **Short Description** | 2-3 sentences on what your contract does |
-
-Submit on the **Rise In program page** your facilitator shares for your campus stop, or browse programs at [risein.com/programs](https://www.risein.com/programs).
-
----
-
-## Git Workflow Guide
-
-Use this Git workflow during the bootcamp, including `.gitignore` setup.
-Submit using your **own GitHub repository** (not this bootcamp/facilitator repository).
-
-### 1) Clone the Repository
-
-- **macOS (Terminal):**
+### Frontend
 
 ```bash
-git clone <facilitator-provided-repo-link>
-cd <contract-folder>
+cd frontend
+npm install
+npm run dev
+# open http://localhost:3000
 ```
 
-- **Windows (PowerShell):**
+**Environment variables** — copy `.env.example` to `.env.local` and fill in:
 
-```powershell
-git clone <facilitator-provided-repo-link>
-Set-Location <contract-folder>
-```
-
-### 2) Connect the Project to Your Own GitHub Repository
-
-Create a new empty repository in your GitHub account first, then update `origin` to your own repo URL:
-
-- **macOS (Terminal):**
-
-```bash
-git remote -v
-git remote set-url origin <your-github-repo-url>
-git remote -v
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-git remote -v
-git remote set-url origin <your-github-repo-url>
-git remote -v
-```
-
-Make sure `origin` points to your GitHub username/repo before pushing.
-
-### 3) Add a `.gitignore` File
-
-Create `.gitignore` to avoid committing build artifacts and secrets.
-
-Recommended `.gitignore` content:
-
-```gitignore
-/target/
-Cargo.lock
-.DS_Store
-.env
-*.log
-```
-
-- **macOS (Terminal):**
-
-```bash
-touch .gitignore
-nano .gitignore
-```
-
-- **Windows (PowerShell):**
-
-```powershell
-New-Item -Path .gitignore -ItemType File -Force
-notepad .gitignore
-```
-
-Track `.gitignore` in Git:
-
-```bash
-git add .gitignore
-git commit -m "Add gitignore for Soroban project"
-```
-
-### 4) Create Your Branch
-
-```bash
-git checkout -b <your-name>-contract-submission
-```
-
-or
-
-```powershell
-git checkout -b <your-name>-contract-submission
-```
-
-### 5) Stage and Commit Changes
-
-```bash
-git add .
-git commit -m "Complete assigned Soroban contract"
-```
-
-or
-
-```powershell
-git add .
-git commit -m "Complete assigned Soroban contract"
-```
-
-### 6) Push to GitHub (Your Own Repo)
-
-```bash
-git push -u origin <your-name>-contract-submission
-```
-
-or
-
-```powershell
-git push -u origin <your-name>-contract-submission
-```
-
-### 7) Useful Git Checks
-
-```bash
-git status
-git log --oneline -n 5
-git branch -vv
+```env
+NEXT_PUBLIC_STELLAR_RPC_URL=https://soroban-testnet.stellar.org
+NEXT_PUBLIC_STELLAR_NETWORK=TESTNET
+NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
+NEXT_PUBLIC_SOROBAN_CONTRACT_ID=<your deployed contract ID>
+NEXT_PUBLIC_STELLAR_ADMIN_ADDRESS=<your admin wallet G... address>
+NEXT_PUBLIC_STELLAR_READ_ADDRESS=<any funded testnet address for read-only calls>
+NEXT_PUBLIC_SOROBAN_ASSET_ADDRESS=CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC
+NEXT_PUBLIC_SOROBAN_ASSET_CODE=XLM
+NEXT_PUBLIC_SOROBAN_ASSET_DECIMALS=7
+NEXT_PUBLIC_STELLAR_EXPLORER_URL=https://stellar.expert/explorer/testnet
 ```
 
 ---
 
-## 📁 Required Repo Structure
+## Sample CLI Invocations
 
-For **EC Contract Certificate**:
+```bash
+# Initialize contract (run once after deploy)
+stellar contract invoke \
+  --id CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y \
+  --source my-key \
+  --network testnet \
+  -- init \
+  --admin <ADMIN_ADDRESS> \
+  --token CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC
 
-```text
-contract/
-└── src/
-    ├── lib.rs
-    └── test.rs
-```
+# Approve an issuer
+stellar contract invoke \
+  --id CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y \
+  --source my-key \
+  --network testnet \
+  -- approve_issuer \
+  --admin <ADMIN_ADDRESS> \
+  --issuer <ISSUER_ADDRESS>
 
-For **Prize Pool Joiner Submission**:
-
-```text
-<project-root>/
-├── contract/
-├── frontend/
-└── backend/ (this is optional)
+# Look up a certificate
+stellar contract invoke \
+  --id CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y \
+  --network testnet \
+  -- get_certificate \
+  --cert_hash <32_BYTE_HEX_HASH>
 ```
 
 ---
 
-## 🏆 Certificate Requirements
+## Target Users
 
-| Requirement | Status |
-|-------------|--------|
-| ✅ Attend the bootcamp session | Required |
-| ✅ Complete the assigned smart contract | Required |
-| ✅ Pass `cargo test` with 3+ tests | Required |
-| ✅ Deploy contract to Stellar testnet | Required |
-| ✅ Submit on Rise In (repo + contract ID) | Required |
+**Bootcamp graduates** — proof of skill that lives on-chain, shareable as a URL or QR code, verifiable by anyone without asking the bootcamp organizer.
 
-> Certificates are typically issued within **3-5 business days** after review.
+**Employers and HR** — one-click credential check with no login, no API key, no background check service. Green means verified on-chain. Red means revoked. No ambiguity.
+
+**Bootcamp organizers (issuers)** — register and verify credentials directly from the issuer dashboard, no backend needed. Issuer approval is also on-chain so verifiers can trust the source.
 
 ---
 
-## 🔗 Resources
+## Why Stellar
+
+Sub-cent fees and 5-second finality make the credential write cheap enough that issuers won't skip it. Soroban gives us custom contract logic — issuer approval, expiry, revocation — without a backend. Public verifiability via `simulateTransaction` means anyone can check a proof with just a hash and a public RPC endpoint, no wallet required. The same contract that stores the credential also handles employer payments, closing the loop from proof to payout on one chain.
+
+---
+
+## Live Demo
+
+| | |
+|---|---|
+| **Live demo** | https://stellaroid-earn-demo.vercel.app/ |
+| **Contract ID (current)** | [`CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`](https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y) — trust-layer ABI, proof block redesign |
+| **Contract ID (stable v1)** | [`CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`](https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ) — original deploy, stable branch |
+| **Proof txs (v1)** | [init](https://stellar.expert/explorer/testnet/tx/c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721) · [register](https://stellar.expert/explorer/testnet/tx/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22) · [verify](https://stellar.expert/explorer/testnet/tx/2215e08ecc935b6f31d5c335c3aaea3e3742f07ef993d8ca947d1711ad5199d9) · [payment](https://stellar.expert/explorer/testnet/tx/5bed652b3725a6826cd4a99e8c750cdd2dc4625f7e3a4a82661680ada50cb435) |
+
+![App dashboard](images/app-dashboard.png)
+
+---
+
+## Resources
 
 | Resource | Link |
-|----------|------|
+|---|---|
 | Rise In Programs | [risein.com/programs](https://www.risein.com/programs) |
 | Stellar Docs | [developers.stellar.org](https://developers.stellar.org) |
 | Soroban SDK | [docs.rs/soroban-sdk](https://docs.rs/soroban-sdk) |
-| Stellar CLI Docs | [developers.stellar.org/docs/tools/stellar-cli](https://developers.stellar.org/docs/tools/stellar-cli) |
+| Stellar CLI | [developers.stellar.org/docs/tools/stellar-cli](https://developers.stellar.org/docs/tools/stellar-cli) |
 | Freighter Wallet | [freighter.app](https://freighter.app) |
 | Stellar Expert (Testnet) | [stellar.expert/explorer/testnet](https://stellar.expert/explorer/testnet) |
-| Stellar Lab | [lab.stellar.org](https://lab.stellar.org) |
-
-## 🔗 Extra Resources
-
-| Resource | Link |
-|----------|------|
-| Stellar CLI (GitHub) | https://github.com/stellar/stellar-cli |
-| Building with AI | https://developers.stellar.org/docs/tools/developer-tools/building-with-ai |
-| Bootcamp Repo (Iron-Mark fork) | https://github.com/Iron-Mark/Stellar-Bootcamp-2026 |
 | Bootcamp Repo (upstream) | https://github.com/armlynobinguar/Stellar-Bootcamp-2026 |
-
----
-
-## 🇵🇭 About Stellar PH Bootcamp
-
-The Stellar UniTour is a **multi-campus roadshow**: the same Stellar Smart Contract Bootcamp format travels to universities across the Philippines so more students can build and deploy on **testnet** with guided support. It is run in partnership with [Rise In](https://risein.com).
-
----
-
-*Questions? Ask your facilitator during the session or reach out via the Rise In platform.*
