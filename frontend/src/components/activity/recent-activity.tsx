@@ -29,7 +29,12 @@ export async function RecentActivity({
   sidebar = false,
   bare = false,
 }: RecentActivityProps) {
-  const events = await getRecentEvents(appConfig.contractId, compact ? 3 : 5);
+  let events: RecentActivityItem[] = [];
+  try {
+    events = await getRecentEvents(appConfig.contractId, compact ? 3 : 5);
+  } catch {
+    // RPC unavailable — render empty state rather than crashing the page
+  }
   const hasContractLink = Boolean(appConfig.contractId);
   const contractEventsUrl = hasContractLink
     ? `${appConfig.explorerUrl}/contract/${appConfig.contractId}#events`
