@@ -76,22 +76,21 @@ export function ActivitySnackbar({
       className={cn(
         "fixed right-4 bottom-6 z-50 w-80 max-sm:right-3 max-sm:left-3 max-sm:w-auto",
         "rounded-2xl bg-surface-glass border border-border-glass backdrop-blur-md shadow-glow-accent",
+        "overflow-hidden",
         "transition-all duration-300",
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
       )}
       aria-hidden={visible ? "false" : "true"}
     >
-      <div className="relative p-4">
-        <button
-          type="button"
-          className="absolute top-3 right-3 flex items-center justify-center w-6 h-6 rounded-md text-text-muted hover:text-text hover:bg-surface-2 transition-colors cursor-pointer"
-          aria-label="Dismiss live activity"
-          onClick={() => setDismissed(true)}
-        >
-          <X className="w-3.5 h-3.5" />
-        </button>
-        {children}
-      </div>
+      <button
+        type="button"
+        className="absolute top-3 right-3 z-10 flex items-center justify-center w-6 h-6 rounded-md text-text-muted hover:text-text hover:bg-surface-2 transition-colors cursor-pointer"
+        aria-label="Dismiss live activity"
+        onClick={() => setDismissed(true)}
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+      {children}
     </div>
   );
 }

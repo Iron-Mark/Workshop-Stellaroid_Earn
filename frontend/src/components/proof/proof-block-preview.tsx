@@ -10,7 +10,7 @@ export function ProofBlockPreview({ hash }: ProofBlockPreviewProps) {
   return (
     <div className="rounded-2xl bg-surface-glass border border-border-glass p-6 flex flex-col gap-4">
       <Badge tone="accent">Proof Block</Badge>
-      <h2 className="text-lg font-semibold text-text font-heading">Share your verified demo</h2>
+      <h2 className="text-lg font-semibold text-text font-heading">Share your verified proof</h2>
       <p className="text-sm text-text-muted leading-relaxed">
         Publishing the proof card converts your submission into distribution.
       </p>

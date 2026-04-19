@@ -22,7 +22,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: [
-          "bg-gradient-to-r from-primary to-primary-hover",
+          "bg-linear-to-r from-primary to-primary-hover",
           "text-on-primary border-primary",
         ],
         secondary: [
@@ -40,6 +40,10 @@ const buttonVariants = cva(
         danger: [
           "bg-danger text-text border-danger",
           "hover:opacity-85",
+        ],
+        warning: [
+          "bg-transparent text-primary border-primary",
+          "hover:bg-primary/10",
         ],
       },
       size: {
@@ -61,19 +65,20 @@ export interface ButtonProps
   asChild?: boolean;
   loading?: boolean;
   href?: string;
+  icon?: React.ReactNode;
 }
 
 export type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>["variant"]>;
 export type ButtonSize = NonNullable<VariantProps<typeof buttonVariants>["size"]>;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading, disabled, children, href, ...props }, ref) => {
+  ({ className, variant, size, loading, disabled, icon, children, href, ...props }, ref) => {
     const classes = cn(buttonVariants({ variant, size }), className);
     const isDisabled = disabled || loading;
 
     const inner = (
       <>
-        {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : icon}
         {children}
       </>
     );

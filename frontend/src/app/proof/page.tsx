@@ -34,10 +34,11 @@ export default async function ProofIndex() {
           margin: "0 auto",
           padding: "72px 24px",
           color: "var(--color-text)",
+          textAlign: "center",
         }}
       >
         <img
-          src="/illust-lookup.svg"
+          src="/illust/illust-lookup.svg"
           alt=""
           width={192}
           height={128}

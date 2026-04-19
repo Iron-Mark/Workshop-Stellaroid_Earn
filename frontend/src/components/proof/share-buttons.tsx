@@ -18,7 +18,7 @@ export function ShareButtons({ hash }: ShareButtonsProps) {
     }
   }, []);
 
-  const tweetText = `I just got verified proof of work — on-chain, instantly settled on @StellarOrg. Sub-cent fees. 5-second finality. No platform take rate.
+  const tweetText = `I just got verified proof of work, on-chain, instantly settled on @StellarOrg. Sub-cent fees. 5-second finality. No platform take rate.
 
 Hash: ${hash}
 
@@ -27,7 +27,7 @@ Proof: ${url}
 #Stellar #Soroban #ProofOfWork`;
   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
 
-  const linkedInText = `I just got verified proof of work — anchored on-chain with SHA-256 and settled atomically on Stellar. No 30-day invoice wait. No 20% platform fee. Just a link anyone can verify.
+  const linkedInText = `I just got verified proof of work, anchored on-chain with SHA-256 and settled atomically on Stellar. No 30-day invoice wait. No 20% platform fee. Just a link anyone can verify.
 
 Hash: ${hash}
 

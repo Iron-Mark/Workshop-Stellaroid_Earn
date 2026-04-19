@@ -28,7 +28,7 @@ export async function generateMetadata({
   const short =
     hash.length > 16 ? `${hash.slice(0, 8)}…${hash.slice(-8)}` : hash;
   return {
-    title: `Proof ${short} — embed`,
+    title: `Proof ${short} - embed`,
     robots: { index: false, follow: false },
   };
 }
@@ -54,7 +54,7 @@ export default async function EmbedProof({ params }: PageProps) {
     }
   }
 
-  const proofMetadata = getProofMetadataForCertificate(hash, cert);
+  const proofMetadata = await getProofMetadataForCertificate(hash, cert);
 
   const status =
     cert?.status === "verified"
@@ -152,8 +152,8 @@ export default async function EmbedProof({ params }: PageProps) {
 
       <div style={{ fontSize: "15px", color: "#94A3B8", lineHeight: 1.4 }}>
         {proofMetadata?.title
-          ? `${proofMetadata.title} — on-chain credential anchored on Stellar.`
-          : "On-chain proof of work — SHA-256 anchored on Stellar."}
+          ? `${proofMetadata.title}: on-chain credential anchored on Stellar.`
+          : "On-chain proof of work, SHA-256 anchored on Stellar."}
       </div>
 
       {proofMetadata?.cohort ? (

@@ -104,6 +104,19 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
+    if (
+      message.includes("issuer not found") ||
+      message.includes("no issuer registry") ||
+      message.includes("#7")
+    ) {
+      return {
+        title: "Issuer not registered",
+        detail:
+          "This wallet is not registered as an issuer. Ask the contract admin to add it first.",
+        recoverable: false,
+      };
+    }
+
     if (message.includes("issuer is not approved") || message.includes("#8")) {
       return {
         title: "Issuer pending approval",

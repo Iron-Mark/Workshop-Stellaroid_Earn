@@ -331,7 +331,7 @@ export function IssuerDashboard() {
                     Approve issuer
                   </Button>
                   <Button
-                    variant="danger"
+                    variant="warning"
                     onClick={() => void handleAdminAction("suspend")}
                     loading={adminBusy === "suspend"}
                     disabled={targetRecord.status === "suspended"}

@@ -21,7 +21,7 @@ export interface ToastInput {
 
 export function useToast() {
   function toast({ title, detail, tone, action }: ToastInput) {
-    const message = detail ? `${title} — ${detail}` : title;
+    const message = detail ? `${title}: ${detail}` : title;
     const opts = action
       ? {
           action: {

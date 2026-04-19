@@ -171,7 +171,7 @@ export function PayForm({ initialHash, initialStudent, onPaid }: PayFormProps) {
           helper={
             amountTouched || payAmount
               ? undefined
-              : `Testnet pays in ${appConfig.assetCode}. USDC-on-Stellar lands in v2 — same flow, stable value.`
+              : `Testnet pays in ${appConfig.assetCode}. USDC-on-Stellar lands in v2, same flow, stable value.`
           }
           placeholder="10"
           autoComplete="off"

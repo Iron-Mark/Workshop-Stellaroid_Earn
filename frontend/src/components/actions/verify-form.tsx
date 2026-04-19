@@ -78,7 +78,7 @@ type LifecycleAction = "verify" | "suspend" | "revoke";
 function actionTitle(action: LifecycleAction) {
   switch (action) {
     case "verify":
-      return "Credential verified";
+      return "Credential approved";
     case "suspend":
       return "Credential suspended";
     case "revoke":
@@ -89,7 +89,7 @@ function actionTitle(action: LifecycleAction) {
 function actionDetail(action: LifecycleAction) {
   switch (action) {
     case "verify":
-      return "Approved verification was submitted on-chain.";
+      return "On-chain approval submitted by the issuer.";
     case "suspend":
       return "The credential has been suspended on-chain.";
     case "revoke":
@@ -122,6 +122,7 @@ export function VerifyForm({
   const [hashTouched, setHashTouched] = useState(false);
   const [pendingAction, setPendingAction] = useState<LifecycleAction | null>(null);
   const [lookup, setLookup] = useState<LookupState>({ status: "idle" });
+  const [hashEditing, setHashEditing] = useState(!initialHash);
 
   const normalizedHash = certHash.trim().replace(/^0x/i, "").toLowerCase();
   const configured = hasRequiredConfig();
@@ -134,6 +135,7 @@ export function VerifyForm({
   useEffect(() => {
     if (!initialHash) return;
     setCertHash((current) => current || initialHash);
+    setHashEditing(false);
   }, [initialHash]);
 
   useEffect(() => {
@@ -142,6 +144,7 @@ export function VerifyForm({
       if (!detail) return;
       setCertHash(detail.certHash);
       setHashTouched(false);
+      setHashEditing(false);
       setLookup({ status: "idle" });
     }
     window.addEventListener(DEMO_AUTOFILL_EVENT, onAutofill);
@@ -377,7 +380,7 @@ export function VerifyForm({
     if (!certHash.trim()) return "Paste a certificate hash. The app will check chain state before enabling trusted verification.";
     if (!hashOk) return "Enter a full 64-character SHA-256 hash.";
     if (currentLookup.status === "loading") return "Checking whether this hash is already registered...";
-    if (currentLookup.status === "missing") return "This hash is not registered, so on-chain verification is blocked.";
+    if (currentLookup.status === "missing") return "This hash is not registered, so on-chain approval is blocked.";
     if (currentLookup.status === "error") return currentLookup.message;
     if (currentLookup.status === "found" && currentLookup.record.status === "verified")
       return allowTrustedActions
@@ -397,29 +400,57 @@ export function VerifyForm({
         : "Hash found. Employers can inspect status here while waiting for trusted verification.";
     if (currentLookup.status === "found")
       return allowTrustedActions
-        ? "Hash found on-chain. Approved issuers or the admin wallet can verify, suspend, or revoke it."
-        : "Hash found on-chain. Once an approved issuer or admin verifies it, the employer can pay.";
+        ? "Hash found on-chain. Approved issuers or the admin wallet can approve, suspend, or revoke it."
+        : "Hash found on-chain. Once an approved issuer or admin approves it, the employer can pay.";
     return "Use Look up if you want to refresh the current chain state manually.";
   })();
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-4">
-        <Input
-          mono
-          label="Certificate hash"
-          value={certHash}
-          onChange={(e) => {
-            setCertHash(e.target.value);
-            setLookup({ status: "idle" });
-          }}
-          onBlur={() => setHashTouched(true)}
-          error={hashError}
-          helper={hashTouched || certHash ? undefined : "The 64-character SHA-256 hash to look up or verify as an approved issuer"}
-          placeholder="0a1b2c..."
-          autoComplete="off"
-          spellCheck={false}
-        />
+      <div className="flex flex-col gap-2">
+        {!hashEditing && certHash ? (
+          <div className="flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg bg-surface-2 border border-border">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="font-pixel text-[10px] text-text-muted uppercase tracking-widest shrink-0">Hash</span>
+              <span className="font-mono text-[12px] text-text truncate">{certHash.slice(0, 16)}…{certHash.slice(-8)}</span>
+              {isValidHash(certHash) && (
+                <span className="font-pixel text-[10px] text-verified tracking-widest uppercase shrink-0">Valid</span>
+              )}
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={() => void navigator.clipboard.writeText(certHash)}
+                className="text-[12px] text-text-muted/50 hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0 font-[inherit]"
+              >
+                Copy
+              </button>
+              <button
+                type="button"
+                onClick={() => setHashEditing(true)}
+                className="text-[12px] text-text-muted hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0 font-[inherit]"
+              >
+                Change
+              </button>
+            </div>
+          </div>
+        ) : (
+          <Input
+            mono
+            label="Certificate hash"
+            value={certHash}
+            onChange={(e) => {
+              setCertHash(e.target.value);
+              setLookup({ status: "idle" });
+            }}
+            onBlur={() => setHashTouched(true)}
+            error={hashError}
+            helper={hashTouched || certHash ? undefined : "The 64-character SHA-256 hash to look up or verify as an approved issuer"}
+            placeholder="0a1b2c..."
+            autoComplete="off"
+            spellCheck={false}
+          />
+        )}
       </div>
 
       <div className="flex gap-2 flex-wrap max-sm:flex-col [&>*]:max-sm:w-full">
@@ -429,8 +460,9 @@ export function VerifyForm({
           onClick={handleLookup}
           disabled={!canLookup}
           loading={currentLookup.status === "loading"}
+          icon={<img src="/ui-icons/icon-lookup.svg" width="16" height="16" aria-hidden="true" />}
         >
-          Look up (read-only)
+          Look up
         </Button>
         {allowTrustedActions ? (
           <>
@@ -440,26 +472,29 @@ export function VerifyForm({
               onClick={() => void handleAction("verify")}
               disabled={!canVerify}
               loading={pendingAction === "verify"}
+              icon={<img src="/ui-icons/icon-approve-cred.svg" width="16" height="16" aria-hidden="true" />}
             >
-              Verify as Issuer/Admin
+              Approve credential
             </Button>
             <Button
               type="button"
-              variant="secondary"
+              variant="warning"
               onClick={() => void handleAction("suspend")}
               disabled={!canSuspend}
               loading={pendingAction === "suspend"}
+              icon={<img src="/ui-icons/icon-suspend-cred.svg" width="16" height="16" aria-hidden="true" />}
             >
-              Suspend
+              Suspend credential
             </Button>
             <Button
               type="button"
-              variant="ghost"
+              variant="danger"
               onClick={() => void handleAction("revoke")}
               disabled={!canRevoke}
               loading={pendingAction === "revoke"}
+              icon={<img src="/ui-icons/icon-revoke-cred.svg" width="16" height="16" aria-hidden="true" />}
             >
-              Revoke
+              Revoke credential
             </Button>
           </>
         ) : null}

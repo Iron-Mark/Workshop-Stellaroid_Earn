@@ -46,19 +46,19 @@ export const i18n: Record<Locale, I18nDict> = {
       h1a: "Verify credentials.",
       h1b: "Settle payment in one flow.",
       lede: "Stellaroid Earn anchors certificate hashes on Stellar so employers can inspect the record and pay the graduate without leaving the workflow once an approved issuer or admin verifies it. No email thread, no invoice delay, no platform fee.",
-      ctaPrimary: "Try the demo ->",
-      ctaGhost: "See a sample Proof Block - no wallet needed",
+      ctaPrimary: "Try the app →",
+      ctaGhost: "See a sample proof →",
     },
     footer: {
       tagline:
-        "On-chain credential registry on Stellar testnet. Built for the Stellar Philippines UniTour bootcamp.",
+        "On-chain credential registry on Stellar testnet. Built for the Stellar PH Bootcamp bootcamp.",
     },
     about: {
       lede: "A thin piece of software around one idea: certificates should be verifiable in seconds, not emails. And if they're verifiable, the grad should get paid on the same tap.",
       problemKicker:
         "The certificate is real. The problem is that proving it costs more than hiring around it.",
       approachKicker:
-        "The canonical output isn't the UI — it's the event stream on stellar.expert. The proof is public by default.",
+        "The canonical output isn't the UI; it's the event stream on stellar.expert. The proof is public by default.",
     },
     app: {
       connectTitle: "Connect your wallet to start",
@@ -88,12 +88,12 @@ export const i18n: Record<Locale, I18nDict> = {
       h1a: "I-verify ang credentials.",
       h1b: "I-settle ang bayad sa iisang flow.",
       lede: "I-anchor ang certificate hash sa Stellar. Kapag verified na ng approved issuer o admin, puwedeng i-check ng employer at magbayad agad — walang email thread, walang invoice delay, walang platform fee.",
-      ctaPrimary: "Subukan ang demo ->",
-      ctaGhost: "Tingnan ang sample Proof Block — walang wallet kailangan",
+      ctaPrimary: "Subukan ang app →",
+      ctaGhost: "Tingnan ang sample proof →",
     },
     footer: {
       tagline:
-        "On-chain credential registry sa Stellar testnet. Ginawa para sa Stellar Philippines UniTour bootcamp.",
+        "On-chain credential registry sa Stellar testnet. Ginawa para sa Stellar PH Bootcamp bootcamp.",
     },
     about: {
       lede: "One idea lang: certificates should be verifiable in seconds — hindi sa pamamagitan ng email. Tapos mabayaran agad.",

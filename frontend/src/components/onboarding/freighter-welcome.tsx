@@ -49,7 +49,7 @@ export function FreighterWelcome() {
         </h2>
         <p className="mb-5 text-text-muted text-[15px] leading-[1.55] max-sm:text-[14px]">
           Stellaroid Earn runs on Stellar testnet. Every action is signed by your
-          own wallet — no email, no password, no KYC.
+          own wallet, no email, no password, no KYC.
         </p>
 
         <ul className="mb-6 p-0 list-none flex flex-col gap-3.5">
@@ -62,7 +62,7 @@ export function FreighterWelcome() {
               <a href="https://www.freighter.app/" target="_blank" rel="noreferrer">
                 Freighter
               </a>{" "}
-              — the Stellar wallet browser extension. <strong>Switch it to
+              , the Stellar wallet browser extension. <strong>Switch it to
               testnet</strong> after install.
             </span>
           </li>
@@ -75,7 +75,7 @@ export function FreighterWelcome() {
               <a href="https://friendbot.stellar.org/" target="_blank" rel="noreferrer">
                 friendbot
               </a>{" "}
-              — one click, no signup.
+              , no signup.
             </span>
           </li>
           <li className="flex gap-3 items-start">
@@ -101,7 +101,7 @@ export function FreighterWelcome() {
             Get Freighter
           </Button>
           <Button variant="primary" size="sm" onClick={dismiss}>
-            Got it — let&rsquo;s go
+            Let&rsquo;s go
           </Button>
         </div>
       </div>

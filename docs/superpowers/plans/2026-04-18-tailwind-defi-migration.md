@@ -13,14 +13,17 @@
 ## File Map
 
 ### Created
+
 - `frontend/postcss.config.mjs` — Tailwind v4 PostCSS plugin
 - `frontend/src/lib/motion.ts` — reusable Framer Motion variants + DeFi easing
 
 ### Heavily Modified
+
 - `frontend/src/styles/globals.css` — `:root` → `@theme`, DeFi tokens, shadcn vars, shimmer/float keyframes
 - `frontend/src/app/layout.tsx` — `next/font/google` font setup, CSS variable injection
 
 ### Rewritten (CSS Module deleted, TSX updated)
+
 Every component listed in Phases 2–5 below.
 
 ---
@@ -62,6 +65,7 @@ git commit -m "chore: install tailwindcss v4, framer-motion, lucide-react"
 ## Task 2 — PostCSS Config
 
 **Files:**
+
 - Create: `frontend/postcss.config.mjs`
 
 - [ ] **Step 1: Create the file**
@@ -70,7 +74,7 @@ git commit -m "chore: install tailwindcss v4, framer-motion, lucide-react"
 // frontend/postcss.config.mjs
 export default {
   plugins: {
-    '@tailwindcss/postcss': {},
+    "@tailwindcss/postcss": {},
   },
 };
 ```
@@ -95,6 +99,7 @@ git commit -m "chore: add tailwind v4 postcss config"
 ## Task 3 — Migrate globals.css to @theme with DeFi Tokens
 
 **Files:**
+
 - Modify: `frontend/src/styles/globals.css`
 
 - [ ] **Step 1: Replace `:root` with `@import "tailwindcss"` + `@theme` block**
@@ -103,28 +108,28 @@ Replace the entire file contents with:
 
 ```css
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Share+Tech+Mono&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Share+Tech+Mono&display=swap");
 
 @theme {
   /* Colors — existing palette */
-  --color-bg: #0F172A;
-  --color-surface: #1E293B;
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
   --color-surface-2: #273549;
   --color-surface-glass: rgba(30, 41, 59, 0.6);
   --color-border: #334155;
   --color-border-glass: rgba(255, 255, 255, 0.08);
-  --color-text: #F8FAFC;
-  --color-text-muted: #94A3B8;
-  --color-primary: #F59E0B;
-  --color-primary-hover: #FBBF24;
-  --color-on-primary: #0F172A;
-  --color-accent: #8B5CF6;
-  --color-verified: #2DD4BF;
-  --color-verified-strong: #14B8A6;
+  --color-text: #f8fafc;
+  --color-text-muted: #94a3b8;
+  --color-primary: #f59e0b;
+  --color-primary-hover: #fbbf24;
+  --color-on-primary: #0f172a;
+  --color-accent: #8b5cf6;
+  --color-verified: #2dd4bf;
+  --color-verified-strong: #14b8a6;
   --color-verified-bg: rgba(45, 212, 191, 0.12);
-  --color-success: #22C55E;
-  --color-warning: #F59E0B;
-  --color-danger: #EF4444;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
 
   /* DeFi glow colors */
   --color-glow-primary: rgba(245, 158, 11, 0.35);
@@ -145,10 +150,10 @@ Replace the entire file contents with:
   --spacing-6: 32px;
 
   /* Fonts */
-  --font-heading: 'Orbitron', system-ui, sans-serif;
-  --font-sans: 'Exo 2', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --font-pixel: 'Share Tech Mono', ui-monospace, monospace;
+  --font-heading: "Orbitron", system-ui, sans-serif;
+  --font-sans: "Exo 2", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-pixel: "Share Tech Mono", ui-monospace, monospace;
 
   /* Type scale */
   --text-xs: 0.75rem;
@@ -164,7 +169,8 @@ Replace the entire file contents with:
   /* DeFi shadow / glow scale */
   --shadow-glow-sm: 0 0 12px rgba(245, 158, 11, 0.25);
   --shadow-glow-md: 0 0 24px rgba(245, 158, 11, 0.35);
-  --shadow-glow-lg: 0 4px 32px rgba(245, 158, 11, 0.45), 0 0 64px rgba(245, 158, 11, 0.15);
+  --shadow-glow-lg:
+    0 4px 32px rgba(245, 158, 11, 0.45), 0 0 64px rgba(245, 158, 11, 0.15);
   --shadow-glow-accent: 0 0 24px rgba(139, 92, 246, 0.35);
   --shadow-glow-verified: 0 0 16px rgba(45, 212, 191, 0.35);
 
@@ -180,25 +186,25 @@ Replace the entire file contents with:
 /* shadcn/ui CSS variable bridge */
 @layer base {
   :root {
-    --background: 15 23 42;           /* #0F172A */
-    --foreground: 248 250 252;        /* #F8FAFC */
-    --card: 30 41 59;                 /* #1E293B */
+    --background: 15 23 42; /* #0F172A */
+    --foreground: 248 250 252; /* #F8FAFC */
+    --card: 30 41 59; /* #1E293B */
     --card-foreground: 248 250 252;
     --popover: 30 41 59;
     --popover-foreground: 248 250 252;
-    --primary: 245 158 11;            /* #F59E0B */
-    --primary-foreground: 15 23 42;   /* #0F172A */
-    --secondary: 39 53 73;            /* #273549 */
+    --primary: 245 158 11; /* #F59E0B */
+    --primary-foreground: 15 23 42; /* #0F172A */
+    --secondary: 39 53 73; /* #273549 */
     --secondary-foreground: 248 250 252;
     --muted: 39 53 73;
-    --muted-foreground: 148 163 184;  /* #94A3B8 */
-    --accent: 139 92 246;             /* #8B5CF6 */
+    --muted-foreground: 148 163 184; /* #94A3B8 */
+    --accent: 139 92 246; /* #8B5CF6 */
     --accent-foreground: 248 250 252;
-    --destructive: 239 68 68;         /* #EF4444 */
+    --destructive: 239 68 68; /* #EF4444 */
     --destructive-foreground: 248 250 252;
-    --border: 51 65 85;               /* #334155 */
+    --border: 51 65 85; /* #334155 */
     --input: 51 65 85;
-    --ring: 245 158 11;               /* #F59E0B */
+    --ring: 245 158 11; /* #F59E0B */
     --radius: 0.5rem;
   }
 }
@@ -211,7 +217,12 @@ Replace the entire file contents with:
 }
 
 body,
-h1, h2, h3, h4, h5, h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 p {
   margin: 0;
 }
@@ -230,7 +241,8 @@ main[id] {
   scroll-margin-top: 96px;
 }
 
-code, pre {
+code,
+pre {
   font-family: var(--font-mono);
 }
 
@@ -251,7 +263,9 @@ a:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -261,18 +275,32 @@ a:hover {
 
 /* Keyframes */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
-  50% { box-shadow: 0 0 18px rgba(245, 158, 11, 0.8); }
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.8);
+  }
 }
 
 /* Utility */
@@ -309,6 +337,7 @@ git commit -m "feat: migrate globals.css to tailwind v4 @theme with DeFi tokens"
 ## Task 4 — Swap Fonts in layout.tsx
 
 **Files:**
+
 - Modify: `frontend/src/app/layout.tsx`
 
 - [ ] **Step 1: Update layout.tsx to use next/font/google**
@@ -317,7 +346,12 @@ git commit -m "feat: migrate globals.css to tailwind v4 @theme with DeFi tokens"
 // frontend/src/app/layout.tsx
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Orbitron, Exo_2, JetBrains_Mono, Share_Tech_Mono } from "next/font/google";
+import {
+  Orbitron,
+  Exo_2,
+  JetBrains_Mono,
+  Share_Tech_Mono,
+} from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { ToastProvider } from "@/components/ui";
 import { JsonLd } from "@/components/ui/json-ld";
@@ -400,9 +434,14 @@ const webAppJsonLd = [
   },
 ];
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const cookieStore = await cookies();
-  const lang = cookieStore.get("stellaroid:locale")?.value === "tl" ? "tl" : "en";
+  const lang =
+    cookieStore.get("stellaroid:locale")?.value === "tl" ? "tl" : "en";
 
   return (
     <html
@@ -426,8 +465,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 - [ ] **Step 2: Remove the Google Fonts `@import` from globals.css** (next/font replaces it)
 
 In `globals.css`, delete the line:
+
 ```css
-@import url('https://fonts.googleapis.com/css2?family=Orbitron...');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron...");
 ```
 
 - [ ] **Step 3: Verify build + fonts load**
@@ -450,6 +490,7 @@ git commit -m "feat: swap fonts to Orbitron + Exo 2 via next/font"
 ## Task 5 — shadcn Init + Install Components
 
 **Files:**
+
 - Create: `frontend/components.json` (auto-generated)
 - Modify: `frontend/src/components/ui/` (scaffolded)
 
@@ -466,6 +507,7 @@ npx shadcn@latest init
 ```
 
 Answer the prompts:
+
 - Style: **New York**
 - Base color: **Neutral**
 - CSS variables: **Yes**
@@ -492,12 +534,13 @@ cat src/lib/utils.ts
 ```
 
 Expected output:
+
 ```ts
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 ```
 
@@ -521,6 +564,7 @@ git commit -m "feat: init shadcn/ui with DeFi theme mapping"
 ## Task 6 — Create Motion Variants Library
 
 **Files:**
+
 - Create: `frontend/src/lib/motion.ts`
 
 - [ ] **Step 1: Create motion.ts**
@@ -548,7 +592,11 @@ export const fadeIn = {
 
 export const scaleIn = {
   hidden: { scale: 0.95, opacity: 0 },
-  visible: { scale: 1, opacity: 1, transition: { ease: EASE_DEFI, duration: 0.4 } },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: { ease: EASE_DEFI, duration: 0.4 },
+  },
 };
 
 export const cardHover = {
@@ -572,7 +620,8 @@ export const ctaHover = {
   rest: { scale: 1, boxShadow: "0 4px 14px rgba(245,158,11,0.15)" },
   hover: {
     scale: 1.02,
-    boxShadow: "0 4px 32px rgba(245,158,11,0.45), 0 0 64px rgba(245,158,11,0.15)",
+    boxShadow:
+      "0 4px 32px rgba(245,158,11,0.45), 0 0 64px rgba(245,158,11,0.15)",
     transition: { ease: EASE_DEFI, duration: 0.2 },
   },
 };
@@ -598,6 +647,7 @@ git commit -m "feat: add framer motion variants library"
 ## Task 7 — Rewrite Button Component
 
 **Files:**
+
 - Modify: `frontend/src/components/ui/button.tsx`
 - Delete: `frontend/src/components/ui/button.module.css`
 
@@ -622,7 +672,7 @@ const buttonVariants = cva(
     "rounded-full font-sans font-semibold text-[15px] whitespace-nowrap",
     "border transition-colors duration-200",
     "cursor-pointer no-underline",
-    "min-h-[44px] px-5",
+    "min-h-11 px-5",
     "focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2",
     "disabled:opacity-45 disabled:cursor-not-allowed",
   ],
@@ -630,13 +680,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: [
-          "bg-gradient-to-r from-primary to-primary-hover",
+          "bg-linear-to-r from-primary to-primary-hover",
           "text-on-primary border-primary",
         ],
-        secondary: [
-          "bg-surface-2 text-text border-border",
-          "hover:bg-border",
-        ],
+        secondary: ["bg-surface-2 text-text border-border", "hover:bg-border"],
         ghost: [
           "bg-transparent text-text border-transparent",
           "hover:bg-surface-2",
@@ -645,26 +692,24 @@ const buttonVariants = cva(
           "bg-transparent text-text border-border-glass",
           "hover:border-primary",
         ],
-        danger: [
-          "bg-danger text-text border-danger",
-          "hover:opacity-85",
-        ],
+        danger: ["bg-danger text-text border-danger", "hover:opacity-85"],
       },
       size: {
-        default: "min-h-[44px] px-5 text-[15px]",
-        sm: "min-h-[36px] px-3 text-[13px]",
-        icon: "min-h-[44px] w-[44px] p-0",
+        default: "min-h-11 px-5 text-[15px]",
+        sm: "min-h-9 px-3 text-[13px]",
+        icon: "min-h-11 w-11 p-0",
       },
     },
     defaultVariants: {
       variant: "primary",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
@@ -672,7 +717,10 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading, disabled, children, href, ...props }, ref) => {
+  (
+    { className, variant, size, loading, disabled, children, href, ...props },
+    ref,
+  ) => {
     const classes = cn(buttonVariants({ variant, size }), className);
     const isDisabled = disabled || loading;
 
@@ -710,7 +758,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {inner}
       </motion.button>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 
@@ -744,6 +792,7 @@ git commit -m "feat: rewrite Button with Tailwind v4 + DeFi pill + Framer Motion
 ## Task 8 — Rewrite Badge Component
 
 **Files:**
+
 - Modify: `frontend/src/components/ui/badge.tsx`
 - Delete: `frontend/src/components/ui/badge.module.css`
 
@@ -761,11 +810,11 @@ import { glowPulse } from "@/lib/motion";
 const toneClasses: Record<string, string> = {
   neutral: "bg-text-muted/15 text-text-muted border-transparent",
   primary: "bg-primary/10 text-primary border-primary/30",
-  accent:  "bg-accent/18 text-[#C4B5FD] border-accent/30",
-  verified:"bg-verified-bg text-verified border-verified/30",
+  accent: "bg-accent/20 text-violet-300 border-accent/30",
+  verified: "bg-verified-bg text-verified border-verified/30",
   success: "bg-success/12 text-success border-success/30",
   warning: "bg-warning/12 text-warning border-warning/30",
-  danger:  "bg-danger/12 text-danger border-danger/30",
+  danger: "bg-danger/12 text-danger border-danger/30",
 };
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -773,26 +822,36 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   dot?: boolean;
 }
 
-export function Badge({ tone = "neutral", dot, className, children, ...props }: BadgeProps) {
+export function Badge({
+  tone = "neutral",
+  dot,
+  className,
+  children,
+  ...props
+}: BadgeProps) {
   return (
     <span
       className={cn(
         "inline-flex items-center gap-1.5",
         "h-6 px-2.5 rounded-full",
-        "font-pixel text-[12px] font-medium leading-none whitespace-nowrap",
+        "font-pixel text-xs font-medium leading-none whitespace-nowrap",
         "border",
         toneClasses[tone] ?? toneClasses.neutral,
-        className
+        className,
       )}
       {...props}
     >
       {dot && (
         <motion.span
           className={cn(
-            "w-1.5 h-1.5 rounded-full flex-shrink-0",
-            tone === "verified" ? "bg-verified" :
-            tone === "primary"  ? "bg-primary"  :
-            tone === "accent"   ? "bg-[#C4B5FD]" : "bg-current"
+            "w-1.5 h-1.5 rounded-full shrink-0",
+            tone === "verified"
+              ? "bg-verified"
+              : tone === "primary"
+                ? "bg-primary"
+                : tone === "accent"
+                  ? "bg-violet-300"
+                  : "bg-current",
           )}
           animate={glowPulse.animate}
         />
@@ -830,6 +889,7 @@ git commit -m "feat: rewrite Badge with Tailwind v4 + DeFi tones"
 ## Task 9 — Rewrite Input, Skeleton, CopyButton, HashReveal; Add Sonner Toast
 
 **Files:**
+
 - Modify: `frontend/src/components/ui/input.tsx`
 - Modify: `frontend/src/components/ui/skeleton.tsx`
 - Modify: `frontend/src/components/ui/copy-button.tsx`
@@ -853,7 +913,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     <input
       ref={ref}
       className={cn(
-        "flex w-full min-h-[44px] px-3 py-2",
+        "flex w-full min-h-11 px-3 py-2",
         "rounded-lg bg-surface-2 border",
         "font-sans text-[15px] text-text placeholder:text-text-muted/60",
         "transition-colors duration-150",
@@ -862,11 +922,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           : "border-border focus-visible:border-primary focus-visible:outline-primary",
         "focus-visible:outline-2 focus-visible:outline-offset-2",
         "disabled:opacity-45 disabled:cursor-not-allowed",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  ),
 );
 Input.displayName = "Input";
 
@@ -879,15 +939,18 @@ export { Input };
 // frontend/src/components/ui/skeleton.tsx
 import { cn } from "@/lib/utils";
 
-export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+export function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
         "rounded-md",
-        "bg-[length:200%_100%] bg-gradient-to-r",
+        "bg-size-[200%_100%] bg-linear-to-r",
         "from-surface-2 via-surface to-surface-2",
-        "[animation:shimmer_1.8s_linear_infinite]",
-        className
+        "animate-[shimmer_1.8s_linear_infinite]",
+        className,
       )}
       {...props}
     />
@@ -911,7 +974,11 @@ interface CopyButtonProps {
   className?: string;
 }
 
-export function CopyButton({ value, ariaLabel = "Copy", className }: CopyButtonProps) {
+export function CopyButton({
+  value,
+  ariaLabel = "Copy",
+  className,
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -931,13 +998,14 @@ export function CopyButton({ value, ariaLabel = "Copy", className }: CopyButtonP
         "text-text-muted hover:text-primary",
         "bg-transparent hover:bg-primary/10",
         "transition-colors duration-150 cursor-pointer",
-        className
+        className,
       )}
     >
-      {copied
-        ? <Check className="w-3.5 h-3.5 text-success" />
-        : <Copy className="w-3.5 h-3.5" />
-      }
+      {copied ? (
+        <Check className="w-3.5 h-3.5 text-success" />
+      ) : (
+        <Copy className="w-3.5 h-3.5" />
+      )}
     </button>
   );
 }
@@ -961,7 +1029,9 @@ interface HashRevealProps {
 
 export function HashReveal({ hash, short, className }: HashRevealProps) {
   const [revealed, setRevealed] = useState(false);
-  const display = revealed ? hash : (short ?? `${hash.slice(0, 8)}…${hash.slice(-8)}`);
+  const display = revealed
+    ? hash
+    : (short ?? `${hash.slice(0, 8)}…${hash.slice(-8)}`);
 
   return (
     <span className={cn("inline-flex items-center gap-1.5", className)}>
@@ -970,14 +1040,15 @@ export function HashReveal({ hash, short, className }: HashRevealProps) {
       </code>
       <button
         type="button"
-        onClick={() => setRevealed(r => !r)}
+        onClick={() => setRevealed((r) => !r)}
         aria-label={revealed ? "Hide full hash" : "Show full hash"}
         className="inline-flex items-center justify-center w-5 h-5 text-text-muted hover:text-primary transition-colors cursor-pointer"
       >
-        {revealed
-          ? <EyeOff className="w-3.5 h-3.5" />
-          : <Eye className="w-3.5 h-3.5" />
-        }
+        {revealed ? (
+          <EyeOff className="w-3.5 h-3.5" />
+        ) : (
+          <Eye className="w-3.5 h-3.5" />
+        )}
       </button>
     </span>
   );
@@ -997,8 +1068,19 @@ export { Skeleton } from "./skeleton";
 export { CopyButton } from "./copy-button";
 export { HashReveal } from "./hash-reveal";
 export { Separator } from "./separator";
-export { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./dialog";
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+export {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "./dialog";
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";
 
 // Toast via Sonner
 export { Toaster as ToastProvider } from "sonner";
@@ -1035,6 +1117,7 @@ git commit -m "feat: rewrite UI primitives + swap to Sonner toast"
 ## Task 10 — Rewrite SiteNav (Glassmorphism)
 
 **Files:**
+
 - Modify: `frontend/src/components/layout/site-nav.tsx`
 - Delete: `frontend/src/components/layout/site-nav.module.css`
 
@@ -1072,7 +1155,7 @@ export function SiteNav() {
     <>
       <a
         href="#main"
-        className="absolute left-4 -top-12 z-[11] focus:top-3 px-3 py-2 rounded-md bg-primary text-on-primary font-semibold text-sm transition-[top] no-underline"
+        className="absolute left-4 -top-12 z-11 focus:top-3 px-3 py-2 rounded-md bg-primary text-on-primary font-semibold text-sm transition-[top] no-underline"
       >
         Skip to content
       </a>
@@ -1085,16 +1168,16 @@ export function SiteNav() {
           "backdrop-blur-xl bg-surface-glass",
           /* amber hairline top edge */
           "before:absolute before:inset-x-0 before:top-0 before:h-px",
-          "before:bg-gradient-to-r before:from-transparent before:via-primary/60 before:to-transparent",
-          "relative"
+          "before:bg-linear-to-r before:from-transparent before:via-primary/60 before:to-transparent",
+          "relative",
         )}
         aria-label="Main navigation"
       >
-        <div className="flex items-center justify-between max-w-[1040px] mx-auto px-7 py-4 gap-4">
+        <div className="flex items-center justify-between max-w-260 mx-auto px-7 py-4 gap-4">
           {/* Brand */}
           <Link
             href="/"
-            className="inline-flex items-center gap-2.5 text-text no-underline font-bold text-[17px] tracking-[-0.2px] flex-shrink-0 hover:opacity-80 transition-opacity focus-visible:outline-primary"
+            className="inline-flex items-center gap-2.5 text-text no-underline font-bold text-[17px] tracking-[-0.2px] shrink-0 hover:opacity-80 transition-opacity focus-visible:outline-primary"
           >
             <Image src="/logo.svg" alt="" width={28} height={28} />
             <span className="font-heading">Stellaroid Earn</span>
@@ -1102,7 +1185,7 @@ export function SiteNav() {
 
           {/* Desktop links */}
           <div className="hidden md:flex gap-6 text-sm flex-1 ml-6">
-            {navLinks.map(l => (
+            {navLinks.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
@@ -1114,7 +1197,7 @@ export function SiteNav() {
           </div>
 
           {/* Right actions */}
-          <div className="hidden md:flex items-center gap-2.5 flex-shrink-0">
+          <div className="hidden md:flex items-center gap-2.5 shrink-0">
             <LocaleToggle />
             <Button
               href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026"
@@ -1131,7 +1214,7 @@ export function SiteNav() {
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            onClick={() => setOpen(o => !o)}
+            onClick={() => setOpen((o) => !o)}
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-border text-text bg-transparent cursor-pointer hover:bg-surface-2 transition-colors"
           >
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -1141,8 +1224,8 @@ export function SiteNav() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-x-0 top-[65px] bottom-0 z-9 bg-bg flex flex-col gap-1 p-6 md:hidden">
-          {navLinks.map(l => (
+        <div className="fixed inset-x-0 top-16.25 bottom-0 z-9 bg-bg flex flex-col gap-1 p-6 md:hidden">
+          {navLinks.map((l) => (
             <Link
               key={l.href}
               href={l.href}
@@ -1154,7 +1237,11 @@ export function SiteNav() {
           ))}
           <div className="mt-3 flex flex-col gap-2">
             <LocaleToggle />
-            <Button href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" variant="outline" size="sm">
+            <Button
+              href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026"
+              variant="outline"
+              size="sm"
+            >
               <Github className="w-3.5 h-3.5" />
               GitHub
             </Button>
@@ -1193,6 +1280,7 @@ git commit -m "feat: rewrite SiteNav with glassmorphism + amber hairline"
 ## Task 11 — Rewrite SiteFooter, AppShell, LocaleToggle
 
 **Files:**
+
 - Modify: `frontend/src/components/layout/site-footer.tsx`
 - Modify: `frontend/src/components/layout/app-shell.tsx`
 - Modify: `frontend/src/components/layout/locale-toggle.tsx`
@@ -1219,21 +1307,41 @@ import { appConfig } from "@/lib/config";
 export function SiteFooter() {
   return (
     <footer className="border-t border-border-glass bg-surface-glass mt-20 px-6 py-8 text-sm text-text-muted text-center">
-      <div className="max-w-[1040px] mx-auto flex flex-col items-center gap-4">
+      <div className="max-w-260 mx-auto flex flex-col items-center gap-4">
         <div className="flex items-center gap-2.5">
           <Image src="/logo.svg" alt="" width={22} height={22} />
-          <span className="font-heading text-text font-semibold text-[15px]">Stellaroid Earn</span>
+          <span className="font-heading text-text font-semibold text-[15px]">
+            Stellaroid Earn
+          </span>
         </div>
         <p className="text-[13px] leading-relaxed max-w-sm">
           A thin piece of software around one idea:{" "}
-          <em className="not-italic font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <em className="not-italic font-medium bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
             certificates should be verifiable in seconds, not emails.
           </em>
         </p>
-        <nav className="flex flex-wrap justify-center gap-5 text-[13px]" aria-label="Footer navigation">
-          <Link href="/about" className="hover:text-text transition-colors no-underline">About</Link>
-          <Link href="/proof" className="hover:text-text transition-colors no-underline">Verify</Link>
-          <Link href="/app" className="hover:text-text transition-colors no-underline">App</Link>
+        <nav
+          className="flex flex-wrap justify-center gap-5 text-[13px]"
+          aria-label="Footer navigation"
+        >
+          <Link
+            href="/about"
+            className="hover:text-text transition-colors no-underline"
+          >
+            About
+          </Link>
+          <Link
+            href="/proof"
+            className="hover:text-text transition-colors no-underline"
+          >
+            Verify
+          </Link>
+          <Link
+            href="/app"
+            className="hover:text-text transition-colors no-underline"
+          >
+            App
+          </Link>
           {appConfig.contractId && (
             <a
               href={`${appConfig.explorerUrl}/contract/${appConfig.contractId}`}
@@ -1245,7 +1353,7 @@ export function SiteFooter() {
             </a>
           )}
         </nav>
-        <p className="text-[12px] text-text-muted/60">
+        <p className="text-xs text-text-muted/60">
           Stellar Philippines UniTour · Built on testnet
         </p>
       </div>
@@ -1310,6 +1418,7 @@ git commit -m "feat: rewrite layout shell components with Tailwind + glass foote
 ## Task 12 — Rewrite ProofCard, ProofBlockPreview, ShareButtons
 
 **Files:**
+
 - Modify: `frontend/src/components/proof/proof-card.tsx`
 - Modify: `frontend/src/components/proof/proof-block-preview.tsx`
 - Modify: `frontend/src/components/proof/share-buttons.tsx`
@@ -1377,6 +1486,7 @@ git commit -m "feat: rewrite proof components with DeFi glass cards"
 ## Task 13 — Rewrite RecentActivity + ActivitySnackbar
 
 **Files:**
+
 - Modify: `frontend/src/components/activity/recent-activity.tsx`
 - Modify: `frontend/src/components/activity/activity-snackbar.tsx`
 - Delete: `recent-activity.module.css`, `activity-snackbar.module.css`
@@ -1391,6 +1501,7 @@ cat src/components/activity/activity-snackbar.tsx
 - [ ] **Step 2: Rewrite recent-activity.tsx**
 
 Replace all `styles.*` with Tailwind. Key patterns:
+
 - Activity row: `flex items-center gap-3 py-3 border-b border-border-glass last:border-0`
 - Event type label: `font-pixel text-[11px] text-primary bg-primary/10 px-2 py-0.5 rounded`
 - Hash: `font-mono text-[13px] text-text-muted`
@@ -1428,6 +1539,7 @@ git commit -m "feat: rewrite activity components with Tailwind + glass snackbar"
 ## Task 14 — Rewrite NextActionCard + Actions
 
 **Files:**
+
 - Modify: `frontend/src/components/actions/next-action-card.tsx`
 - Modify: `frontend/src/components/actions/actions.module.css` (replace + delete)
 - Delete: `next-action-card.module.css`, `actions.module.css`
@@ -1442,13 +1554,17 @@ cat src/components/actions/verify-form.tsx
 - [ ] **Step 2: Rewrite next-action-card.tsx**
 
 Replace CSS Module. DeFi card with gradient top-bar:
+
 ```tsx
 <motion.article
   className="rounded-2xl bg-surface-glass border border-border-glass p-6 relative overflow-hidden"
-  whileHover={{ borderColor: "rgba(139,92,246,0.35)", transition: { duration: 0.2 } }}
+  whileHover={{
+    borderColor: "rgba(139,92,246,0.35)",
+    transition: { duration: 0.2 },
+  }}
 >
   {/* gradient top accent bar */}
-  <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-primary to-accent" />
+  <div className="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-primary to-accent" />
   ...
 </motion.article>
 ```
@@ -1488,6 +1604,7 @@ git commit -m "feat: rewrite action components with DeFi cards"
 ## Task 15 — Rewrite Wallet + Network Components
 
 **Files:**
+
 - Modify: `frontend/src/components/wallet/wallet-connect-button.tsx`
 - Modify: `frontend/src/components/app/wallet-empty-state.tsx`
 - Modify: `frontend/src/components/app/network-banner.tsx`
@@ -1508,6 +1625,7 @@ Replace CSS Module. Use `Button` component with `variant="outline"` or `variant=
 - [ ] **Step 3: Rewrite wallet-empty-state.tsx**
 
 Replace CSS Module with Tailwind. Empty state pattern:
+
 ```tsx
 <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
   <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
@@ -1522,9 +1640,10 @@ Replace CSS Module with Tailwind. Empty state pattern:
 - [ ] **Step 4: Rewrite network-banner.tsx**
 
 Replace CSS Module. Warning banner pattern:
+
 ```tsx
 <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-warning/10 border border-warning/25 text-warning text-sm">
-  <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+  <AlertTriangle className="w-4 h-4 shrink-0" />
   ...
 </div>
 ```
@@ -1555,6 +1674,7 @@ git commit -m "feat: rewrite wallet + network components with Tailwind"
 ## Task 16 — Rewrite MilestoneRail, FreighterWelcome, DemoAutofillButton
 
 **Files:**
+
 - Modify: `frontend/src/components/milestones/milestone-rail.tsx`
 - Modify: `frontend/src/components/onboarding/freighter-welcome.tsx`
 - Modify: `frontend/src/components/demo/demo-autofill-button.tsx`
@@ -1571,7 +1691,8 @@ cat src/components/demo/demo-autofill-button.tsx
 - [ ] **Step 2: Rewrite milestone-rail.tsx**
 
 Replace CSS Module with Tailwind. Milestone steps use a vertical timeline pattern:
-- Connector line: `absolute left-[17px] top-9 bottom-0 w-px bg-border`
+
+- Connector line: `absolute left-4.25 top-9 bottom-0 w-px bg-border`
 - Step icon: `w-9 h-9 rounded-xl flex items-center justify-center relative z-10`
 - Completed: `bg-primary/15 border border-primary/30 text-primary`
 - Pending: `bg-surface-2 border border-border text-text-muted`
@@ -1610,6 +1731,7 @@ git commit -m "feat: rewrite milestone + onboarding + demo components"
 ## Task 17 — Rewrite LocalizedHero + LocalizedAboutCopy
 
 **Files:**
+
 - Modify: `frontend/src/components/landing/localized-hero.tsx`
 - Modify: `frontend/src/components/about/localized-about-copy.tsx`
 
@@ -1651,6 +1773,7 @@ git commit -m "feat: confirm localized components use cn() for Tailwind passthro
 ## Task 18 — Rewrite Home Page
 
 **Files:**
+
 - Modify: `frontend/src/app/page.tsx`
 - Delete: `frontend/src/app/page.module.css`
 
@@ -1666,7 +1789,10 @@ cat src/app/page.tsx
 // Floating blur orbs for DeFi hero atmosphere
 function HeroOrbs() {
   return (
-    <div aria-hidden className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div
+      aria-hidden
+      className="absolute inset-0 overflow-hidden pointer-events-none"
+    >
       <motion.div
         className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/12 blur-3xl"
         animate={{ y: [0, -12, 0] }}
@@ -1675,12 +1801,22 @@ function HeroOrbs() {
       <motion.div
         className="absolute -top-16 right-0 w-80 h-80 rounded-full bg-accent/10 blur-3xl"
         animate={{ y: [0, 12, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
       />
       <motion.div
         className="absolute top-32 left-1/2 w-64 h-64 rounded-full bg-verified/8 blur-3xl"
         animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
       />
     </div>
   );
@@ -1696,13 +1832,13 @@ Replace all `styles.*` references. Key layout patterns:
 <div className="text-text font-sans min-h-dvh">
 
 // Hero section
-<section className="relative overflow-hidden px-6 pt-24 pb-16 max-w-[960px] mx-auto text-center">
+<section className="relative overflow-hidden px-6 pt-24 pb-16 max-w-260 mx-auto text-center">
   <HeroOrbs />
   {/* content */}
 </section>
 
 // Section
-<section className="max-w-[1040px] mx-auto px-6 my-16">
+<section className="max-w-260 mx-auto px-6 my-16">
   <div className="text-center mb-8">
     <h2 className="font-heading text-3xl font-semibold tracking-tight mb-2">...</h2>
   </div>
@@ -1747,6 +1883,7 @@ git commit -m "feat: rewrite home page with DeFi hero orbs + stagger entrance"
 ## Task 19 — Rewrite About Page
 
 **Files:**
+
 - Modify: `frontend/src/app/about/page.tsx`
 - Delete: `frontend/src/app/about/page.module.css`
 
@@ -1756,18 +1893,18 @@ Replace all `styles.*` references. Key patterns:
 
 ```tsx
 // Hero — centered, Orbitron gradient heading
-<section className="max-w-[960px] mx-auto px-7 pt-18 pb-12 text-center">
-  <span className="inline-block font-pixel text-[12px] tracking-widest uppercase text-primary border border-primary/30 bg-primary/8 px-3 py-1 rounded-full mb-4">
+<section className="max-w-260 mx-auto px-7 pt-18 pb-12 text-center">
+  <span className="inline-block font-pixel text-xs tracking-widest uppercase text-primary border border-primary/30 bg-primary/8 px-3 py-1 rounded-full mb-4">
     About
   </span>
   <h1 className="font-heading text-5xl font-bold tracking-tight leading-tight mb-4">
-    Why <em className="not-italic bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Stellaroid Earn</em>
+    Why <em className="not-italic bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">Stellaroid Earn</em>
   </h1>
-  <LocalizedAboutCopy id="lede" className="text-text-muted text-[17px] leading-relaxed max-w-[620px] mx-auto" />
+  <LocalizedAboutCopy id="lede" className="text-text-muted text-[17px] leading-relaxed max-w-155 mx-auto" />
 </section>
 
 // Stats bar
-<div className="max-w-[1040px] mx-auto px-7">
+<div className="max-w-260 mx-auto px-7">
   <dl className="grid grid-cols-2 sm:grid-cols-4 rounded-xl bg-surface-glass border border-border-glass overflow-hidden mb-12">
     {/* stat cells with border-r border-border-glass last:border-r-0 */}
   </dl>
@@ -1811,6 +1948,7 @@ git commit -m "feat: rewrite about page with Tailwind + DeFi centered hero"
 ## Task 20 — Rewrite App Page + Loading Skeleton
 
 **Files:**
+
 - Modify: `frontend/src/app/app/page.tsx`
 - Delete: `frontend/src/app/app/page.module.css`
 - Modify: `frontend/src/app/proof/[hash]/loading.tsx`
@@ -1828,12 +1966,14 @@ cat src/app/proof/\[hash\]/loading.tsx
 Replace all `styles.*` with Tailwind. The app page is primarily a layout for the wallet + actions components. Key wrapper:
 
 ```tsx
-<div className="max-w-[1040px] mx-auto px-6 py-10">
+<div className="max-w-260 mx-auto px-6 py-10">
   <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
     {/* sidebar */}
     <aside className="flex flex-col gap-4">...</aside>
     {/* main panel */}
-    <main id="main" className="flex flex-col gap-6">...</main>
+    <main id="main" className="flex flex-col gap-6">
+      ...
+    </main>
   </div>
 </div>
 ```
@@ -1846,7 +1986,7 @@ import { Skeleton } from "@/components/ui";
 
 export default function ProofLoading() {
   return (
-    <div className="max-w-[760px] mx-auto px-6 py-16 flex flex-col gap-6">
+    <div className="max-w-190 mx-auto px-6 py-16 flex flex-col gap-6">
       <Skeleton className="h-8 w-48" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="h-4 w-3/4" />
@@ -1886,6 +2026,7 @@ git commit -m "feat: rewrite app page + loading skeleton with Tailwind"
 ## Task 21 — Final Cleanup + Verification
 
 **Files:**
+
 - Verify: all `*.module.css` files gone
 - Modify: `frontend/src/app/proof/page.tsx` (check for any remaining module imports)
 - Modify: `frontend/src/app/proof/[hash]/page.tsx` (check for any remaining module imports)
@@ -1968,17 +2109,17 @@ All 28 CSS module files deleted. shadcn/ui primitives installed and themed. Fram
 
 ## Quick Reference: DeFi Class Patterns
 
-| Pattern | Tailwind Classes |
-|---------|-----------------|
-| Glass card | `rounded-2xl bg-surface-glass border border-border-glass backdrop-blur-md` |
-| Gradient heading | `font-heading bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent` |
-| Pill button | `rounded-full bg-gradient-to-r from-primary to-primary-hover text-on-primary` |
-| Glow on hover | `hover:shadow-glow-md transition-shadow` |
-| Mono data | `font-mono text-primary [text-shadow:0_0_8px_rgba(245,158,11,0.35)]` |
-| Eyebrow label | `font-pixel text-[12px] tracking-widest uppercase text-primary border border-primary/30 bg-primary/8 px-3 py-1 rounded-full` |
-| Section wrapper | `max-w-[1040px] mx-auto px-6 my-16` |
-| Amber hairline | `bg-gradient-to-r from-transparent via-primary/60 to-transparent h-px` |
-| Noise texture | Add `.noise` utility to `globals.css` and apply to hero `::before`: |
+| Pattern          | Tailwind Classes                                                                                                             |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Glass card       | `rounded-2xl bg-surface-glass border border-border-glass backdrop-blur-md`                                                   |
+| Gradient heading | `font-heading bg-linear-to-r from-primary to-accent bg-clip-text text-transparent`                                           |
+| Pill button      | `rounded-full bg-linear-to-r from-primary to-primary-hover text-on-primary`                                                  |
+| Glow on hover    | `hover:shadow-glow-md transition-shadow`                                                                                     |
+| Mono data        | `font-mono text-primary [text-shadow:0_0_8px_rgba(245,158,11,0.35)]`                                                         |
+| Eyebrow label    | `font-pixel text-xs tracking-widest uppercase text-primary border border-primary/30 bg-primary/8 px-3 py-1 rounded-full` |
+| Section wrapper  | `max-w-260 mx-auto px-6 my-16`                                                                                               |
+| Amber hairline   | `bg-linear-to-r from-transparent via-primary/60 to-transparent h-px`                                                         |
+| Noise texture    | Add `.noise` utility to `globals.css` and apply to hero `::before`:                                                          |
 
 ```css
 /* Add to globals.css @layer utilities: */

@@ -545,7 +545,7 @@ function normalizeError(error: unknown): string {
   if (/#1\b|AlreadyInitialized/i.test(message))
     return "Contract is already initialized.";
   if (/#2\b|NotInitialized/i.test(message))
-    return "Contract has not been initialized yet — run init first.";
+    return "Contract has not been initialized yet. Run init first.";
   if (/#3\b|Unauthorized/i.test(message))
     return "This wallet is not authorized to perform that action.";
   if (/#4\b|AlreadyExists/i.test(message))
@@ -714,7 +714,7 @@ export async function getCertificate(certHashHex: string) {
       owner: "GAWIOVGF3N7G3K4J4Y6MGSQYPN4K53Q3VHWL5V66B5Y4BBJH3M6AJYLD",
       issuer: "GAWIOVGF3N7G3K4J4Y6MGSQYPN4K53Q3VHWL5V66B5Y4BBJH3M6AJYLD",
       title: "Stellar Smart Contract Bootcamp Completion",
-      cohort: "Stellar Philippines UniTour 2026",
+      cohort: "Stellar PH Bootcamp 2026",
       metadataUri: "",
       status: "verified" as const,
       issuedAt: 0,

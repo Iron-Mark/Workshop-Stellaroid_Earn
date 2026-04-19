@@ -21,7 +21,7 @@ export default function Landing() {
       <HeroOrbs />
       <SiteNav />
       <ActivitySnackbar>
-        <RecentActivity compact sidebar />
+        <RecentActivity compact sidebar bare />
       </ActivitySnackbar>
       <main id="main">
         <LocalizedHero />
@@ -57,7 +57,7 @@ export default function Landing() {
               <p className="m-0 text-text-muted leading-relaxed text-sm">
                 An approved issuer or the admin calls <code>verify_certificate</code> with the
                 hash. The contract updates the credential status to{" "}
-                <code>Verified</code> and emits <code>cert_ver</code> — proof anyone can audit on
+                <code>Verified</code> and emits <code>cert_ver</code>, proof anyone can audit on
                 stellar.expert.
               </p>
             </div>
@@ -85,7 +85,7 @@ export default function Landing() {
           <dl className="grid grid-cols-[max-content_1fr] gap-[10px_18px] text-sm items-center">
             <dt className="text-text-muted">Contract</dt>
             <dd className="m-0 font-mono text-[13px]">
-              <a href={contractUrl} target="_blank" rel="noreferrer" className="text-accent hover:underline">
+              <a href={contractUrl} target="_blank" rel="noreferrer" className="text-primary hover:underline">
                 {contractShort} ↗
               </a>
             </dd>
@@ -93,9 +93,9 @@ export default function Landing() {
             <dd className="m-0 font-mono text-[13px]">{appConfig.network}</dd>
             <dt className="text-text-muted">Reward token</dt>
             <dd className="m-0 font-mono text-[13px]">{appConfig.assetCode} (native SAC)</dd>
-            <dt className="text-text-muted">Demo</dt>
+            <dt className="text-text-muted">App</dt>
             <dd className="m-0 font-mono text-[13px]">
-              <Link href="/app" className="text-accent hover:underline">
+              <Link href="/app" className="text-primary hover:underline">
                 stellaroid-earn-demo.vercel.app/app
               </Link>
             </dd>

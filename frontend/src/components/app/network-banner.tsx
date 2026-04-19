@@ -41,7 +41,7 @@ export function NetworkBanner({ wallet }: NetworkBannerProps) {
       }
     : {
         title: `You're connected to ${normalizeConnectedNetwork(wallet)}.`,
-        detail: `This demo is on ${getExpectedNetworkLabel()} — switch networks in Freighter to continue.`,
+        detail: `This app is on ${getExpectedNetworkLabel()}. Switch networks in Freighter to continue.`,
       };
 
   return (

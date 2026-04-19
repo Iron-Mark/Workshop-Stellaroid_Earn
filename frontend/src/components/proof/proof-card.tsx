@@ -164,7 +164,7 @@ export function ProofCard({
 
   return (
     <div className="max-w-2xl mx-auto px-8 max-sm:px-3">
-      <article className="relative overflow-hidden rounded-2xl bg-surface border border-border-glass flex flex-col gap-6 p-8 max-sm:p-5 before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-linear-to-r before:from-primary before:to-accent">
+      <article className="relative overflow-hidden rounded-2xl bg-surface border border-border-glass flex flex-col gap-6 p-8 max-sm:p-5 before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-[linear-gradient(to_right_in_oklch,var(--color-primary),var(--color-accent))]">
         {/* 1. Header row */}
         <header className="flex items-center gap-2 flex-wrap">
           <Badge tone="accent">Stellar testnet</Badge>
@@ -178,11 +178,21 @@ export function ProofCard({
           On-chain credential + direct payment rail on Stellar testnet.
         </h1>
 
-        <section className="rounded-lg border border-border bg-surface-2 px-4 py-3" aria-label="Proof status summary">
-          <p className="text-text text-[0.95rem] font-semibold">{status.title}</p>
-          <p className="mt-1 text-text-muted text-sm leading-relaxed">{status.body}</p>
+        <section
+          className="rounded-lg border border-border bg-surface-2 px-4 py-3"
+          aria-label="Proof status summary"
+        >
+          <p className="text-text text-[0.95rem] font-semibold">
+            {status.title}
+          </p>
+          <p className="mt-1 text-text-muted text-sm leading-relaxed">
+            {status.body}
+          </p>
           {cert && status.canVerify ? (
-            <Link href="/app" className="inline-flex mt-2 text-accent text-[0.8125rem] font-semibold hover:underline no-underline">
+            <Link
+              href="/app"
+              className="inline-flex mt-2 text-accent text-[0.8125rem] font-semibold hover:underline no-underline"
+            >
               Open trusted verification flow →
             </Link>
           ) : null}
@@ -190,8 +200,12 @@ export function ProofCard({
 
         {/* 3. Contract ID row */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">Contract ID</span>
-          <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">{shortContract}</code>
+          <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+            Contract ID
+          </span>
+          <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
+            {shortContract}
+          </code>
           <CopyButton value={contractId} ariaLabel="Copy contract ID" />
           <a
             href={`${explorerUrl}/contract/${contractId}`}
@@ -206,7 +220,9 @@ export function ProofCard({
 
         {/* 4. Hash row */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">Certificate hash</span>
+          <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+            Certificate hash
+          </span>
           <HashReveal hash={shortHash} />
           <CopyButton value={hash} ariaLabel="Copy certificate hash" />
           <a
@@ -223,20 +239,30 @@ export function ProofCard({
         {/* 5. Cert details (only if cert exists) */}
         {cert ? (
           <>
-            <section className="grid gap-3 border-t border-border pt-4" aria-label="Certificate details">
+            <section
+              className="grid gap-3 border-t border-border pt-4"
+              aria-label="Certificate details"
+            >
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">Owner</span>
+                <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+                  Owner
+                </span>
                 <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
                   {shortenAddress(cert.owner, 8)}
                 </code>
                 <CopyButton value={cert.owner} ariaLabel="Copy owner address" />
               </div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">Issuer</span>
+                <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+                  Issuer
+                </span>
                 <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
                   {shortenAddress(cert.issuer, 8)}
                 </code>
-                <CopyButton value={cert.issuer} ariaLabel="Copy issuer address" />
+                <CopyButton
+                  value={cert.issuer}
+                  ariaLabel="Copy issuer address"
+                />
                 {issuerState ? (
                   <Badge tone={issuerState.tone} dot>
                     {issuerState.name} · {issuerState.label}
@@ -244,19 +270,23 @@ export function ProofCard({
                 ) : null}
               </div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">Status</span>
+                <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+                  Status
+                </span>
                 <Badge tone={status.tone} dot>
                   {status.label}
                 </Badge>
               </div>
             </section>
 
-            {proofMetadata ? <CredentialMetadataPanel metadata={proofMetadata} /> : null}
+            {proofMetadata ? (
+              <CredentialMetadataPanel metadata={proofMetadata} />
+            ) : null}
           </>
         ) : (
           <div className="flex flex-col items-center gap-1 text-sm text-text-muted border border-dashed border-border rounded-lg p-6 text-center">
             <img
-              src="/illust-lookup.svg"
+              src="/illust/illust-lookup.svg"
               alt=""
               width={160}
               height={107}
@@ -285,7 +315,10 @@ export function ProofCard({
                 </p>
               </>
             )}
-            <Link href="/proof" className="mt-3 inline-flex items-center px-4 py-2 rounded-md bg-primary text-on-primary font-semibold text-sm no-underline hover:bg-primary-hover transition-colors">
+            <Link
+              href="/proof"
+              className="mt-3 inline-flex items-center px-4 py-2 rounded-md bg-primary text-on-primary font-semibold text-sm no-underline hover:bg-primary-hover transition-colors"
+            >
               Look up another hash →
             </Link>
           </div>
@@ -296,34 +329,56 @@ export function ProofCard({
           className="border-t border-border pt-4"
           aria-label="Submission rubric"
         >
-          <p className="font-pixel text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Submission self-check</p>
+          <p className="font-pixel text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">
+            Submission self-check
+          </p>
           <ul className="list-none m-0 p-0 flex flex-col gap-2" role="list">
             <li className="flex items-start gap-2 text-sm text-text">
-              <Check className="w-4 h-4 text-success shrink-0 mt-0.5" aria-hidden="true" />
+              <Check
+                className="w-4 h-4 text-success shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               Contract deployed + verified on stellar.expert
             </li>
             <li className="flex items-start gap-2 text-sm text-text">
-              <Check className="w-4 h-4 text-success shrink-0 mt-0.5" aria-hidden="true" />
+              <Check
+                className="w-4 h-4 text-success shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               <code>cargo test</code> passes (≥5 tests)
             </li>
             <li className="flex items-start gap-2 text-sm text-text">
-              <Check className="w-4 h-4 text-success shrink-0 mt-0.5" aria-hidden="true" />
+              <Check
+                className="w-4 h-4 text-success shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               Frontend signs real tx via Freighter end-to-end
             </li>
             <li className="flex items-start gap-2 text-sm text-text">
-              <Check className="w-4 h-4 text-success shrink-0 mt-0.5" aria-hidden="true" />
+              <Check
+                className="w-4 h-4 text-success shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               On-chain events emitted and visible in explorer
             </li>
             <li className="flex items-start gap-2 text-sm text-text">
-              <Check className="w-4 h-4 text-success shrink-0 mt-0.5" aria-hidden="true" />
+              <Check
+                className="w-4 h-4 text-success shrink-0 mt-0.5"
+                aria-hidden="true"
+              />
               No raw ScVal / HostError surfaces in any error path
             </li>
           </ul>
         </section>
 
         {/* 7. Share section */}
-        <section className="border-t border-border pt-4" aria-label="Share this proof">
-          <p className="font-pixel text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Share</p>
+        <section
+          className="border-t border-border pt-4"
+          aria-label="Share this proof"
+        >
+          <p className="font-pixel text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">
+            Share
+          </p>
           <ShareButtons hash={hash} />
         </section>
 
@@ -332,9 +387,15 @@ export function ProofCard({
 
         {/* 8. Footer */}
         <footer className="text-xs text-text-muted text-center border-t border-border pt-4 font-mono tracking-wide flex items-center justify-center gap-2">
-          <span className="flex-1 h-px max-w-20 bg-[repeating-linear-gradient(90deg,var(--color-border)_0_6px,transparent_6px_10px)]" aria-hidden="true" />
-          Generated from bootcamp submission · Stellar Philippines UniTour 2026
-          <span className="flex-1 h-px max-w-20 bg-[repeating-linear-gradient(90deg,var(--color-border)_0_6px,transparent_6px_10px)]" aria-hidden="true" />
+          <span
+            className="flex-1 h-px max-w-20 bg-[repeating-linear-gradient(90deg,var(--color-border)_0_6px,transparent_6px_10px)]"
+            aria-hidden="true"
+          />
+          Generated from bootcamp submission · Stellar PH Bootcamp 2026
+          <span
+            className="flex-1 h-px max-w-20 bg-[repeating-linear-gradient(90deg,var(--color-border)_0_6px,transparent_6px_10px)]"
+            aria-hidden="true"
+          />
         </footer>
       </article>
     </div>

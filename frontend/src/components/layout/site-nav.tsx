@@ -5,7 +5,6 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, GitFork } from "lucide-react";
-import { LocaleToggle } from "./locale-toggle";
 import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +12,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/proof", label: "Verify" },
+  { href: "/issuer", label: "Issuer" },
   { href: "/app", label: "App" },
 ];
 
@@ -23,7 +23,7 @@ export function SiteNav() {
     <>
       <a
         href="#main"
-        className="absolute left-4 -top-12 z-11 focus:top-3 px-3 py-2 rounded-md bg-primary text-on-primary font-semibold text-sm transition-[top] no-underline"
+        className="absolute left-4 -top-12 z-[11] focus:top-3 px-3 py-2 rounded-md bg-primary text-on-primary font-semibold text-sm transition-[top] no-underline"
       >
         Skip to content
       </a>
@@ -66,10 +66,9 @@ export function SiteNav() {
 
           {/* Right actions */}
           <div className="hidden md:flex items-center gap-2.5 shrink-0">
-            <LocaleToggle />
             <Button
               href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026"
-              variant="primary"
+              variant="outline"
               size="sm"
             >
               <GitFork className="w-3.5 h-3.5" />
@@ -92,7 +91,7 @@ export function SiteNav() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-x-0 top-[65px] bottom-0 z-9 bg-bg flex flex-col gap-1 p-6 md:hidden">
+        <div className="fixed inset-x-0 top-[65px] bottom-0 z-20 bg-bg flex flex-col gap-1 p-6 md:hidden">
           {navLinks.map(l => (
             <Link
               key={l.href}
@@ -104,7 +103,6 @@ export function SiteNav() {
             </Link>
           ))}
           <div className="mt-3 flex flex-col gap-2">
-            <LocaleToggle />
             <Button href="https://github.com/Iron-Mark/Stellar-Bootcamp-2026" variant="outline" size="sm">
               <GitFork className="w-3.5 h-3.5" />
               GitHub

@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
     default: "Stellaroid Earn",
-    template: "%s — Stellaroid Earn",
+    template: "%s | Stellaroid Earn",
   },
   description:
     "Stellaroid Earn links proof and payment on Stellar so teams can check the record and pay with confidence.",
@@ -53,6 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
+    siteName: "Stellaroid Earn",
     title: "Stellaroid Earn",
     description: "Check the record and pay with confidence on Stellar.",
     locale: "en_US",

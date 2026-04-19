@@ -10,6 +10,7 @@ interface RecentActivityProps {
   className?: string;
   compact?: boolean;
   sidebar?: boolean;
+  bare?: boolean;
 }
 
 function kindTag(kind: RecentActivityItem["kind"]) {
@@ -26,6 +27,7 @@ export async function RecentActivity({
   className,
   compact = false,
   sidebar = false,
+  bare = false,
 }: RecentActivityProps) {
   const events = await getRecentEvents(appConfig.contractId, compact ? 3 : 5);
   const hasContractLink = Boolean(appConfig.contractId);
@@ -34,9 +36,9 @@ export async function RecentActivity({
     : null;
 
   const cardClass = cn(
-    "rounded-2xl border border-border-glass bg-surface-glass p-6 flex flex-col gap-4",
-    compact && "p-4 gap-3",
-    sidebar && "p-4 gap-3",
+    !bare && "rounded-2xl border border-border-glass bg-surface-glass",
+    "flex flex-col",
+    compact || sidebar ? "p-4 gap-3" : "p-6 gap-4",
     className
   );
 
@@ -69,10 +71,19 @@ export async function RecentActivity({
             </a>
           )}
         </div>
+        {!compact && !sidebar && (
+          <img
+            src="/illust/illust-no-activity.svg"
+            alt=""
+            className="w-10 h-auto opacity-75 self-start"
+            aria-hidden="true"
+            style={{ imageRendering: "pixelated" }}
+          />
+        )}
         <p className={cn("text-sm text-text-muted", (compact || sidebar) && "text-[12px]")}>
           {hasContractLink
-            ? "No events yet — complete the demo flow to see live on-chain activity here."
-            : "Contract ID not configured yet — add it to enable live on-chain activity."}
+            ? "No events yet. Complete the app flow to see live on-chain activity here."
+            : "Contract ID not configured yet. Add it to enable live on-chain activity."}
         </p>
       </section>
     );

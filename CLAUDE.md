@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-This is the **Stellar Philippines UniTour** bootcamp repository — a participant-facing guide, not a production codebase. It packages:
+This is the **Stellar PH Bootcamp** bootcamp repository — a participant-facing guide, not a production codebase. It packages:
 
 1. **`README.md`** — 5-step walkthrough: install toolchain → complete assigned Soroban contract → `cargo test` (≥3 tests) → deploy to Stellar **testnet** → submit on Rise In.
 2. **`setup/[ENG] Pre-Workshop Setup Guide.pdf`** — participant install guide (Rust, Stellar CLI, WASM target, Freighter).

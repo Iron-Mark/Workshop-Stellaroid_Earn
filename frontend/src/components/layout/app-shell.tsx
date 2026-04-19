@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { appConfig } from "@/lib/config";
 import { shortenAddress } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import { CopyButton } from "@/components/ui";
 import { SiteNav } from "./site-nav";
 import { SiteFooter } from "./site-footer";
@@ -9,9 +10,11 @@ interface AppShellProps {
   children: ReactNode;
   rpcPill?: ReactNode;
   walletButton?: ReactNode;
+  /** When true, the contract subheader is hidden at ≥920px (sidebar shows that info instead) */
+  sidebarMode?: boolean;
 }
 
-export function AppShell({ children, rpcPill, walletButton }: AppShellProps) {
+export function AppShell({ children, rpcPill, walletButton, sidebarMode }: AppShellProps) {
   const contractId = appConfig.contractId;
   const explorerUrl = appConfig.explorerUrl;
   const shortenedContractId = contractId
@@ -25,11 +28,11 @@ export function AppShell({ children, rpcPill, walletButton }: AppShellProps) {
     <div className="min-h-dvh flex flex-col bg-bg">
       <SiteNav />
 
-      {/* Contract subheader */}
-      <div className="border-b border-border bg-surface">
+      {/* Contract subheader — hidden on desktop when sidebar carries this info */}
+      <div className={cn("border-b border-border bg-surface", sidebarMode && "min-[920px]:hidden")} role="region" aria-label="Contract info">
         <div className="max-w-[1040px] mx-auto px-7 py-2 flex items-center gap-2 text-[13px] text-text-muted flex-wrap max-sm:px-[18px]">
-          <span>Contract</span>
-          <code className="font-mono text-[13px] text-text bg-surface-2 px-1 py-0.5 rounded">
+          <span className="text-text-muted">Contract</span>
+          <code className="font-mono text-[13px] text-text bg-surface-2 px-1.5 py-0.5 rounded border border-border">
             {shortenedContractId}
           </code>
           {contractId && (
@@ -44,6 +47,7 @@ export function AppShell({ children, rpcPill, walletButton }: AppShellProps) {
             stellar.expert ↗
           </a>
           {rpcPill}
+          <span className="ml-auto" />
           {walletButton}
         </div>
       </div>

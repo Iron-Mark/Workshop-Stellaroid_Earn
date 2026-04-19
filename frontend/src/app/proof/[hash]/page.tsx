@@ -33,7 +33,7 @@ export async function generateMetadata({
   const { hash } = await params;
   const short =
     hash.length > 16 ? `${hash.slice(0, 10)}…${hash.slice(-10)}` : hash;
-  const title = `Proof of Work · ${short} — Stellaroid Earn`;
+  const title = `Proof of Work · ${short} | Stellaroid Earn`;
   const description =
     "Verified, on-chain proof of completed work. Anchored on Stellar with SHA-256. Paid atomically on verification.";
 
@@ -84,7 +84,7 @@ export default async function ProofPage({ params }: PageProps) {
     }
   }
 
-  const proofMetadata = getProofMetadataForCertificate(hash, cert);
+  const proofMetadata = await getProofMetadataForCertificate(hash, cert);
 
   return (
     <>

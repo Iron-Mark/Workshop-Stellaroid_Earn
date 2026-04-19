@@ -1,4 +1,4 @@
-# Stellar Philippines UniTour — University Campus Bootcamp Tour
+# Stellar PH Bootcamp — University Campus Bootcamp Tour
 
 **Platform:** [Rise In](https://www.risein.com/programs)  
 **Track:** Stellar Smart Contract Bootcamp  
@@ -38,7 +38,7 @@ Current note: the repo has moved to the issuer trust-layer ABI. The historical t
 
 ## Overview
 
-Welcome to the **Stellar Philippines UniTour**—a **university-wide campus bootcamp tour** that brings Soroban and Stellar to students across Philippine campuses. In this session, you’ll receive an assigned Soroban smart contract, complete it, deploy to Stellar **testnet**, then submit your work on Rise In for certification.
+Welcome to the **Stellar PH Bootcamp**—a **university-wide campus bootcamp tour** that brings Soroban and Stellar to students across Philippine campuses. In this session, you’ll receive an assigned Soroban smart contract, complete it, deploy to Stellar **testnet**, then submit your work on Rise In for certification.
 
 No prior Web3 experience needed—follow the steps below.
 
@@ -432,7 +432,7 @@ For **Prize Pool Joiner Submission**:
 
 ---
 
-## 🇵🇭 About Stellar Philippines UniTour
+## 🇵🇭 About Stellar PH Bootcamp
 
 The Stellar UniTour is a **multi-campus roadshow**: the same Stellar Smart Contract Bootcamp format travels to universities across the Philippines so more students can build and deploy on **testnet** with guided support. It is run in partnership with [Rise In](https://risein.com).
 

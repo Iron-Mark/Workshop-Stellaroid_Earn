@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Demo",
+  title: "App",
   description:
-    "Register a certificate, verify it with an approved issuer or admin wallet, and pay the graduate — all in one Freighter-signed flow on Stellar testnet.",
+    "Register a certificate, verify it with an approved issuer or admin wallet, and pay the graduate, all in one Freighter-signed flow on Stellar testnet.",
 };
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

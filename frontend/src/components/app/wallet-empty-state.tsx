@@ -11,7 +11,7 @@ export function WalletEmptyState({ mode }: WalletEmptyStateProps) {
       ? {
           title: "Freighter is desktop-only.",
           body:
-            "Open this demo on desktop to sign register / verify / pay. If you are reviewing on mobile, use a sample Proof Block instead — no wallet needed.",
+            "Open this app on desktop to sign register / verify / pay. If you are reviewing on mobile, use a sample Proof Block instead, no wallet needed.",
         }
       : {
           title: "Freighter is not available in this browser.",
@@ -24,6 +24,13 @@ export function WalletEmptyState({ mode }: WalletEmptyStateProps) {
       className="flex flex-col gap-3 p-[22px] bg-gradient-to-b from-[rgba(30,41,59,0.96)] to-[rgba(15,23,42,0.96)] border border-border rounded-2xl"
       aria-label="Wallet setup help"
     >
+      <img
+        src="/illust/illust-wallet-setup.svg"
+        alt=""
+        className="w-14 h-auto opacity-90"
+        aria-hidden="true"
+        style={{ imageRendering: "pixelated" }}
+      />
       <span className="inline-flex w-fit font-pixel text-[0.6875rem] font-bold tracking-[0.12em] uppercase text-primary bg-primary/[0.12] border border-primary/25 rounded-full px-[10px] py-1">
         Wallet setup
       </span>

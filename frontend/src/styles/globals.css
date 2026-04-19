@@ -94,51 +94,53 @@
   }
 }
 
-/* CSS Reset */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/* Base element styles — inside @layer base so Tailwind utilities can override */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-body,
-h1, h2, h3, h4, h5, h6,
-p {
-  margin: 0;
-}
+  body,
+  h1, h2, h3, h4, h5, h6,
+  p {
+    margin: 0;
+  }
 
-body {
-  min-height: 100dvh;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
 
-main[id] {
-  scroll-margin-top: 96px;
-}
+  main[id] {
+    scroll-margin-top: 96px;
+  }
 
-code, pre {
-  font-family: var(--font-mono);
-}
+  code, pre {
+    font-family: var(--font-mono);
+  }
 
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
 
-a {
-  color: var(--color-accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
+  a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 
-a:hover {
-  color: var(--color-primary);
+  a:hover {
+    color: var(--color-primary);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

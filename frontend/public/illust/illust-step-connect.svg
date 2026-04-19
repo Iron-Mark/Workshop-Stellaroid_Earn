@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img"
+  aria-label="Wallet card with amber checkmark — connect Freighter and sign transactions">
+  <title>Connect &amp; Sign</title>
+  <!--
+    24×24 step icon — drop-in replacement for the amber numbered circle.
+    Wallet card + amber ✓ = "connected, ready to sign."
+    Same diagonal checkmark as icon-approve-cred.svg for visual consistency.
+  -->
+
+  <!-- Amber circle background -->
+  <circle cx="12" cy="12" r="12" fill="rgba(245,158,11,0.14)"/>
+
+  <!-- Wallet flap (top-left pocket) -->
+  <rect x="4" y="6" width="8" height="4" fill="#475569" shape-rendering="crispEdges"/>
+
+  <!-- Wallet body outer -->
+  <rect x="4" y="8" width="16" height="11" fill="#334155" shape-rendering="crispEdges"/>
+  <!-- Wallet face -->
+  <rect x="5" y="9" width="14" height="9"  fill="#1E293B" shape-rendering="crispEdges"/>
+
+  <!-- Coin holder (right inset pocket) -->
+  <rect x="15" y="9" width="4" height="5" fill="#334155" shape-rendering="crispEdges"/>
+
+  <!-- Amber ✓ checkmark (diagonal step, 5 blocks) -->
+  <rect x="7"  y="15" width="2" height="2" fill="#FBBF24" shape-rendering="crispEdges"/>
+  <rect x="9"  y="17" width="2" height="2" fill="#FBBF24" shape-rendering="crispEdges"/>
+  <rect x="11" y="15" width="2" height="2" fill="#FBBF24" shape-rendering="crispEdges"/>
+  <rect x="13" y="13" width="2" height="2" fill="#FBBF24" shape-rendering="crispEdges"/>
+
+</svg>
