@@ -41,7 +41,7 @@ export function SiteNav() {
         )}
         aria-label="Main navigation"
       >
-        <div className="flex items-center justify-between max-w-[1040px] mx-auto px-7 py-4 gap-4">
+        <div className="flex items-center justify-between max-w-7xl mx-auto px-7 py-4 gap-4">
           {/* Brand */}
           <Link
             href="/"

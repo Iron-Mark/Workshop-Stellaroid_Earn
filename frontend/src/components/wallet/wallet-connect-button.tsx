@@ -94,13 +94,13 @@ export function WalletConnectButton({ sidebar = false }: WalletConnectButtonProp
             {/* Top row: chip + contactless + label */}
             <div className="relative flex items-start justify-between">
               {/* EMV chip */}
-              <div className="w-9 h-[26px] rounded-[3px] overflow-hidden bg-gradient-to-br from-yellow-200 via-yellow-300 to-yellow-500 flex flex-col justify-between p-[3px]" aria-hidden="true">
-                <div className="flex gap-[3px] items-center">
+              <div className="w-9 h-6.5 rounded-[3px] overflow-hidden bg-linear-to-br from-yellow-200 via-yellow-300 to-yellow-500 flex flex-col justify-between p-0.75" aria-hidden="true">
+                <div className="flex gap-0.75 items-center">
                   <div className="flex-1 h-px bg-yellow-700/60" />
                   <div className="w-px h-3 bg-yellow-700/60" />
                   <div className="flex-1 h-px bg-yellow-700/60" />
                 </div>
-                <div className="flex gap-[3px] items-center">
+                <div className="flex gap-0.75 items-center">
                   <div className="flex-1 h-px bg-yellow-700/60" />
                   <div className="w-px h-3 bg-yellow-700/60" />
                   <div className="flex-1 h-px bg-yellow-700/60" />
@@ -177,7 +177,7 @@ export function WalletConnectButton({ sidebar = false }: WalletConnectButtonProp
           <img
             src="/illust/illust-wallet-sidebar.svg"
             alt=""
-            className="w-full max-w-[140px] h-auto opacity-80"
+            className="w-full max-w-35 h-auto opacity-80"
             aria-hidden="true"
             style={{ imageRendering: "pixelated" }}
           />
@@ -185,7 +185,7 @@ export function WalletConnectButton({ sidebar = false }: WalletConnectButtonProp
             <p className="text-[13px] font-semibold text-text">
               {isUnsupported ? "Freighter not found" : "No wallet connected"}
             </p>
-            <p className="text-[11px] text-text-muted leading-relaxed mt-0.5 max-w-[160px]">
+            <p className="text-[11px] text-text-muted leading-relaxed mt-0.5 max-w-40">
               {isUnsupported
                 ? "Install the Freighter extension to continue."
                 : "Connect Freighter to sign transactions."}
