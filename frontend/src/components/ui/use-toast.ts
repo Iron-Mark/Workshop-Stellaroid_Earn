@@ -21,20 +21,22 @@ export interface ToastInput {
 
 export function useToast() {
   function toast({ title, detail, tone, action }: ToastInput) {
-    const message = detail ? `${title}: ${detail}` : title;
-    const opts = action
-      ? {
-          action: {
-            label: action.label,
-            onClick: action.onClick ?? (() => { if (action.href) window.location.href = action.href; }),
-          },
-        }
-      : undefined;
+    const opts = {
+      description: detail,
+      ...(action
+        ? {
+            action: {
+              label: action.label,
+              onClick: action.onClick ?? (() => { if (action.href) window.location.href = action.href; }),
+            },
+          }
+        : {}),
+    };
 
-    if (tone === "success") sonnerToast.success(message, opts);
-    else if (tone === "danger") sonnerToast.error(message, opts);
-    else if (tone === "warning") sonnerToast.warning(message, opts);
-    else sonnerToast(message, opts);
+    if (tone === "success") sonnerToast.success(title, opts);
+    else if (tone === "danger") sonnerToast.error(title, opts);
+    else if (tone === "warning") sonnerToast.warning(title, opts);
+    else sonnerToast(title, opts);
   }
 
   return { toast };
