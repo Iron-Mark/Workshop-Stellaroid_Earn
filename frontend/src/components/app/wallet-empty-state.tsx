@@ -22,7 +22,7 @@ export function WalletEmptyState({ mode }: WalletEmptyStateProps) {
 
   return (
     <section
-      className="flex flex-col gap-3 p-[22px] bg-gradient-to-b from-[rgba(30,41,59,0.96)] to-[rgba(15,23,42,0.96)] border border-border rounded-2xl"
+      className="flex flex-col gap-3 p-[22px] bg-linear-to-b from-[rgba(30,41,59,0.96)] to-[rgba(15,23,42,0.96)] border border-border rounded-2xl"
       aria-label="Wallet setup help"
     >
       <img
