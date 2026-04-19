@@ -269,64 +269,66 @@ export function ProofCard({
         ) : null}
 
         {/* ▾ Technical details */}
-        <details className="border-t border-border pt-4 group">
-          <summary className="cursor-pointer list-none flex items-center gap-2 text-[0.8125rem] font-medium text-text-muted hover:text-text transition-colors select-none">
-            <span className="transition-transform group-open:rotate-90 inline-block">▶</span>
-            Technical details
-          </summary>
-          <div className="mt-3 grid gap-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
-                Contract ID
-              </span>
-              <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
-                {shortContract}
-              </code>
-              <CopyButton value={contractId} ariaLabel="Copy contract ID" />
-              <a
-                href={`${explorerUrl}/contract/${contractId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[0.8125rem] text-accent no-underline whitespace-nowrap hover:opacity-80 hover:underline transition-opacity"
-                aria-label="View contract on explorer"
-              >
-                View on explorer ↗
-              </a>
+        {cert || lookupFailed ? (
+          <details className="border-t border-border pt-4 group">
+            <summary className="cursor-pointer list-none flex items-center gap-2 text-[0.8125rem] font-medium text-text-muted hover:text-text transition-colors select-none">
+              <span className="transition-transform group-open:rotate-90 inline-block">▶</span>
+              Technical details
+            </summary>
+            <div className="mt-3 grid gap-3">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+                  Contract ID
+                </span>
+                <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
+                  {shortContract}
+                </code>
+                <CopyButton value={contractId} ariaLabel="Copy contract ID" />
+                <a
+                  href={`${explorerUrl}/contract/${contractId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[0.8125rem] text-accent no-underline whitespace-nowrap hover:opacity-80 hover:underline transition-opacity"
+                  aria-label="View contract on explorer"
+                >
+                  View on explorer ↗
+                </a>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+                  Certificate hash
+                </span>
+                <HashReveal hash={shortHash} />
+                <CopyButton value={hash} ariaLabel="Copy certificate hash" />
+              </div>
+              {cert ? (
+                <>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+                      Owner
+                    </span>
+                    <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
+                      {shortenAddress(cert.owner, 8)}
+                    </code>
+                    <CopyButton value={cert.owner} ariaLabel="Copy owner address" />
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
+                      Issuer
+                    </span>
+                    <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
+                      {shortenAddress(cert.issuer, 8)}
+                    </code>
+                    <CopyButton
+                      value={cert.issuer}
+                      ariaLabel="Copy issuer address"
+                    />
+                  </div>
+                </>
+              ) : null}
             </div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
-                Certificate hash
-              </span>
-              <HashReveal hash={shortHash} />
-              <CopyButton value={hash} ariaLabel="Copy certificate hash" />
-            </div>
-            {cert ? (
-              <>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
-                    Owner
-                  </span>
-                  <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
-                    {shortenAddress(cert.owner, 8)}
-                  </code>
-                  <CopyButton value={cert.owner} ariaLabel="Copy owner address" />
-                </div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-pixel text-xs font-medium text-text-muted uppercase tracking-wider whitespace-nowrap">
-                    Issuer
-                  </span>
-                  <code className="font-mono text-[0.8125rem] text-text bg-surface-2 border border-border rounded px-1.5 py-0.5">
-                    {shortenAddress(cert.issuer, 8)}
-                  </code>
-                  <CopyButton
-                    value={cert.issuer}
-                    ariaLabel="Copy issuer address"
-                  />
-                </div>
-              </>
-            ) : null}
-          </div>
-        </details>
+          </details>
+        ) : null}
 
         {/* ▾ Submission self-check */}
         <details className="border-t border-border pt-4 group">
