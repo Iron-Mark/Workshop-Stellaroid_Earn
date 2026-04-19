@@ -179,6 +179,14 @@ export function NextActionCard({
       </div>
       {/* Body */}
       <div className="flex items-center gap-3 p-4 max-[420px]:px-4 max-[420px]:pt-4 max-[420px]:pb-5">
+        {!walletConnected && (
+          <img
+            src="/illust/illust-wallet-setup.svg"
+            alt=""
+            className="w-12 h-auto shrink-0 opacity-90 lg:h-13 lg:w-auto"
+            aria-hidden="true"
+          />
+        )}
         {role === "issuer" && !milestones.registered && walletConnected && (
           <img
             src="/illust/illust-register.svg"

@@ -98,7 +98,7 @@ scopeLabel: "View this page in"
 
 **footer**
 ```
-tagline: "On-chain credential registry sa Stellar testnet. Ginawa para sa Stellar Philippines UniTour bootcamp."
+tagline: "On-chain credential registry sa Stellar testnet. Ginawa para sa Stellar PH Bootcamp bootcamp."
 ```
 
 **about**

@@ -1354,7 +1354,7 @@ export function SiteFooter() {
           )}
         </nav>
         <p className="text-xs text-text-muted/60">
-          Stellar Philippines UniTour · Built on testnet
+          Stellar PH Bootcamp · Built on testnet
         </p>
       </div>
     </footer>
@@ -2109,17 +2109,17 @@ All 28 CSS module files deleted. shadcn/ui primitives installed and themed. Fram
 
 ## Quick Reference: DeFi Class Patterns
 
-| Pattern          | Tailwind Classes                                                                                                             |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Glass card       | `rounded-2xl bg-surface-glass border border-border-glass backdrop-blur-md`                                                   |
-| Gradient heading | `font-heading bg-linear-to-r from-primary to-accent bg-clip-text text-transparent`                                           |
-| Pill button      | `rounded-full bg-linear-to-r from-primary to-primary-hover text-on-primary`                                                  |
-| Glow on hover    | `hover:shadow-glow-md transition-shadow`                                                                                     |
-| Mono data        | `font-mono text-primary [text-shadow:0_0_8px_rgba(245,158,11,0.35)]`                                                         |
+| Pattern          | Tailwind Classes                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Glass card       | `rounded-2xl bg-surface-glass border border-border-glass backdrop-blur-md`                                               |
+| Gradient heading | `font-heading bg-linear-to-r from-primary to-accent bg-clip-text text-transparent`                                       |
+| Pill button      | `rounded-full bg-linear-to-r from-primary to-primary-hover text-on-primary`                                              |
+| Glow on hover    | `hover:shadow-glow-md transition-shadow`                                                                                 |
+| Mono data        | `font-mono text-primary [text-shadow:0_0_8px_rgba(245,158,11,0.35)]`                                                     |
 | Eyebrow label    | `font-pixel text-xs tracking-widest uppercase text-primary border border-primary/30 bg-primary/8 px-3 py-1 rounded-full` |
-| Section wrapper  | `max-w-260 mx-auto px-6 my-16`                                                                                               |
-| Amber hairline   | `bg-linear-to-r from-transparent via-primary/60 to-transparent h-px`                                                         |
-| Noise texture    | Add `.noise` utility to `globals.css` and apply to hero `::before`:                                                          |
+| Section wrapper  | `max-w-260 mx-auto px-6 my-16`                                                                                           |
+| Amber hairline   | `bg-linear-to-r from-transparent via-primary/60 to-transparent h-px`                                                     |
+| Noise texture    | Add `.noise` utility to `globals.css` and apply to hero `::before`:                                                      |
 
 ```css
 /* Add to globals.css @layer utilities: */

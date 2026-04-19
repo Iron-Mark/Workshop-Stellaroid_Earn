@@ -1,8 +1,9 @@
 #![cfg(test)]
 use super::*;
 use soroban_sdk::{
+    symbol_short,
     testutils::{Address as _, Events},
-    token, Address, BytesN, Env, String,
+    token, vec, Address, BytesN, Env, IntoVal, String,
 };
 
 struct Ctx<'a> {
@@ -60,7 +61,7 @@ fn register_certificate(
         student,
         hash,
         &text(&ctx.env, "Stellar Smart Contract Bootcamp Completion"),
-        &text(&ctx.env, "Stellar Philippines UniTour 2026"),
+        &text(&ctx.env, "Stellar PH Bootcamp 2026"),
         &text(
             &ctx.env,
             "https://stellaroid-earn-demo.vercel.app/proof-metadata/sample.json",
@@ -118,7 +119,7 @@ fn t2_unapproved_issuer_cannot_issue() {
             &student,
             &hash,
             &text(&ctx.env, "Stellar Smart Contract Bootcamp Completion"),
-            &text(&ctx.env, "Stellar Philippines UniTour 2026"),
+            &text(&ctx.env, "Stellar PH Bootcamp 2026"),
             &text(
                 &ctx.env,
                 "https://stellaroid-earn-demo.vercel.app/proof-metadata/sample.json",
@@ -152,7 +153,7 @@ fn t3_suspended_issuer_cannot_issue() {
             &student,
             &hash,
             &text(&ctx.env, "Stellar Smart Contract Bootcamp Completion"),
-            &text(&ctx.env, "Stellar Philippines UniTour 2026"),
+            &text(&ctx.env, "Stellar PH Bootcamp 2026"),
             &text(
                 &ctx.env,
                 "https://stellaroid-earn-demo.vercel.app/proof-metadata/sample.json",
@@ -227,15 +228,34 @@ fn t5_revoked_credential_blocks_payment() {
 fn t6_issuer_events_emit() {
     let ctx = setup();
     ctx.env.mock_all_auths();
+    let e = &ctx.env;
+    let contract_id = ctx.client.address.clone();
+
     ctx.client.init(&ctx.admin, &ctx.token_addr);
+    assert_eq!(
+        ctx.env.events().all(),
+        vec![
+            e,
+            (contract_id.clone(), (symbol_short!("init"),).into_val(e), ctx.admin.into_val(e)),
+        ]
+    );
 
     let issuer = Address::generate(&ctx.env);
     register_issuer(&ctx, &issuer);
-    approve_issuer(&ctx, &issuer);
+    assert_eq!(
+        ctx.env.events().all(),
+        vec![
+            e,
+            (contract_id.clone(), (symbol_short!("iss_reg"),).into_val(e), issuer.into_val(e)),
+        ]
+    );
 
-    let events = ctx.env.events().all();
-    assert!(
-        events.len() >= 3,
-        "expected init + issuer registration + issuer approval events"
+    approve_issuer(&ctx, &issuer);
+    assert_eq!(
+        ctx.env.events().all(),
+        vec![
+            e,
+            (contract_id.clone(), (symbol_short!("iss_appr"),).into_val(e), issuer.into_val(e)),
+        ]
     );
 }

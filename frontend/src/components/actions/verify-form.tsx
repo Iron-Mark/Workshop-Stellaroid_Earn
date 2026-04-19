@@ -51,9 +51,8 @@ function statusLabel(status: CertificateStatus): string {
     case "expired":
       return "Expired";
     case "issued":
-      return "Issued";
     default:
-      return "Unknown";
+      return "Issued";
   }
 }
 
