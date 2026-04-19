@@ -15,12 +15,12 @@ export function ProofQrBlock({ hash }: ProofQrBlockProps) {
   }, [hash]);
 
   return (
-    <div className="flex items-center gap-4 border-t border-border pt-4">
+    <div className="flex items-center gap-4">
       {url ? (
-        <ProofQr url={url} size={96} />
+        <ProofQr url={url} size={128} />
       ) : (
         <div
-          className="w-24 h-24 rounded shrink-0 bg-[#F8FAFC] p-1.5"
+          className="w-32 h-32 rounded shrink-0 bg-[#F8FAFC] p-1.5"
           aria-hidden="true"
         />
       )}
