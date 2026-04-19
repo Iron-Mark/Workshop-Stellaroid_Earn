@@ -1,138 +1,197 @@
 # Stellaroid Earn
 
-On-chain credential registry and employer payment rail for bootcamp graduates, built on Stellar.
+**On-chain credential trust for Stellar PH Bootcamp 2026**
+
+Issue, verify, and pay graduates on Stellar testnet — Soroban + Freighter, end-to-end.
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-stellaroid--earn-F59E0B?style=for-the-badge&logo=vercel&logoColor=white)](https://stellaroid-earn-demo.vercel.app/)
+[![Stellar Testnet](https://img.shields.io/badge/Stellar-Testnet-7C3AED?style=for-the-badge&logo=stellar&logoColor=white)](https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y)
+[![Soroban SDK](https://img.shields.io/badge/Soroban_SDK-22.0.0-3B82F6?style=for-the-badge)](https://docs.rs/soroban-sdk/22.0.0)
+[![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
+
+![Stellaroid Earn](images/github-social-card.png)
+
+| | |
+|---|---|
+| **Live demo** | [stellaroid-earn-demo.vercel.app](https://stellaroid-earn-demo.vercel.app/) |
+| **Contract (current)** | [`CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`](https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y) |
+| **Tx evidence** | [init](https://stellar.expert/explorer/testnet/tx/c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721) · [register](https://stellar.expert/explorer/testnet/tx/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22) · [verify](https://stellar.expert/explorer/testnet/tx/2215e08ecc935b6f31d5c335c3aaea3e3742f07ef993d8ca947d1711ad5199d9) · [payment](https://stellar.expert/explorer/testnet/tx/5bed652b3725a6826cd4a99e8c750cdd2dc4625f7e3a4a82661680ada50cb435) |
+| **Submission** | Rise In · Stellar Smart Contract Bootcamp · Stellar PH Bootcamp 2026 |
 
 ---
 
-## Problem
+## 30-Second Pitch
 
-A bootcamp graduate has no way to prove their skills to an employer without trusting a third party to vouch for them. Paper certificates and PDF badges are easy to fake and impossible to verify independently. Employers either skip verification or pay for a background check service. The graduate's achievement lives on someone else's server.
+**Problem** — Bootcamp certificates are PDFs that anyone can fake and no one can independently verify. Employers skip verification or pay for a background check service.
 
-## Solution
+**Solution** — Stellaroid Earn anchors credential hashes on a Soroban smart contract where approved issuers register and verify certificates, anyone checks proof at a public URL with no login, and employers pay graduates in XLM — all on-chain.
 
-Stellaroid Earn stores credential hashes on a Soroban smart contract. An approved issuer (bootcamp organizer) registers and verifies the certificate on-chain. Anyone — recruiter, employer, or peer — can verify the credential at a public URL with no login required. Employers can pay the graduate directly in XLM through the same contract, turning a credential into a payment rail.
+**Why Stellar** — Sub-cent fees and 5-second finality make issuing credentials cheap enough to never skip. `simulateTransaction` lets anyone verify with zero wallet setup. Native XLM via SAC closes the loop from proof to payout on one chain.
 
 ---
 
-## Demo Flow (2 minutes)
+## Feature Gallery
 
-1. Connect Freighter wallet (testnet)
-2. Issuer applies and gets approved by admin on-chain
-3. Issuer registers a certificate hash for a graduate
-4. Admin or issuer verifies the credential — status changes to **Verified**
-5. Anyone scans the QR or visits `/proof/[hash]` — no wallet or login needed
-6. Employer pays graduate in XLM directly through the contract
+<table>
+<tr>
+<td width="50%" align="center">
+<img src="images/landing-hero.png" alt="Landing page" width="100%"/><br/>
+<b>Discover</b> — Landing page with 3-step how-it-works flow
+</td>
+<td width="50%" align="center">
+<img src="images/proof-verified.png" alt="Verified proof block" width="100%"/><br/>
+<b>Verify</b> — On-chain proof block with green Verified badge
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+<img src="images/app-dashboard.png" alt="App dashboard" width="100%"/><br/>
+<b>Issue &amp; Pay</b> — Dual-role dashboard for issuers and employers
+</td>
+<td width="50%" align="center">
+<img src="images/mobile-proof-card.png" alt="Mobile proof card" width="100%"/><br/>
+<b>Share</b> — QR-scannable proof card on any mobile browser
+</td>
+</tr>
+</table>
+
+---
+
+## Live Trust Artifact
+
+Every credential produces a public **Proof Block** URL — no wallet, no login, no API key. Green means verified on-chain. Amber means issued but not yet verified.
+
+<table>
+<tr>
+<td width="50%" align="center">
+<img src="images/proof-verified.png" alt="Verified credential" width="100%"/><br/>
+<b>Verified</b><br/>
+<a href="https://stellaroid-earn-demo.vercel.app/proof/c02ce1602d5bbb6ddfe93c6603d7f4e3dae3b2fb571ea4e70669ccd5a359aea3">Try it yourself →</a>
+</td>
+<td width="50%" align="center">
+<img src="images/proof-locked.png" alt="Issued (locked) credential" width="100%"/><br/>
+<b>Issued (locked)</b><br/>
+<a href="https://stellaroid-earn-demo.vercel.app/proof/c6df0adf9d1a6f5a88d847e8e9a779e71aa2435d6fa47b47d065ebbfa8c1f890">Try it yourself →</a>
+</td>
+</tr>
+</table>
+
+Contract on Stellar Expert: [`CBNSOFNX…HI2DX2Y`](https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y)
+
+![Contract history on Stellar Expert](images/stellar-expert.png)
 
 ---
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  Next.js 15 App Router (frontend/)                              │
-│                                                                 │
-│  Server Components (RSC)          Client Components             │
-│  ┌────────────────────────┐       ┌────────────────────────┐   │
-│  │ /proof/[hash]          │       │ /app   (dashboard)      │   │
-│  │ /proof/[hash]/embed    │       │ /issuer (management)    │   │
-│  │ revalidate=60 (ISR)    │       │ /issuer/register        │   │
-│  │                        │       │                         │   │
-│  │ contract-read-server   │       │ contract-client.ts      │   │
-│  │ simulateTransaction    │       │ simulateTransaction      │   │
-│  │ (read address, no sig) │       │ (reads, no wallet)      │   │
-│  └──────────┬─────────────┘       │ signWithFreighter       │   │
-│             │                     │ (writes, wallet sign)   │   │
-│             │                     └──────────┬──────────────┘   │
-│             │                                │                  │
-│  ┌──────────▼────────────────────────────────▼──────────────┐  │
-│  │  @stellar/stellar-sdk  (TransactionBuilder, rpc.Server)  │  │
-│  │  CSP: connect-src restricted to *.stellar.org only       │  │
-│  └──────────────────────────────┬───────────────────────────┘  │
-└─────────────────────────────────┼───────────────────────────────┘
-                                  │ HTTPS / Soroban RPC
-                    ┌─────────────▼──────────────────┐
-                    │  Stellar Testnet               │
-                    │                                │
-                    │  Stellaroid Earn Contract      │
-                    │  CBNSOFNX…WEHI2DX2Y            │
-                    │  (credential registry +        │
-                    │   issuer trust layer +         │
-                    │   employer payment rail)       │
-                    │                                │
-                    │  Native XLM SAC                │
-                    │  CDLZFC3S…HI2HHGCYSC           │
-                    │  (payment token)               │
-                    └────────────────────────────────┘
+```mermaid
+sequenceDiagram
+  autonumber
+  actor Issuer as Approved Issuer
+  actor Student
+  actor Employer
+  participant FE as Stellaroid Earn (Next.js)
+  participant FR as Freighter
+  participant SC as Soroban contract<br/>(stellaroid_earn)
+  participant XLM as Stellar testnet
+
+  Issuer->>FE: Open /app, paste student wallet + cert hash
+  FE->>FR: requestAccess + signTransaction(register_certificate)
+  FR->>XLM: Submit tx
+  XLM->>SC: register_certificate(issuer, student, hash, title, cohort, uri)
+  SC-->>XLM: cert_reg event
+  Issuer->>FE: Click "Approve credential"
+  FE->>FR: signTransaction(verify_certificate)
+  FR->>XLM: Submit tx
+  XLM->>SC: verify_certificate(verifier, hash)
+  SC-->>XLM: cert_ver event
+  Student->>FE: Share /proof/<hash> (QR or link)
+  Note over FE,SC: Read-only get_certificate via simulateTransaction
+  Employer->>FE: Open /app as Employer, paste hash + amount
+  FE->>FR: signTransaction(link_payment)
+  FR->>XLM: Submit tx (XLM transfer + payment event)
 ```
 
-**Two read paths, one write path:**
+**Design decisions:**
 
-| Path | Where | How | Who triggers |
-|---|---|---|---|
-| Server read | RSC on `/proof/[hash]` | `simulateTransaction` with funded read address, no wallet | Anyone visiting a proof URL |
-| Client read | Browser components | `simulateTransaction` with read address via `contract-client.ts` | UI state loading |
-| Write | Client components | Freighter signs → `sendTransaction` → poll for result | Connected wallet user |
-
-**Key design decisions:**
-- `/proof/[hash]` is server-rendered with `revalidate=60` — proof pages are CDN-cached, load instantly, require no wallet
-- Hash format is validated before any RPC call to avoid wasting network requests on bad inputs
-- CSP blocks all `connect-src` except `*.stellar.org` — no third-party data leaks
-- No backend server — all state is on-chain, read address is a funded testnet account used only for gas-free simulation
+- **soroban-sdk 22** with typed `#[contracterror]` enum (12 variants), persistent + instance storage, TTL 518k/1.04M ledgers
+- **Issuer trust layer**: self-register → admin approve → issue credentials. Suspended issuers are blocked on-chain
+- **Two read paths**: server-side RSC with `revalidate=60` (CDN-cached proof pages) + client-side `simulateTransaction` (dashboard state)
+- **One write path**: Freighter signs → `sendTransaction` → poll for result
+- **CSP** locks `connect-src` to `*.stellar.org` — no third-party data leaks
 
 ---
 
-## Project Structure
+## Quick Start
 
+### Prerequisites
+
+- Rust (stable) + `wasm32v1-none` target
+- [Stellar CLI v26+](https://developers.stellar.org/docs/tools/stellar-cli)
+- Node.js 20+ and npm
+- [Freighter](https://www.freighter.app/) browser extension set to **Testnet**
+
+Full setup guide: [`setup/[ENG] Pre-Workshop Setup Guide.pdf`](setup/%5BENG%5D%20Pre-Workshop%20Setup%20Guide.pdf)
+
+### Smart Contract
+
+```bash
+cd contract
+cargo test                    # 6 tests pass
+stellar contract build        # builds wasm32v1-none target
+
+# Deploy to testnet
+stellar keys generate my-key --network testnet --fund
+stellar contract deploy \
+  --wasm target/wasm32v1-none/release/stellaroid_earn.wasm \
+  --source my-key --network testnet
 ```
-Workshop-Stellaroid_Earn/
-├── contract/
-│   ├── src/
-│   │   ├── lib.rs              # Soroban credential + payment contract (433 lines)
-│   │   └── test.rs             # 5 contract tests
-│   └── Cargo.toml
-├── frontend/
-│   ├── src/
-│   │   ├── app/                # Next.js App Router pages
-│   │   │   ├── app/            # Participant dashboard
-│   │   │   ├── issuer/         # Issuer registration + management
-│   │   │   └── proof/[hash]/   # Public shareable proof card
-│   │   ├── components/         # UI components (proof card, wallet, badges)
-│   │   ├── hooks/              # Freighter wallet state
-│   │   └── lib/                # Contract client, RPC helpers, types
-│   ├── public/                 # Illustrations, OG images
-│   └── .env.example            # Environment variable template
-├── demo/                       # Demo script, FAQ, press kit
-├── docs/                       # Specs and implementation plans
-└── README.md
+
+### Frontend
+
+```bash
+cd frontend
+cp .env.example .env.local    # fill in contract ID + read address
+npm install
+npm run dev                   # http://localhost:3000
+```
+
+**Environment variables** (`.env.local`):
+
+```env
+NEXT_PUBLIC_STELLAR_RPC_URL=https://soroban-testnet.stellar.org
+NEXT_PUBLIC_STELLAR_NETWORK=TESTNET
+NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
+NEXT_PUBLIC_SOROBAN_CONTRACT_ID=<your deployed contract ID>
+NEXT_PUBLIC_STELLAR_ADMIN_ADDRESS=<your admin G... address>
+NEXT_PUBLIC_STELLAR_READ_ADDRESS=<any funded testnet address for read-only calls>
+NEXT_PUBLIC_SOROBAN_ASSET_ADDRESS=CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC
+NEXT_PUBLIC_SOROBAN_ASSET_CODE=XLM
+NEXT_PUBLIC_SOROBAN_ASSET_DECIMALS=7
+NEXT_PUBLIC_STELLAR_EXPLORER_URL=https://stellar.expert/explorer/testnet
 ```
 
 ---
 
-## Stellar Features Used
+## Verifiable On-Chain
 
-| Feature | Usage |
-|---|---|
-| Soroban smart contracts | Credential registry — register, verify, revoke, suspend, expire |
-| Issuer trust layer | On-chain issuer approval and suspension by admin |
-| Native XLM | Direct employer-to-graduate payments via `reward_student` |
-| Native XLM SAC | Token interface for XLM in contract payment calls |
-| Freighter Wallet | Browser signing for all write transactions |
-| Soroban RPC | Read-only credential lookups — no wallet needed for verification |
-| `simulateTransaction` | Gas-free reads using a funded read address |
+Every action in the demo flow is a real transaction on Stellar testnet. Click any hash to verify on Stellar Expert.
 
----
+| Action | Tx Hash | Result |
+|---|---|---|
+| `init` | [`c7de2d61…5721`](https://stellar.expert/explorer/testnet/tx/c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721) | Contract initialized with admin + XLM token |
+| `register_certificate` | [`1e8078e3…3a22`](https://stellar.expert/explorer/testnet/tx/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22) | Credential hash registered for student |
+| `verify_certificate` | [`2215e08e…99d9`](https://stellar.expert/explorer/testnet/tx/2215e08ecc935b6f31d5c335c3aaea3e3742f07ef993d8ca947d1711ad5199d9) | Status changed to Verified |
+| `link_payment` | [`5bed652b…b435`](https://stellar.expert/explorer/testnet/tx/5bed652b3725a6826cd4a99e8c750cdd2dc4625f7e3a4a82661680ada50cb435) | Employer paid graduate 10 XLM |
 
-## Smart Contract
+**Live certificates** (testnet, contract [`CBNSOFNX…`](https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y)):
 
-Deployed on Stellar testnet:
-
-```
-CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
-```
-
-Explorer: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
-
-![Contract on Stellar Expert](images/stellar-expert-contract.png)
+| Hash | Cohort | Status |
+|---|---|---|
+| [`c02ce160…aea3`](https://stellaroid-earn-demo.vercel.app/proof/c02ce1602d5bbb6ddfe93c6603d7f4e3dae3b2fb571ea4e70669ccd5a359aea3) | Stellar PH Bootcamp 2026 | Verified |
+| [`35a19276…702e`](https://stellaroid-earn-demo.vercel.app/proof/35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e) | Stellar Philippines UniTour 2026 | Verified |
+| [`c6df0adf…f890`](https://stellaroid-earn-demo.vercel.app/proof/c6df0adf9d1a6f5a88d847e8e9a779e71aa2435d6fa47b47d065ebbfa8c1f890) | Stellar PH Bootcamp 2026 | Issued (locked demo) |
 
 ### Contract Functions
 
@@ -143,12 +202,12 @@ Explorer: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7U
 | `approve_issuer(admin, issuer)` | Admin | Approve an issuer to register credentials |
 | `suspend_issuer(admin, issuer)` | Admin | Suspend a misbehaving issuer |
 | `get_issuer(issuer)` | Anyone | Read issuer record and status |
-| `register_certificate(issuer, owner, hash, title, cohort, metadata_uri, expires_at)` | Approved issuer | Register a credential hash for a graduate |
-| `verify_certificate(issuer, cert_hash)` | Admin or approved issuer | Mark a credential Verified |
-| `revoke_certificate(issuer, cert_hash)` | Admin or approved issuer | Permanently revoke a credential |
-| `suspend_certificate(issuer, cert_hash)` | Admin or approved issuer | Temporarily suspend a credential |
-| `reward_student(employer, cert_hash, amount)` | Employer | Pay graduate in XLM, linked to credential |
-| `link_payment(payer, cert_hash, amount)` | Anyone | Record a payment reference on a credential |
+| `register_certificate(issuer, student, cert_hash, title, cohort, metadata_uri)` | Approved issuer | Register a credential hash for a graduate |
+| `verify_certificate(issuer, cert_hash)` | Admin or issuer | Mark a credential Verified |
+| `revoke_certificate(issuer, cert_hash)` | Admin or issuer | Permanently revoke a credential |
+| `suspend_certificate(issuer, cert_hash)` | Admin or issuer | Temporarily suspend a credential |
+| `reward_student(student, cert_hash, amount)` | Admin | Admin-initiated XLM payment to a graduate |
+| `link_payment(employer, student, cert_hash, amount)` | Employer | Employer pays graduate in XLM, linked to credential |
 | `get_certificate(cert_hash)` | Anyone | Read full credential record and status |
 
 ### Credential Status Lifecycle
@@ -160,139 +219,83 @@ Issued --> Verified  (issuer or admin calls verify_certificate)
        --> Expired   (automatically after expires_at ledger sequence)
 ```
 
-![Proof card — verified state](images/proof-card-verified.png)
-![Proof card — locked state](images/proof-card-locked.png)
-
 ---
 
-## Prerequisites
+## Tests
 
-**Smart contract:**
-- Rust (latest stable)
-- Stellar CLI v26+
-- `wasm32v1-none` WASM target
-- Testnet account funded via Friendbot
+6 tests covering the trust layer, access control, revocation, and events:
 
-**Frontend:**
-- Node.js 18+
-- Freighter browser extension set to Testnet
-- Testnet XLM for gas
+```
+running 6 tests
+test test::t1_happy_path_with_approved_issuer ... ok
+test test::t2_unapproved_issuer_cannot_issue ... ok
+test test::t3_suspended_issuer_cannot_issue ... ok
+test test::t4_wrong_approved_issuer_cannot_verify ... ok
+test test::t5_revoked_credential_blocks_payment ... ok
+test test::t6_issuer_events_emit ... ok
 
----
-
-## Setup
-
-### Smart Contract
-
-```bash
-# Test
-cd contract && cargo test
-
-# Build
-stellar contract build
-
-# Deploy to testnet
-stellar keys generate my-key --network testnet --fund
-stellar contract deploy \
-  --wasm target/wasm32v1-none/release/stellaroid_earn.wasm \
-  --source my-key \
-  --network testnet
+test result: ok. 6 passed; 0 failed; 0 ignored
 ```
 
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-# open http://localhost:3000
-```
-
-**Environment variables** — copy `.env.example` to `.env.local` and fill in:
-
-```env
-NEXT_PUBLIC_STELLAR_RPC_URL=https://soroban-testnet.stellar.org
-NEXT_PUBLIC_STELLAR_NETWORK=TESTNET
-NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
-NEXT_PUBLIC_SOROBAN_CONTRACT_ID=<your deployed contract ID>
-NEXT_PUBLIC_STELLAR_ADMIN_ADDRESS=<your admin wallet G... address>
-NEXT_PUBLIC_STELLAR_READ_ADDRESS=<any funded testnet address for read-only calls>
-NEXT_PUBLIC_SOROBAN_ASSET_ADDRESS=CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC
-NEXT_PUBLIC_SOROBAN_ASSET_CODE=XLM
-NEXT_PUBLIC_SOROBAN_ASSET_DECIMALS=7
-NEXT_PUBLIC_STELLAR_EXPLORER_URL=https://stellar.expert/explorer/testnet
-```
-
----
-
-## Sample CLI Invocations
-
-```bash
-# Initialize contract (run once after deploy)
-stellar contract invoke \
-  --id CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y \
-  --source my-key \
-  --network testnet \
-  -- init \
-  --admin <ADMIN_ADDRESS> \
-  --token CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC
-
-# Approve an issuer
-stellar contract invoke \
-  --id CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y \
-  --source my-key \
-  --network testnet \
-  -- approve_issuer \
-  --admin <ADMIN_ADDRESS> \
-  --issuer <ISSUER_ADDRESS>
-
-# Look up a certificate
-stellar contract invoke \
-  --id CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y \
-  --network testnet \
-  -- get_certificate \
-  --cert_hash <32_BYTE_HEX_HASH>
-```
-
----
-
-## Target Users
-
-**Bootcamp graduates** — proof of skill that lives on-chain, shareable as a URL or QR code, verifiable by anyone without asking the bootcamp organizer.
-
-**Employers and HR** — one-click credential check with no login, no API key, no background check service. Green means verified on-chain. Red means revoked. No ambiguity.
-
-**Bootcamp organizers (issuers)** — register and verify credentials directly from the issuer dashboard, no backend needed. Issuer approval is also on-chain so verifiers can trust the source.
-
----
-
-## Why Stellar
-
-Sub-cent fees and 5-second finality make the credential write cheap enough that issuers won't skip it. Soroban gives us custom contract logic — issuer approval, expiry, revocation — without a backend. Public verifiability via `simulateTransaction` means anyone can check a proof with just a hash and a public RPC endpoint, no wallet required. The same contract that stores the credential also handles employer payments, closing the loop from proof to payout on one chain.
-
----
-
-## Live Demo
-
-| | |
+| Test | What it verifies |
 |---|---|
-| **Live demo** | https://stellaroid-earn-demo.vercel.app/ |
-| **Contract ID (current)** | [`CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`](https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y) — trust-layer ABI, proof block redesign |
-| **Contract ID (stable v1)** | [`CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`](https://stellar.expert/explorer/testnet/contract/CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ) — original deploy, stable branch |
-| **Proof txs (v1)** | [init](https://stellar.expert/explorer/testnet/tx/c7de2d61cfd1f51cfb255379775dd928604d264d6b5bb3775dc75cdd7c4b5721) · [register](https://stellar.expert/explorer/testnet/tx/1e8078e36333023c46f11a0bd990f97b62bd13ae086597de6a3db8e66d4b3a22) · [verify](https://stellar.expert/explorer/testnet/tx/2215e08ecc935b6f31d5c335c3aaea3e3742f07ef993d8ca947d1711ad5199d9) · [payment](https://stellar.expert/explorer/testnet/tx/5bed652b3725a6826cd4a99e8c750cdd2dc4625f7e3a4a82661680ada50cb435) |
-
-![App dashboard](images/app-dashboard.png)
+| t1 | Happy path: approved issuer registers + verifies credential, admin rewards student |
+| t2 | Pending (unapproved) issuer cannot register a credential |
+| t3 | Suspended issuer cannot register a credential |
+| t4 | Approved issuer A cannot verify issuer B's credential |
+| t5 | Revoked credential blocks downstream payments |
+| t6 | Events emitted correctly for init, register_issuer, approve_issuer |
 
 ---
 
-## Resources
+## Tech Stack
 
-| Resource | Link |
+| Component | Version |
 |---|---|
-| Rise In Programs | [risein.com/programs](https://www.risein.com/programs) |
-| Stellar Docs | [developers.stellar.org](https://developers.stellar.org) |
-| Soroban SDK | [docs.rs/soroban-sdk](https://docs.rs/soroban-sdk) |
-| Stellar CLI | [developers.stellar.org/docs/tools/stellar-cli](https://developers.stellar.org/docs/tools/stellar-cli) |
-| Freighter Wallet | [freighter.app](https://freighter.app) |
-| Stellar Expert (Testnet) | [stellar.expert/explorer/testnet](https://stellar.expert/explorer/testnet) |
-| Bootcamp Repo (upstream) | https://github.com/armlynobinguar/Stellar-Bootcamp-2026 |
+| Soroban SDK | 22.0.0 |
+| Stellar CLI | 26+ |
+| Next.js | 15 (App Router) |
+| React | 19 |
+| @stellar/stellar-sdk | latest |
+| @stellar/freighter-api | latest |
+| Tailwind CSS | v4 |
+
+---
+
+## Project Structure
+
+```
+stellaroid-earn/
+├── contract/
+│   ├── src/
+│   │   ├── lib.rs              # Soroban credential + payment contract
+│   │   └── test.rs             # 6 contract tests
+│   └── Cargo.toml
+├── frontend/
+│   ├── src/
+│   │   ├── app/                # Next.js App Router pages
+│   │   │   ├── app/            # Participant dashboard (issuer + employer)
+│   │   │   ├── issuer/         # Issuer registration + lookup
+│   │   │   └── proof/[hash]/   # Public shareable proof block
+│   │   ├── components/         # UI components (proof card, wallet, badges)
+│   │   ├── hooks/              # Freighter wallet state
+│   │   └── lib/                # Contract client, RPC helpers, types
+│   └── .env.example
+├── demo/                       # Demo script, FAQ, press kit
+├── scripts/                    # Screenshot capture (Playwright)
+├── images/                     # README screenshots
+├── LICENSE
+└── README.md
+```
+
+---
+
+## Acknowledgments
+
+- [Rise In](https://www.risein.com/programs) — Stellar Smart Contract Bootcamp
+- [Stellar Philippines](https://stellar.org/) — Stellar PH Bootcamp 2026
+- [Stellar Docs](https://developers.stellar.org) · [Soroban SDK](https://docs.rs/soroban-sdk) · [Freighter](https://www.freighter.app/) · [Stellar Expert](https://stellar.expert/explorer/testnet)
+
+---
+
+MIT License — see [LICENSE](LICENSE) for details.
