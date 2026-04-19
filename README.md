@@ -137,14 +137,14 @@ cargo test
 - **macOS (Terminal):**
 
 ```bash
-stellar keys generate --global my-key --network testnet
+stellar keys generate my-key --network testnet --fund
 stellar keys address my-key
 ```
 
 - **Windows (PowerShell):**
 
 ```powershell
-stellar keys generate --global my-key --network testnet
+stellar keys generate my-key --network testnet --fund
 stellar keys address my-key
 ```
 
@@ -190,15 +190,15 @@ Invoke-WebRequest "https://friendbot.stellar.org?addr=<YOUR_FREIGHTER_TESTNET_AD
 - **macOS (Terminal):**
 
 ```bash
-cargo build --target wasm32-unknown-unknown --release
-ls target/wasm32-unknown-unknown/release/*.wasm
+cargo build --target wasm32v1-none --release
+ls target/wasm32v1-none/release/*.wasm
 ```
 
 - **Windows (PowerShell):**
 
 ```powershell
-cargo build --target wasm32-unknown-unknown --release
-Get-ChildItem target\wasm32-unknown-unknown\release\*.wasm
+cargo build --target wasm32v1-none --release
+Get-ChildItem target\wasm32v1-none\release\*.wasm
 ```
 
 If you do not see a `.wasm` file, confirm your contract crate name and retry the build command.
@@ -209,7 +209,7 @@ If you do not see a `.wasm` file, confirm your contract crate name and retry the
 
 ```bash
 stellar contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/soroban_community_treasury.wasm \
+  --wasm target/wasm32v1-none/release/<your_contract>.wasm \
   --source my-key \
   --network testnet
 ```
@@ -218,7 +218,7 @@ stellar contract deploy \
 
 ```powershell
 stellar contract deploy `
-  --wasm target/wasm32-unknown-unknown/release/soroban_community_treasury.wasm `
+  --wasm target\wasm32v1-none\release\<your_contract>.wasm `
   --source my-key `
   --network testnet
 ```
@@ -426,7 +426,7 @@ For **Prize Pool Joiner Submission**:
 |----------|------|
 | Stellar CLI (GitHub) | https://github.com/stellar/stellar-cli |
 | Building with AI | https://developers.stellar.org/docs/tools/developer-tools/building-with-ai |
-| Bootcamp Repo (Iron-Mark fork) | https://github.com/Iron-Mark/Stellar-Bootcamp-2026 |
+| Bootcamp Repo (Iron-Mark fork) | https://github.com/Iron-Mark/Workshop-Stellaroid_Earn |
 | Bootcamp Repo (upstream) | https://github.com/armlynobinguar/Stellar-Bootcamp-2026 |
 
 ---
