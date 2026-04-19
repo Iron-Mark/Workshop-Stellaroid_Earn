@@ -217,3 +217,27 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Sonner toast theming ───────────────────────────────────────────────── */
+[data-sonner-toaster] {
+  --width: 340px;
+}
+
+[data-sonner-toaster][data-theme=dark] {
+  /* Base */
+  --normal-bg:     rgba(30, 41, 59, 0.85);
+  --normal-border: rgba(255, 255, 255, 0.08);
+  --normal-text:   #F8FAFC;
+  /* Success */
+  --success-bg:    rgba(20, 50, 35, 0.9);
+  --success-border: rgba(34, 197, 94, 0.25);
+  --success-text:  #4ade80;
+  /* Error / danger */
+  --error-bg:      rgba(60, 20, 20, 0.9);
+  --error-border:  rgba(239, 68, 68, 0.25);
+  --error-text:    #f87171;
+  /* Warning */
+  --warning-bg:    rgba(55, 35, 10, 0.9);
+  --warning-border: rgba(245, 158, 11, 0.3);
+  --warning-text:  #fbbf24;
+}
+
