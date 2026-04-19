@@ -38,6 +38,10 @@ export type CertificateRecord = {
 function normalizeStatusKey(value: unknown): string {
   if (typeof value === "string") return value.toLowerCase();
   if (typeof value === "number") return String(value);
+  // Soroban SDK encodes enum variants as ["VariantName"] or ["VariantName", ...values]
+  if (Array.isArray(value) && value.length > 0 && typeof value[0] === "string") {
+    return value[0].toLowerCase();
+  }
   if (value && typeof value === "object") {
     const record = value as Record<string, unknown>;
     if (typeof record.tag === "string") return record.tag.toLowerCase();

@@ -23,6 +23,19 @@ next-env.d.ts
 # Claude Code local state
 .claude/scheduled_tasks.lock
 .vercel
+.mcp.json
 
 # Superpowers brainstorm runtime files
 .superpowers/
+
+# Playwright MCP runtime files
+.playwright-mcp/
+
+# Temporary screenshot check files (root-level)
+*-check.png
+proof-check*.png
+stellar-expert-bottom.png
+stellar-expert-history.png
+proof-tech-details.png
+proof-verified-check.png
+images/stellar-expert-contract.png
