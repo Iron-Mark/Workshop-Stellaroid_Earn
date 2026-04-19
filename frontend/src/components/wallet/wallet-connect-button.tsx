@@ -175,9 +175,9 @@ export function WalletConnectButton({ sidebar = false }: WalletConnectButtonProp
           style={{ aspectRatio: "1.586", padding: "20px" }}
         >
           <img
-            src="/illust/illust-wallet-setup.svg"
+            src="/illust/illust-wallet-sidebar.svg"
             alt=""
-            className="w-16 h-auto opacity-80"
+            className="w-full max-w-[140px] h-auto opacity-80"
             aria-hidden="true"
             style={{ imageRendering: "pixelated" }}
           />
