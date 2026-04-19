@@ -186,7 +186,7 @@ stellar contract invoke \
   --network testnet \
   -- register_issuer \
   --issuer GAWIOVGFSPJDEIJJZUSVRFPVP3D5VNO2LGCU47KEHJD6MV277QKNR34D \
-  --name "Stellar Philippines UniTour" \
+  --name "Stellar PH Bootcamp" \
   --website "https://stellaroid-earn-demo.vercel.app" \
   --category "bootcamp"
 ```
@@ -274,7 +274,7 @@ stellar contract invoke \
   --student GAWIOVGFSPJDEIJJZUSVRFPVP3D5VNO2LGCU47KEHJD6MV277QKNR34D \
   --cert_hash 35a19276e58b8f742177892531def5e820f7c07bd8fd5a716ac710db09e6702e \
   --title "Stellar Smart Contract Bootcamp Completion" \
-  --cohort "Stellar Philippines UniTour 2026" \
+  --cohort "Stellar PH Bootcamp 2026" \
   --metadata_uri "https://stellaroid-earn-demo.vercel.app/proof-metadata/sample.json"
 ```
 
@@ -327,7 +327,7 @@ Open `http://localhost:3000/proof/35a19276e58b8f742177892531def5e820f7c07bd8fd5a
 
 Confirm:
 - Status badge shows **Verified**
-- Issuer row shows `Stellar Philippines UniTour · Approved issuer` badge (green dot)
+- Issuer row shows `Stellar PH Bootcamp · Approved issuer` badge (green dot)
 - Credential metadata panel shows title, cohort, skills
 - No console errors
 
@@ -337,7 +337,7 @@ Open `http://localhost:3000/proof/35a19276e58b8f742177892531def5e820f7c07bd8fd5a
 
 Confirm:
 - Status badge shows **Verified**
-- Issuer line reads `Stellar Philippines UniTour (GAWIO…)` not just the raw address
+- Issuer line reads `Stellar PH Bootcamp (GAWIO…)` not just the raw address
 
 - [ ] **Step 4: Verify issuer dashboard — approved state**
 

@@ -1354,7 +1354,7 @@ export function SiteFooter() {
           )}
         </nav>
         <p className="text-xs text-text-muted/60">
-          Stellar Philippines UniTour · Built on testnet
+          Stellar PH Bootcamp · Built on testnet
         </p>
       </div>
     </footer>
