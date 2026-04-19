@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  id-token: write
+  contents: write
+  attestations: write
+
 jobs:
   release-stellaroid-earn:
     uses: stellar-expert/soroban-build-workflow/.github/workflows/release.yml@main
