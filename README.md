@@ -296,8 +296,9 @@ stellaroid-earn/
 **Mark Siazon** — Hybrid Product Designer & Full-Stack Developer
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-marksiazon.dev-F59E0B?style=flat-square&logo=vercel&logoColor=white)](https://www.marksiazon.dev/)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Mark_Siazon-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mark-siazon/)
-[![GitHub](https://img.shields.io/badge/GitHub-Iron--Mark-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Iron-Mark)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Mark_Siazon-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mark-siazon/)<br>
+[![GitHub Main](https://img.shields.io/badge/GitHub-Iron--Mark-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Iron-Mark)   
+[![GitHub Professional Acct](https://img.shields.io/badge/GitHub-Mark--Siazon-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/mark-siazon)
 
 ## Acknowledgments
 
