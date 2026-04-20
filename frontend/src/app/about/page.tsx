@@ -746,11 +746,12 @@ export default function About() {
                     </span>
                     <div>
                       <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-primary mt-1.5 mb-1">
-                        Step 3 · Pay
+                        Step 3 · Employer pays
                       </p>
                       <p className="text-text-muted text-sm leading-[1.55] m-0">
-                        500 XLM lands in Maria&rsquo;s wallet, no invoice, no
-                        platform, no 30-day wait.
+                        The employer verifies the proof, hires Maria, and sends
+                        payment straight to her wallet — no invoice, no
+                        middleman.
                       </p>
                     </div>
                   </li>
