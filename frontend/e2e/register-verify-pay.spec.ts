@@ -33,7 +33,7 @@ test("register, verify, pay, and open the proof page", async ({ page }) => {
   await page.getByRole("button", { name: "Pay Student" }).click();
   await expect(page.getByText("Payment settled")).toBeVisible();
 
-  const proofLink = page.getByRole("link", { name: "Open public Proof Block" });
+  const proofLink = page.getByRole("link", { name: "Open public Verified Badge" });
   await expect(proofLink).toHaveAttribute("href", `/proof/${certHash}`);
   await proofLink.click();
 

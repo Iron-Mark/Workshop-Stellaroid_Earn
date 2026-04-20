@@ -79,7 +79,7 @@ export const i18n: Record<Locale, I18nDict> = {
       payTitle: "Pay the verified student",
       paySubtitle: "Send the payment amount linked to this certificate.",
       doneTitle: "All done",
-      doneSubtitle: "The proof block is ready to share.",
+      doneSubtitle: "The verified badge is ready to share.",
     },
   },
   tl: {
@@ -122,7 +122,7 @@ export const i18n: Record<Locale, I18nDict> = {
       paySubtitle:
         "I-send ang payment amount na naka-link sa certificate na ito.",
       doneTitle: "Tapos na",
-      doneSubtitle: "Handa na ang proof block para i-share.",
+      doneSubtitle: "Handa na ang verified badge para i-share.",
     },
   },
 };

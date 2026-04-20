@@ -48,7 +48,7 @@ export default function ProofLoading() {
                 <Skeleton className="h-2.5 w-[200px]" />
               </div>
             </div>
-            <span className="sr-only">Loading proof block…</span>
+            <span className="sr-only">Loading verified badge…</span>
           </article>
         </div>
       </main>

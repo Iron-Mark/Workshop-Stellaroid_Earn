@@ -32,7 +32,7 @@ Open http://localhost:3000. Install [Freighter](https://www.freighter.app/) and 
 
 | Path | Description |
 |------|-------------|
-| `/` | Dashboard — Next Action card + Milestone rail + Register / Verify / Pay forms + Proof Block preview |
+| `/` | Dashboard — Next Action card + Milestone rail + Register / Verify / Pay forms + Verified Badge preview |
 | `/about` | About page |
 | `/proof` | Proof lookup form — enter any cert hash to check status |
 | `/proof/[hash]` | Public proof page — shareable, no wallet required. Cached 60 s at CDN; invalid hashes return instant 404. Transitional off-chain metadata/evidence can be shown here while the contract still stores trust-critical state only. |

@@ -41,7 +41,7 @@ Issue, verify, and pay graduates on Stellar testnet — Soroban + Freighter, end
 </td>
 <td width="50%" align="center">
 <img src="images/proof-verified.png" alt="Verified proof block" width="100%"/><br/>
-<b>Verify</b> — On-chain proof block with green Verified badge
+<b>Verify</b> — On-chain credential with green Verified badge
 </td>
 </tr>
 <tr>
@@ -276,7 +276,7 @@ stellaroid-earn/
 │   │   ├── app/                # Next.js App Router pages
 │   │   │   ├── app/            # Participant dashboard (issuer + employer)
 │   │   │   ├── issuer/         # Issuer registration + lookup
-│   │   │   └── proof/[hash]/   # Public shareable proof block
+│   │   │   └── proof/[hash]/   # Public shareable verified badge
 │   │   ├── components/         # UI components (proof card, wallet, badges)
 │   │   ├── hooks/              # Freighter wallet state
 │   │   └── lib/                # Contract client, RPC helpers, types

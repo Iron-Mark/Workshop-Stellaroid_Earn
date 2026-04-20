@@ -79,7 +79,7 @@ export default function Landing() {
 
         <section className="my-16 mx-auto max-w-[1040px] px-8 py-8 bg-linear-to-br from-[rgba(245,158,11,0.08)] to-[rgba(139,92,246,0.06)] border border-border rounded-xl grid gap-5">
           <div>
-            <h2 className="mb-2 text-[1.375rem]">Proof block</h2>
+            <h2 className="mb-2 text-[1.375rem]">Verified Badge</h2>
             <p className="m-0 text-text-muted">
               Public, verifiable, no wallet required.
             </p>
