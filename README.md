@@ -60,7 +60,7 @@ Issue, verify, and pay graduates on Stellar testnet — Soroban + Freighter, end
 
 ## Live Trust Artifact
 
-Every credential produces a public **Proof Block** URL — no wallet, no login, no API key. Green means verified on-chain. Amber means issued but not yet verified.
+Every credential produces a public **Verified Badge** URL — no wallet, no login, no API key. Green means verified on-chain. Amber means issued but not yet verified.
 
 <table>
 <tr>
