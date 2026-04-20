@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { DEMO_AUTOFILL_EVENT, DemoAutofillDetail } from "@/components/demo/demo-autofill-button";
-import { Button, Input, Badge, Skeleton, useToast } from "@/components/ui";
+import { Button, Badge, Skeleton, useToast } from "@/components/ui";
+import { HashInput } from "@/components/actions/hash-input";
 import { humanizeError } from "@/lib/errors";
 import { withTimeout } from "@/lib/with-timeout";
 import {
@@ -434,20 +435,13 @@ export function VerifyForm({
             </div>
           </div>
         ) : (
-          <Input
-            mono
-            label="Certificate hash"
+          <HashInput
             value={certHash}
-            onChange={(e) => {
-              setCertHash(e.target.value);
-              setLookup({ status: "idle" });
-            }}
+            onChange={(v) => { setCertHash(v); setLookup({ status: "idle" }); }}
             onBlur={() => setHashTouched(true)}
             error={hashError}
-            helper={hashTouched || certHash ? undefined : "The 64-character SHA-256 hash to look up or verify as an approved issuer"}
-            placeholder="0a1b2c..."
-            autoComplete="off"
-            spellCheck={false}
+            helper="Paste a SHA-256 hex string, upload a file, or drag it onto the field"
+            touched={hashTouched}
           />
         )}
       </div>

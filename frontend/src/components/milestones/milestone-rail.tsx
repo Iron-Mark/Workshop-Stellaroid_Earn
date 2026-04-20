@@ -7,6 +7,7 @@ export interface MilestoneState {
 export interface MilestoneRailProps {
   state: MilestoneState;
   orientation?: "horizontal" | "vertical";
+  started?: boolean;
 }
 
 function CheckIcon() {
@@ -145,13 +146,13 @@ function Connector({ filled, vertical }: ConnectorProps) {
   );
 }
 
-export function MilestoneRail({ state, orientation = "horizontal" }: MilestoneRailProps) {
+export function MilestoneRail({ state, orientation = "horizontal", started = true }: MilestoneRailProps) {
   const stepDone = [state.registered, state.verified, state.paid];
   const vertical = orientation === "vertical";
 
-  const registeredStatus = getStepStatus(0, stepDone);
-  const verifiedStatus = getStepStatus(1, stepDone);
-  const paidStatus = getStepStatus(2, stepDone);
+  const registeredStatus = started ? getStepStatus(0, stepDone) : state.registered ? "done" : "pending";
+  const verifiedStatus = started ? getStepStatus(1, stepDone) : state.verified ? "done" : "pending";
+  const paidStatus = started ? getStepStatus(2, stepDone) : state.paid ? "done" : "pending";
 
   return (
     <nav

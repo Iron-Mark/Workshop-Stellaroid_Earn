@@ -25,6 +25,15 @@ export function FreighterWelcome() {
     setOpen(false);
   }
 
+  useEffect(() => {
+    if (!open) return;
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") dismiss();
+    }
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [open]);
+
   if (!open) return null;
 
   return (

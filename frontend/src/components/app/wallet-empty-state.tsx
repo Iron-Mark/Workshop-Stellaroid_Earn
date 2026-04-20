@@ -12,12 +12,12 @@ export function WalletEmptyState({ mode }: WalletEmptyStateProps) {
     ? {
         label: "Mobile detected",
         title: "Switch to desktop to sign transactions.",
-        body: "Signing requires the Freighter browser extension, which only runs on desktop Chrome or Brave. You can still view any public Proof Block right now — no wallet needed.",
+        body: "Signing requires the Freighter browser extension, which only runs on desktop Chrome or Brave. You can still view any public Verified Badge right now — no wallet needed.",
       }
     : {
         label: "Wallet setup",
         title: "Freighter extension not found.",
-        body: "Install Freighter in Chrome or Brave on desktop, then come back and connect. You can still open a sample Proof Block to see the public verification flow.",
+        body: "Install Freighter in Chrome or Brave on desktop, then come back and connect. You can still open a sample Verified Badge to see the public verification flow.",
       };
 
   return (
@@ -52,7 +52,7 @@ export function WalletEmptyState({ mode }: WalletEmptyStateProps) {
           href={`/proof/${DEFAULT_SAMPLE_PROOF_HASH}`}
           className="inline-flex items-center justify-center min-h-[42px] px-4 rounded-md font-semibold no-underline text-foreground border border-border bg-transparent hover:bg-surface-2 hover:text-foreground"
         >
-          View sample Proof Block
+          View sample Verified Badge
         </Link>
       </div>
     </section>

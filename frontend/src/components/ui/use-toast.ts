@@ -2,6 +2,7 @@
 // Sonner-backed shim. Keeps the old { toast } = useToast() API working.
 "use client";
 
+import { useCallback } from "react";
 import { toast as sonnerToast } from "sonner";
 
 export type ToastTone = "success" | "danger" | "warning" | "neutral";
@@ -20,7 +21,7 @@ export interface ToastInput {
 }
 
 export function useToast() {
-  function toast({ title, detail, tone, action }: ToastInput) {
+  const toast = useCallback(({ title, detail, tone, action }: ToastInput) => {
     const opts = {
       description: detail,
       ...(action
@@ -37,7 +38,7 @@ export function useToast() {
     else if (tone === "danger") sonnerToast.error(title, opts);
     else if (tone === "warning") sonnerToast.warning(title, opts);
     else sonnerToast(title, opts);
-  }
+  }, []);
 
   return { toast };
 }

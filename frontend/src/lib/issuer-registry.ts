@@ -20,6 +20,10 @@ const REGISTRY: Record<string, IssuerInfo> = {
   // Add production issuers here as partnerships land.
 };
 
+export function getAllIssuers(): { address: string; info: IssuerInfo }[] {
+  return Object.entries(REGISTRY).map(([address, info]) => ({ address, info }));
+}
+
 export function lookupIssuer(address: string | undefined): IssuerInfo | null {
   if (!address) return null;
   const key = address.trim().toUpperCase();

@@ -163,7 +163,7 @@ export function ProofCard({
   const issuerState = issuerMeta(cert, issuer, issuerLookupFailed);
 
   return (
-    <div className="max-w-2xl mx-auto px-8 max-sm:px-3">
+    <div className="max-w-3xl mx-auto px-8 max-sm:px-3">
       <article className="relative overflow-hidden rounded-2xl bg-surface border border-border-glass flex flex-col gap-6 p-8 max-sm:p-5 before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-[linear-gradient(to_right_in_oklch,var(--color-primary),var(--color-accent))]">
 
         {/* Header row */}

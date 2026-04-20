@@ -4,6 +4,7 @@ import { Orbitron, Exo_2, JetBrains_Mono, Share_Tech_Mono } from "next/font/goog
 import { Analytics } from "@vercel/analytics/react";
 import { ToastProvider } from "@/components/ui";
 import { JsonLd } from "@/components/ui/json-ld";
+import { ScrollToTop } from "@/components/layout/scroll-to-top";
 import "../styles/globals.css";
 import { cn } from "@/lib/utils";
 
@@ -99,6 +100,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <JsonLd key={i} data={schema} />
         ))}
         {children}
+        <ScrollToTop />
         <Analytics />
         <ToastProvider
           theme="dark"

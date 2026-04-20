@@ -35,7 +35,7 @@ Facilitator update: skip C1–C2 (no facilitator repo). Built own contract `stel
 - [x] ~~**C1.** Get facilitator-provided repo link~~ (skipped per instructor)
 - [x] ~~**C2.** Clone facilitator repo~~ (skipped — own `contract/` folder instead)
 - [x] **C3.** Complete `contract/src/lib.rs` + 5 passing tests in `contract/src/test.rs`
-- [x] **C4.** `cargo test` — 5/5 passed
+- [x] **C4.** `cargo test` — 6/6 passed
 - [x] **C5.** `stellar contract build` — wasm at `target/wasm32v1-none/release/stellaroid_earn.wasm`
 - [x] **C6.** Deployed via `stellar contract deploy --source my-key --network testnet`
 - [x] **C7.** Contract ID: `CDWCARXLJUJ5ISC3GPXRLR5HC6QPLMGULCVRIACYKQM4U5AG7TFWXHVZ`
@@ -45,16 +45,30 @@ Facilitator update: skip C1–C2 (no facilitator repo). Built own contract `stel
   - WASM hash: `bfee3c47c08e788ebbd3743324c35783f66afe4f34a9fe62b70de11c183cbc02`
   - Verify: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
   - Seeded: issuer `GAWIO…` → Approved · cert `35a19276…` → Verified
+- [x] **C10.** Source-verified redeploy via CI (2026-04-20): deployed CI-built WASM for Stellar Expert source validation
+  - Final Contract ID: `CA7P5EPYKC2IW4PCMAH6NRBLHH3WP7AN6WWC3QDRWO4HLE47FAGO6TET`
+  - WASM hash: `decf556e731437ef70bba08587e277f67086dd66ec915d48826bb4867fc12e7f`
+  - Verify: https://stellar.expert/explorer/testnet/contract/CA7P5EPYKC2IW4PCMAH6NRBLHH3WP7AN6WWC3QDRWO4HLE47FAGO6TET
+  - Source validation: **Verified** — linked to GitHub commit `71d2b03`
+  - Deploy key: `GALGZZRXRB5SIBGT62OZDA7BMPC4YUZDECHVHGWOAMXIMNLTZGFGTLMN`
+  - Seeded: issuer approved · 3 certs (2 Verified, 1 Issued) · 10 XLM reward on cert `c02ce160…`
 
 ## D. Rise In Submission (Step 5)
 - [x] **D1.** Pushed to https://github.com/Iron-Mark/Stellar-Bootcamp-2026 (dev merged to main as PR #1)
 - [x] **D1b.** Live demo deployed to Vercel: https://stellaroid-earn-demo.vercel.app/
-- [ ] **D2.** Submit on Rise In: GitHub link, Contract ID, Stellar Expert link, Vercel link, short description
-  - GitHub: https://github.com/Iron-Mark/Workshop-Stellaroid_Earn (repo renamed)
-  - Contract ID: `CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y`
-  - Stellar Expert: https://stellar.expert/explorer/testnet/contract/CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y
+- [x] **D2.** Submitted on Rise In — status: **Under review**
+  - GitHub: https://github.com/Iron-Mark/Workshop-Stellaroid_Earn
+  - Contract ID: `CA7P5EPYKC2IW4PCMAH6NRBLHH3WP7AN6WWC3QDRWO4HLE47FAGO6TET`
+  - Stellar Expert: https://stellar.expert/explorer/testnet/contract/CA7P5EPYKC2IW4PCMAH6NRBLHH3WP7AN6WWC3QDRWO4HLE47FAGO6TET (source verified)
   - Live demo: https://stellaroid-earn-demo.vercel.app/
-  - ⚠️  Also update Vercel env var `NEXT_PUBLIC_SOROBAN_CONTRACT_ID` → `CBNSOFNXAOIFFKCOZLT7UZ5EEPB3ML2DP4YUGF24M4VBJCUWEHI2DX2Y` then redeploy
+  - Vercel env vars updated with new contract ID + admin/read address
+- [x] **D3.** Feedback form submitted (rating 5/5, essay on hands-on experience)
+- [x] **D4.** Level 5 (Blue Belt) idea submitted: mainnet deployment + onboarding 5 real graduates
+- [x] **D5.** GitHub social preview card uploaded (1280×640, `images/github-social-card.png`)
+- [x] **D6.** GitHub release v1.1.0 created: "Stellaroid Earn: Trust Layer, Proof Blocks & Full Redesign"
+- [x] **D7.** CI release v1.2.0 created automatically via `stellar-expert/soroban-build-workflow`
+- [x] **D8.** Repo topics + description updated on GitHub
+- [x] **D9.** MIT LICENSE added
 
 ## E. Phase 2 — Fullstack (after Contract ID is verified)
 Use the Stellar-provided template prompt to generate a project idea + Soroban contract files, then build the fullstack on top.
@@ -74,5 +88,16 @@ Template: [`FULLSTACK_PROMPT_TEMPLATE.md`](./FULLSTACK_PROMPT_TEMPLATE.md)
 
 ---
 
+## F. Post-Submission Enhancements
+- [x] **F1.** Judge-optimized README (10 sections, feature gallery, Mermaid diagram, shields.io badges)
+- [x] **F2.** Screenshot capture pipeline (Playwright + Sharp, 7 images under 500KB each)
+- [x] **F3.** Stellar Expert source code validation (CI-built WASM, build attestation, verified)
+- [x] **F4.** Developer attribution (Mark Siazon — portfolio, LinkedIn, GitHub)
+
+---
+
 ## Notes
 - Stellar CLI v26 dropped `--global` (global is default); use `--fund` on `keys generate` to auto-fund.
+- Source validation requires deploying the exact WASM from CI — local builds produce different hashes.
+- `NEXT_PUBLIC_*` env vars are baked at Next.js build time — Vercel must rebuild after changes.
+- Use `printf '%s'` (not `echo`) when piping env vars to `vercel env add` to avoid trailing newlines.

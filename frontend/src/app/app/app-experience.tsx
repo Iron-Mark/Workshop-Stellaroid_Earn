@@ -81,7 +81,7 @@ export function AppExperience({ sidebarActivity }: AppExperienceProps) {
                 />
                 {/* Horizontal rail — mobile only */}
                 <div className="min-[920px]:hidden">
-                  <MilestoneRail state={milestones} />
+                  <MilestoneRail state={milestones} started={walletConnected} />
                 </div>
                 <section>
                   {role === "issuer" && (
@@ -237,7 +237,7 @@ export function AppExperience({ sidebarActivity }: AppExperienceProps) {
             </div>
             <div className="max-[920px]:hidden bg-surface border border-border rounded-lg px-5 py-4">
               <p className="font-pixel text-[10.5px] font-semibold tracking-[0.1em] uppercase text-text-muted mb-3">Progress</p>
-              <MilestoneRail state={milestones} orientation="vertical" />
+              <MilestoneRail state={milestones} orientation="vertical" started={walletConnected} />
             </div>
             <ProofBlockPreview
               hash={milestones.lastHash}

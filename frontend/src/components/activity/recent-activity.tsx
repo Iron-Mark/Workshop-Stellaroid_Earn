@@ -49,7 +49,7 @@ export async function RecentActivity({
 
   const titleClass = cn(
     "text-lg font-semibold text-text font-heading",
-    (compact || sidebar) && "text-base"
+    (compact || sidebar) && "text-sm whitespace-nowrap"
   );
 
   const viewAllClass = cn(
@@ -60,7 +60,7 @@ export async function RecentActivity({
   if (events.length === 0) {
     return (
       <section className={cardClass}>
-        <div className="flex items-start justify-between gap-4">
+        <div className={cn("flex items-start justify-between gap-4", (compact || sidebar) && "pr-6")}>
           <div>
             <p className={eyebrowClass}>Live on-chain activity</p>
             <h2 className={titleClass}>Recent contract events</h2>
@@ -71,20 +71,23 @@ export async function RecentActivity({
             </a>
           )}
         </div>
-        {!compact && !sidebar && (
+        <div className="flex items-center gap-3">
           <img
             src="/illust/illust-no-activity.svg"
             alt=""
-            className="w-10 h-auto opacity-75 self-start"
+            className={cn(
+              "h-auto opacity-75 shrink-0",
+              compact || sidebar ? "w-7" : "w-10"
+            )}
             aria-hidden="true"
             style={{ imageRendering: "pixelated" }}
           />
-        )}
-        <p className={cn("text-sm text-text-muted", (compact || sidebar) && "text-[12px]")}>
-          {hasContractLink
-            ? "No events yet. Complete the app flow to see live on-chain activity here."
-            : "Contract ID not configured yet. Add it to enable live on-chain activity."}
-        </p>
+          <p className={cn("text-sm text-text-muted m-0", (compact || sidebar) && "text-[12px]")}>
+            {hasContractLink
+              ? "No events yet. Complete the app flow to see live on-chain activity here."
+              : "Contract ID not configured yet. Add it to enable live on-chain activity."}
+          </p>
+        </div>
       </section>
     );
   }

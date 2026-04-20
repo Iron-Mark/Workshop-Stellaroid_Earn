@@ -9,7 +9,7 @@ export interface ProofBlockPreviewProps {
   certStatus?: CertificateStatus;
 }
 
-const FALLBACK_TITLE = "Stellar Smart Contract Bootcamp Completion";
+const FALLBACK_TITLE = "Pending Issuance";
 
 function statusBadge(status: CertificateStatus) {
   switch (status) {
@@ -35,7 +35,7 @@ export function ProofBlockPreview({ hash, certStatus }: ProofBlockPreviewProps) 
 
   return (
     <div className="rounded-2xl bg-surface-glass border border-border-glass p-6 flex flex-col gap-4">
-      <Badge tone="accent">Proof Block</Badge>
+      <Badge tone="accent">Stellaroid Verified Badge</Badge>
 
       <div className="flex flex-col gap-1.5">
         <h2 className="text-base font-semibold text-text font-heading leading-snug">

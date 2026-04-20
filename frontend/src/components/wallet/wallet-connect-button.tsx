@@ -169,9 +169,13 @@ export function WalletConnectButton({ sidebar = false }: WalletConnectButtonProp
 
     return (
       <div className="flex flex-col gap-2.5">
-        {/* Ghost card shell */}
+        {/* Ghost card shell — clickable to connect */}
         <div
-          className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-3 text-center bg-surface-2"
+          role={!isUnsupported ? "button" : undefined}
+          tabIndex={!isUnsupported ? 0 : undefined}
+          onClick={!isUnsupported ? () => void connectWallet() : undefined}
+          onKeyDown={!isUnsupported ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); void connectWallet(); } } : undefined}
+          className={`relative overflow-hidden rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-3 text-center bg-surface-2 shadow-[inset_0_2px_6px_rgba(0,0,0,0.3)] ${!isUnsupported ? "cursor-pointer hover:border-primary/40 hover:bg-surface hover:shadow-[inset_0_2px_8px_rgba(245,158,11,0.1)] transition-all" : ""}`}
           style={{ aspectRatio: "1.586", padding: "20px" }}
         >
           <img

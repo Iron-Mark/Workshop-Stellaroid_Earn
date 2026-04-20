@@ -45,7 +45,7 @@ export default function Landing() {
                 1
               </div>
               <h3 className="mb-2 text-[1.0625rem]">Issuer registers a certificate</h3>
-              <p className="m-0 text-text-muted leading-relaxed text-sm">
+              <p className="m-0 text-text-muted leading-relaxed text-sm [&_code]:text-accent [&_code]:font-mono [&_code]:text-[13px]">
                 A school or bootcamp drops a PDF, the browser computes its SHA-256 hash, and
                 the issuer signs <code>register_certificate</code> binding the hash to the
                 student&rsquo;s wallet. Duplicate hashes are rejected on-chain.
@@ -56,7 +56,7 @@ export default function Landing() {
                 2
               </div>
               <h3 className="mb-2 text-[1.0625rem]">Approved issuer verifies</h3>
-              <p className="m-0 text-text-muted leading-relaxed text-sm">
+              <p className="m-0 text-text-muted leading-relaxed text-sm [&_code]:text-accent [&_code]:font-mono [&_code]:text-[13px]">
                 An approved issuer or the admin calls <code>verify_certificate</code> with the
                 hash. The contract updates the credential status to{" "}
                 <code>Verified</code> and emits <code>cert_ver</code>, proof anyone can audit on
@@ -68,7 +68,7 @@ export default function Landing() {
                 3
               </div>
               <h3 className="mb-2 text-[1.0625rem]">Employer pays the grad</h3>
-              <p className="m-0 text-text-muted leading-relaxed text-sm">
+              <p className="m-0 text-text-muted leading-relaxed text-sm [&_code]:text-accent [&_code]:font-mono [&_code]:text-[13px]">
                 <code>link_payment</code> transfers XLM via the native SAC directly to the
                 student&rsquo;s verified wallet. Settlement is typically under five seconds and
                 costs a fraction of a centavo.
@@ -77,7 +77,7 @@ export default function Landing() {
           </div>
         </section>
 
-        <section className="my-16 mx-auto max-w-7xl px-8 py-8 bg-linear-to-br from-[rgba(245,158,11,0.08)] to-[rgba(139,92,246,0.06)] border border-border rounded-xl grid gap-5">
+        <section className="my-16 mx-auto max-w-[1040px] px-8 py-8 bg-linear-to-br from-[rgba(245,158,11,0.08)] to-[rgba(139,92,246,0.06)] border border-border rounded-xl grid gap-5">
           <div>
             <h2 className="mb-2 text-[1.375rem]">Proof block</h2>
             <p className="m-0 text-text-muted">

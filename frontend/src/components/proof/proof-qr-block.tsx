@@ -26,7 +26,7 @@ export function ProofQrBlock({ hash }: ProofQrBlockProps) {
       )}
       <div className="text-[0.8125rem] text-text-muted leading-relaxed">
         <strong className="block text-text text-sm mb-0.5">Scan to verify</strong>
-        Point a phone camera at the QR to open this Proof Block without a wallet.
+        Point a phone camera at the QR to open this Verified Badge without a wallet.
       </div>
     </div>
   );

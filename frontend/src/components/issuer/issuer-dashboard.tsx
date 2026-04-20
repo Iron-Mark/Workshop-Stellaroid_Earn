@@ -12,7 +12,11 @@ import { approveIssuer, getIssuer, suspendIssuer } from "@/lib/contract-client";
 import { appConfig } from "@/lib/config";
 import { humanizeError } from "@/lib/errors";
 import { withTimeout } from "@/lib/with-timeout";
+import { getAllIssuers } from "@/lib/issuer-registry";
+import { Loader2 } from "lucide-react";
 import type { IssuerRecord } from "@/lib/types";
+
+const knownIssuers = getAllIssuers();
 
 function statusTone(status: IssuerRecord["status"]): "success" | "warning" | "danger" {
   switch (status) {
@@ -80,7 +84,8 @@ export function IssuerDashboard() {
     return () => {
       cancelled = true;
     };
-  }, [walletConnected, wallet.address, toast]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [walletConnected, wallet.address]);
 
   async function handleTargetLookup() {
     if (!targetIssuer.trim()) return;
@@ -179,8 +184,8 @@ export function IssuerDashboard() {
                 {issuer.status}
               </Badge>
             ) : (
-              <Badge tone="accent" dot>
-                {loading ? "Checking chain state" : "No issuer record"}
+              <Badge tone="accent">
+                {loading ? "Loading…" : "No issuer record"}
               </Badge>
             )}
           </div>
@@ -234,18 +239,26 @@ export function IssuerDashboard() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-4 flex items-center gap-3">
+                <div className="mt-4 flex flex-col items-center gap-4 rounded-xl border border-dashed border-border/60 bg-bg/50 px-6 py-8 text-center">
                   <img
                     src="/illust/illust-issuer-empty.svg"
                     alt=""
-                    className="w-10 h-auto shrink-0 opacity-85"
+                    className="w-24 h-auto"
                     aria-hidden="true"
                     style={{ imageRendering: "pixelated" }}
                   />
-                  <p className="text-sm text-text-muted">
-                    No issuer record exists yet for the connected wallet. Register it first, then
-                    ask the admin wallet to approve it.
-                  </p>
+                  <div className="space-y-1">
+                    <p className="text-base font-semibold text-text">No issuer record yet :(</p>
+                    <p className="text-sm text-text-muted">Register your wallet as an issuer, then ask the admin to approve it.</p>
+                  </div>
+                  <div className="flex gap-3 mt-1">
+                    <Button variant="primary" href="/issuer/register">
+                      Register now
+                    </Button>
+                    <Button variant="secondary" href="/app">
+                      Open app
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
@@ -254,19 +267,21 @@ export function IssuerDashboard() {
           <aside className="rounded-2xl border border-border bg-surface p-6">
             <h2 className="text-xl font-semibold text-text">Next actions</h2>
             <div className="mt-4 flex flex-col gap-3">
-              <Button variant="primary" className="w-full" href="/issuer/register">
-                Register issuer profile
-              </Button>
+              {issuer && (
+                <Button variant="primary" className="w-full" href="/issuer/register">
+                  Register issuer profile
+                </Button>
+              )}
               <Button variant="secondary" className="w-full" href="/app">
                 Open app flow
               </Button>
             </div>
-            <ul className="mt-5 space-y-2 text-sm text-text-muted">
-              <li>1. Register issuer profile on-chain.</li>
-              <li>2. Approve it with the admin wallet after redeploy.</li>
-              <li>3. Issue credentials from the approved issuer wallet.</li>
-              <li>4. Use trusted verification before payment.</li>
-            </ul>
+            <ol className="mt-5 space-y-2 text-sm text-text-muted list-decimal list-inside">
+              <li>Register your issuer profile on-chain.</li>
+              <li>Get approval from the admin wallet.</li>
+              <li>Issue and verify credentials.</li>
+              <li>Accept payments for verified work.</li>
+            </ol>
           </aside>
         </section>
 
@@ -290,7 +305,33 @@ export function IssuerDashboard() {
               </Badge>
             </div>
 
-            <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_auto]">
+            {knownIssuers.length > 0 && (
+              <div className="mt-5">
+                <p className="text-xs uppercase tracking-[0.14em] text-text-muted/70 mb-2">Known issuers</p>
+                <div className="flex flex-wrap gap-2">
+                  {knownIssuers.map(({ address, info }) => (
+                    <button
+                      key={address}
+                      type="button"
+                      className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm transition-colors ${
+                        targetIssuer === address
+                          ? "border-primary bg-primary/10 text-primary font-medium"
+                          : "border-border bg-bg text-text-muted hover:border-primary/50 hover:text-text"
+                      }`}
+                      onClick={() => {
+                        setTargetIssuer(address);
+                        setTargetRecord(null);
+                      }}
+                    >
+                      <span>{info.name}</span>
+                      <span className="text-xs opacity-60">{address.slice(0, 4)}…{address.slice(-4)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto]">
               <Input
                 label="Target issuer wallet"
                 value={targetIssuer}
@@ -299,7 +340,7 @@ export function IssuerDashboard() {
                   setTargetRecord(null);
                 }}
                 placeholder="G..."
-                helper="Paste the issuer wallet you want to approve or suspend."
+                helper="Pick a known issuer above or paste any wallet address."
                 mono
               />
               <div className="flex items-end">
@@ -353,8 +394,7 @@ export function IssuerDashboard() {
           </section>
         ) : configuredAdmin ? (
           <section className="rounded-2xl border border-border bg-surface p-6 text-sm text-text-muted">
-            Admin controls are configured but hidden because the connected wallet does not match the
-            configured admin address.
+            Looking for admin controls? They&apos;re hidden because the connected wallet doesn&apos;t match the configured admin address.
           </section>
         ) : null}
       </div>

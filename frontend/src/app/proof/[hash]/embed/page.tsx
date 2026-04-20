@@ -1,4 +1,4 @@
-// Compact, iframe-friendly Proof Block for embedding in portfolios, Notion, blogs.
+// Compact, iframe-friendly Verified Badge for embedding in portfolios, Notion, blogs.
 // Usage: <iframe src="https://.../proof/<hash>/embed" width="420" height="220" />
 export const revalidate = 60;
 
@@ -227,7 +227,7 @@ export default async function EmbedProof({ params }: PageProps) {
           target="_top"
           style={{ color: "#F59E0B", textDecoration: "none", fontWeight: 600 }}
         >
-          View full Proof Block ↗
+          View full Verified Badge ↗
         </Link>
         <a
           href={explorerUrl}

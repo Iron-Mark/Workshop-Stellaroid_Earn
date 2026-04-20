@@ -3,13 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Input, Badge, useToast } from "@/components/ui";
+import { Select } from "@/components/ui/select";
 import { useFreighterWallet } from "@/hooks/use-freighter-wallet";
 import { appConfig, hasRequiredConfig } from "@/lib/config";
 import { registerIssuer } from "@/lib/contract-client";
 import { humanizeError } from "@/lib/errors";
 import { withTimeout } from "@/lib/with-timeout";
 
-const CATEGORIES = ["bootcamp", "university", "employer", "dao", "platform"];
+const CATEGORIES = [
+  { value: "bootcamp", label: "Bootcamp" },
+  { value: "university", label: "University" },
+  { value: "employer", label: "Employer" },
+  { value: "dao", label: "DAO" },
+  { value: "platform", label: "Platform" },
+];
 
 function isValidWebsite(value: string): boolean {
   if (!value.trim()) return true;
@@ -48,7 +55,7 @@ export function IssuerRegisterForm() {
     !submitting &&
     !!name.trim() &&
     isValidWebsite(website) &&
-    CATEGORIES.includes(category);
+    CATEGORIES.some((c) => c.value === category);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -127,18 +134,12 @@ export function IssuerRegisterForm() {
         <label htmlFor="issuer-category" className="text-[13px] font-medium text-text-muted">
           Category
         </label>
-        <select
+        <Select
           id="issuer-category"
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="min-h-[44px] rounded-lg border border-border bg-surface-2 px-3 py-2 text-[15px] text-text focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
-        >
-          {CATEGORIES.map((entry) => (
-            <option key={entry} value={entry}>
-              {entry}
-            </option>
-          ))}
-        </select>
+          onChange={setCategory}
+          options={CATEGORIES}
+        />
         <p className="text-[12px] text-text-muted">
           Start narrow. Bootcamp and training-provider categories are the strongest fit today.
         </p>
