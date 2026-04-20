@@ -8,7 +8,10 @@ import {
   signTransaction,
 } from "@stellar/freighter-api";
 import { getExpectedNetworkPassphrase, appConfig } from "@/lib/config";
+import { withTimeout } from "@/lib/with-timeout";
 import type { WalletSnapshot } from "@/lib/types";
+
+const FREIGHTER_TIMEOUT_MS = 5_000;
 
 const E2E_WALLET_ADDRESS =
   "GAWIOVGF3N7G3K4J4Y6MGSQYPN4K53Q3VHWL5V66B5Y4BBJH3M6AJYLD";
@@ -45,7 +48,12 @@ export async function readFreighterWallet(): Promise<WalletSnapshot> {
     };
   }
 
-  const connection = await isConnected();
+  let connection;
+  try {
+    connection = await withTimeout(isConnected(), FREIGHTER_TIMEOUT_MS, "Freighter isConnected");
+  } catch {
+    return buildUnsupportedWallet("Freighter is not available in this browser.");
+  }
 
   if (connection.error) {
     return buildUnsupportedWallet(connection.error);
@@ -109,7 +117,12 @@ export async function connectFreighterWallet() {
     return buildE2EWallet();
   }
 
-  const access = await requestAccess();
+  let access;
+  try {
+    access = await withTimeout(requestAccess(), FREIGHTER_TIMEOUT_MS, "Freighter requestAccess");
+  } catch {
+    throw new Error("Freighter did not respond. Is the extension installed?");
+  }
 
   if (access.error) {
     throw new Error(access.error);

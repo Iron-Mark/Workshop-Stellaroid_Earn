@@ -28,7 +28,7 @@ export function LocalizedHero({ className }: LocalizedHeroProps) {
       <h1 className="text-4xl sm:text-7xl leading-tight -tracking-wide font-bold m-0 mb-5">
         {t.h1a}
         <br />
-        <em className="not-italic bg-[linear-gradient(to_right_in_oklch,var(--color-primary),var(--color-accent))] bg-clip-text text-transparent">
+        <em className="not-italic bg-[linear-gradient(to_right_in_oklch,var(--color-primary),#FCD34D)] bg-clip-text text-transparent">
           {t.h1b}
         </em>
       </h1>

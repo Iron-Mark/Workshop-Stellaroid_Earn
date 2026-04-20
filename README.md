@@ -302,6 +302,7 @@ stellaroid-earn/
 
 - [Rise In](https://www.risein.com/programs) — Stellar Smart Contract Bootcamp
 - [Stellar Philippines](https://stellar.org/) — Stellar PH Bootcamp 2026
+- [Workflow PH](https://www.facebook.com/WorkFlowPH/) — Community partner
 - [Stellar Docs](https://developers.stellar.org) · [Soroban SDK](https://docs.rs/soroban-sdk) · [Freighter](https://www.freighter.app/) · [Stellar Expert](https://stellar.expert/explorer/testnet)
 
 ---

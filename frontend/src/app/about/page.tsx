@@ -10,14 +10,35 @@ import { CopyButton } from "@/components/ui/copy-button";
 import { Badge } from "@/components/ui/badge";
 import { JsonLd } from "@/components/ui/json-ld";
 import { LocalizedAboutCopy } from "@/components/about/localized-about-copy";
+import { StatCard } from "@/components/about/stat-dialog";
 
 export const metadata: Metadata = {
   title: "About",
   description:
     "Why Stellaroid Earn exists: certificates should be verifiable in seconds, not emails, and trusted verification should unlock payment in the same flow.",
+  alternates: { canonical: "/about" },
 };
 
 const BASE_URL = "https://stellaroid-earn-demo.vercel.app";
+
+const aboutBreadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: BASE_URL,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "About",
+      item: `${BASE_URL}/about`,
+    },
+  ],
+};
 
 const aboutJsonLd = {
   "@context": "https://schema.org",
@@ -122,11 +143,50 @@ const stack = [
   },
 ];
 
+const testDetail = {
+  title: "6 contract tests, and why each one matters",
+  description:
+    "Every test maps to a real moment in Maria's story: from her school anchoring the hash, to the employer paying her wallet.",
+  items: [
+    {
+      name: "test_full_flow",
+      why: "The complete journey: init, register issuer, approve, register cert, verify, pay. If this passes, Maria gets paid.",
+      tone: "flow" as const,
+    },
+    {
+      name: "test_duplicate_certificate",
+      why: "Tries to register the same hash twice. The contract must reject it, otherwise anyone could overwrite Maria's credential.",
+      tone: "guard" as const,
+    },
+    {
+      name: "test_unauthorized_verify",
+      why: "A random wallet tries to verify. Only approved issuers or the admin can. This test proves the trust layer works.",
+      tone: "guard" as const,
+    },
+    {
+      name: "test_payment_requires_verification",
+      why: "Blocks payment to an unverified cert. Employers can't pay until the credential is confirmed on-chain.",
+      tone: "guard" as const,
+    },
+    {
+      name: "test_issuer_registration",
+      why: "Issuer self-registers and enters the pending queue. Admin approves. Tests the two-step trust handshake.",
+      tone: "pass" as const,
+    },
+    {
+      name: "test_certificate_lifecycle",
+      why: "Register → verify → suspend → unsuspend → revoke. Covers every status transition a credential can go through.",
+      tone: "flow" as const,
+    },
+  ],
+};
+
 const stats = [
   {
     value: "6",
     label: "Contract tests in repo",
     category: "Tests",
+    scrollTo: "contract-surface",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -144,6 +204,7 @@ const stats = [
     value: "12",
     label: "Public functions",
     category: "Surface",
+    scrollTo: "contract-surface",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -162,6 +223,7 @@ const stats = [
     value: "10",
     label: "Event types",
     category: "On-chain",
+    scrollTo: "contract-surface",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -179,6 +241,7 @@ const stats = [
     value: "<5s",
     label: "Testnet settlement",
     category: "Speed",
+    scrollTo: "tech-stack",
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -230,7 +293,7 @@ const mariaWins = [
     ),
   },
   {
-    title: "Public Proof Block URL",
+    title: "Public Verified Badge URL",
     body: "A shareable link she drops into her next offer email, verifiable without any login.",
     icon: (
       <svg
@@ -442,7 +505,7 @@ const errCategoryClasses: Record<string, string> = {
 };
 
 const problemBeatIconClass =
-  "text-[#dc2626] bg-[rgba(220,38,38,0.08)] border-[rgba(220,38,38,0.25)]";
+  "text-[#f87171] bg-[rgba(220,38,38,0.08)] border-[rgba(220,38,38,0.25)]";
 const approachBeatIconClass =
   "text-primary bg-[rgba(245,158,11,0.1)] border-[rgba(245,158,11,0.3)]";
 
@@ -454,6 +517,7 @@ export default function About() {
   return (
     <>
       <JsonLd data={aboutJsonLd} />
+      <JsonLd data={aboutBreadcrumbJsonLd} />
       <div className="min-h-dvh">
         <SiteNav />
         <main id="main">
@@ -483,32 +547,21 @@ export default function About() {
               aria-label="By the numbers"
             >
               {stats.map((s) => (
-                <div
+                <StatCard
                   key={s.label}
-                  className="flex flex-col gap-1.5 px-5 py-5.5 border-r border-border last:border-r-0 max-sm:odd:border-r max-sm:border-b max-sm:nth-[n+3]:border-b-0"
-                >
-                  <div className="inline-flex items-center gap-2 text-text-muted">
-                    <span
-                      className="w-5.5 h-5.5 inline-flex items-center justify-center text-primary [&_svg]:w-4 [&_svg]:h-4"
-                      aria-hidden="true"
-                    >
-                      {s.icon}
-                    </span>
-                    <span className="font-pixel text-[10.5px] font-semibold tracking-[0.12em] uppercase">
-                      {s.category}
-                    </span>
-                  </div>
-                  <dt className="font-mono text-[1.75rem] font-semibold text-primary tracking-tight m-0">
-                    {s.value}
-                  </dt>
-                  <dd className="text-xs text-text-muted m-0">{s.label}</dd>
-                </div>
+                  value={s.value}
+                  label={s.label}
+                  category={s.category}
+                  icon={s.icon}
+                  scrollTo={s.scrollTo}
+                  detail={s.category === "Tests" ? testDetail : undefined}
+                />
               ))}
             </dl>
 
             <div className="grid grid-cols-2 gap-5 mb-12 max-[720px]:grid-cols-1">
               <article className="bg-surface border border-border rounded-lg px-6.5 py-6 flex flex-col">
-                <div className="flex items-center gap-2 font-pixel text-[11px] tracking-widest uppercase text-text-muted mb-2.5 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary">
+                <div className="flex items-center gap-2 font-pixel text-[11px] tracking-widest uppercase text-text-muted mb-2.5 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-[#dc2626]">
                   The problem
                 </div>
                 <h2 className="text-[1.375rem] mb-3 text-text tracking-tight">
@@ -539,7 +592,7 @@ export default function About() {
                       </svg>
                     </span>
                     <div>
-                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">
+                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-[#f87171] mt-1.5 mb-1">
                         Tuesday
                       </p>
                       <p className="text-text-muted text-sm leading-[1.55] m-0">
@@ -566,7 +619,7 @@ export default function About() {
                       </svg>
                     </span>
                     <div>
-                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">
+                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-[#f87171] mt-1.5 mb-1">
                         14–21 days
                       </p>
                       <p className="text-text-muted text-sm leading-[1.55] m-0">
@@ -593,7 +646,7 @@ export default function About() {
                       </svg>
                     </span>
                     <div>
-                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">
+                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-[#f87171] mt-1.5 mb-1">
                         Three weeks later
                       </p>
                       <p className="text-text-muted text-sm leading-[1.55] m-0">
@@ -613,7 +666,7 @@ export default function About() {
                 <div className="flex items-center gap-2 font-pixel text-[11px] tracking-[0.12em] uppercase text-text-muted mb-2.5 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary">
                   The approach
                 </div>
-                <h2 className="text-[1.375rem] mb-3 text-text tracking-tight">
+                <h2 className="text-[1.125rem] sm:text-[1.375rem] mb-3 text-text tracking-tight">
                   Bind the hash. Trust the issuer. Pay the wallet.
                 </h2>
                 <p className="text-text-muted text-[0.9375rem] leading-relaxed mb-4.5 [&_strong]:text-text [&_strong]:font-semibold">
@@ -639,7 +692,7 @@ export default function About() {
                       </svg>
                     </span>
                     <div>
-                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">
+                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-primary mt-1.5 mb-1">
                         Step 1 · Anchor
                       </p>
                       <p className="text-text-muted text-sm leading-[1.55] m-0">
@@ -665,7 +718,7 @@ export default function About() {
                       </svg>
                     </span>
                     <div>
-                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">
+                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-primary mt-1.5 mb-1">
                         Step 2 · Verify in 5s
                       </p>
                       <p className="text-text-muted text-sm leading-[1.55] m-0">
@@ -692,7 +745,7 @@ export default function About() {
                       </svg>
                     </span>
                     <div>
-                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-text mt-1.5 mb-1">
+                      <p className="font-pixel text-[11px] font-semibold tracking-[0.08em] uppercase text-primary mt-1.5 mb-1">
                         Step 3 · Pay
                       </p>
                       <p className="text-text-muted text-sm leading-[1.55] m-0">
@@ -709,7 +762,7 @@ export default function About() {
               </article>
             </div>
 
-            <article className="bg-surface border border-border rounded-lg px-6.5 py-6 mt-6">
+            <article className="bg-surface border border-border rounded-lg px-6.5 py-6 mt-6 shadow-[0_2px_12px_rgba(0,0,0,0.3),0_1px_0_rgba(255,255,255,0.04)_inset]">
               <div className="flex items-center gap-2 font-pixel text-[11px] tracking-widest uppercase text-text-muted mb-2.5 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary">
                 What changes for Maria
               </div>
@@ -723,7 +776,7 @@ export default function About() {
                 {mariaWins.map((w) => (
                   <li
                     key={w.title}
-                    className="grid grid-cols-[auto_1fr] gap-3 items-start p-3.5 px-4 bg-surface-2 border border-border rounded-lg"
+                    className="grid grid-cols-[auto_1fr] gap-3 items-start p-3.5 px-4 bg-[rgba(0,0,0,0.1)] rounded-lg border border-[rgba(0,0,0,0.1)] shadow-[inset_0_1px_4px_rgba(0,0,0,0.3),0_1px_0_rgba(255,255,255,0.03)]"
                   >
                     <span
                       className="w-8 h-8 rounded-lg inline-flex items-center justify-center text-primary bg-[rgba(245,158,11,0.12)] shrink-0 [&_svg]:w-4 [&_svg]:h-4"
@@ -744,7 +797,7 @@ export default function About() {
               </ul>
             </article>
 
-            <section className="my-14">
+            <section id="tech-stack" className="my-14 scroll-mt-24">
               <div className="mb-7">
                 <h2 className="text-[1.75rem] tracking-tight mb-2">
                   Tech stack
@@ -778,7 +831,7 @@ export default function About() {
               </div>
             </section>
 
-            <section className="my-14">
+            <section id="contract-surface" className="my-14 scroll-mt-24">
               <div className="mb-7">
                 <h2 className="text-[1.75rem] tracking-tight mb-2">
                   Contract surface

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Stellaroid Earn | Proof Block";
+export const alt = "Stellaroid Earn | Verified Badge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -48,16 +48,70 @@ export default async function OpengraphImage({ params }: Props) {
             display: "flex",
             width: "48px",
             height: "48px",
-            borderRadius: "12px",
-            background: "#F59E0B",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#0F172A",
-            fontSize: "28px",
-            fontWeight: 800,
           }}
         >
-          ✓
+          <svg
+            viewBox="0 0 64 64"
+            width="48"
+            height="48"
+            style={{ imageRendering: "pixelated" }}
+          >
+            <rect x="20" y="4" width="24" height="4" fill="#78350F" />
+            <rect x="12" y="8" width="8" height="4" fill="#78350F" />
+            <rect x="20" y="8" width="24" height="4" fill="#B45309" />
+            <rect x="44" y="8" width="8" height="4" fill="#78350F" />
+            <rect x="8" y="12" width="4" height="4" fill="#78350F" />
+            <rect x="12" y="12" width="4" height="4" fill="#B45309" />
+            <rect x="16" y="12" width="12" height="4" fill="#FBBF24" />
+            <rect x="28" y="12" width="4" height="4" fill="#FEF3C7" />
+            <rect x="32" y="12" width="16" height="4" fill="#FBBF24" />
+            <rect x="48" y="12" width="4" height="4" fill="#B45309" />
+            <rect x="52" y="12" width="4" height="4" fill="#78350F" />
+            <rect x="8" y="16" width="4" height="4" fill="#78350F" />
+            <rect x="12" y="16" width="4" height="4" fill="#B45309" />
+            <rect x="16" y="16" width="4" height="4" fill="#FBBF24" />
+            <rect x="20" y="16" width="20" height="4" fill="#78350F" />
+            <rect x="40" y="16" width="8" height="4" fill="#FBBF24" />
+            <rect x="48" y="16" width="4" height="4" fill="#B45309" />
+            <rect x="52" y="16" width="4" height="4" fill="#78350F" />
+            <rect x="4" y="20" width="4" height="8" fill="#78350F" />
+            <rect x="8" y="20" width="4" height="8" fill="#B45309" />
+            <rect x="12" y="20" width="8" height="8" fill="#FBBF24" />
+            <rect x="20" y="20" width="4" height="8" fill="#78350F" />
+            <rect x="24" y="20" width="24" height="8" fill="#FBBF24" />
+            <rect x="48" y="20" width="8" height="8" fill="#B45309" />
+            <rect x="56" y="20" width="4" height="8" fill="#78350F" />
+            <rect x="4" y="28" width="4" height="4" fill="#78350F" />
+            <rect x="8" y="28" width="4" height="4" fill="#B45309" />
+            <rect x="12" y="28" width="8" height="4" fill="#FBBF24" />
+            <rect x="20" y="28" width="20" height="4" fill="#78350F" />
+            <rect x="40" y="28" width="8" height="4" fill="#FBBF24" />
+            <rect x="48" y="28" width="8" height="4" fill="#B45309" />
+            <rect x="56" y="28" width="4" height="4" fill="#78350F" />
+            <rect x="4" y="32" width="4" height="8" fill="#78350F" />
+            <rect x="8" y="32" width="4" height="8" fill="#B45309" />
+            <rect x="12" y="32" width="24" height="8" fill="#FBBF24" />
+            <rect x="36" y="32" width="4" height="8" fill="#78350F" />
+            <rect x="40" y="32" width="8" height="8" fill="#FBBF24" />
+            <rect x="48" y="32" width="8" height="8" fill="#B45309" />
+            <rect x="56" y="32" width="4" height="8" fill="#78350F" />
+            <rect x="8" y="40" width="4" height="4" fill="#78350F" />
+            <rect x="12" y="40" width="4" height="4" fill="#B45309" />
+            <rect x="16" y="40" width="4" height="4" fill="#FBBF24" />
+            <rect x="20" y="40" width="20" height="4" fill="#78350F" />
+            <rect x="40" y="40" width="8" height="4" fill="#FBBF24" />
+            <rect x="48" y="40" width="8" height="4" fill="#B45309" />
+            <rect x="56" y="40" width="4" height="4" fill="#78350F" />
+            <rect x="8" y="44" width="4" height="4" fill="#78350F" />
+            <rect x="12" y="44" width="4" height="4" fill="#B45309" />
+            <rect x="16" y="44" width="32" height="4" fill="#FBBF24" />
+            <rect x="48" y="44" width="4" height="4" fill="#B45309" />
+            <rect x="52" y="44" width="4" height="4" fill="#78350F" />
+            <rect x="8" y="48" width="8" height="4" fill="#78350F" />
+            <rect x="16" y="48" width="32" height="4" fill="#B45309" />
+            <rect x="48" y="48" width="8" height="4" fill="#78350F" />
+            <rect x="12" y="52" width="40" height="4" fill="#78350F" />
+          </svg>
         </div>
         STELLAROID EARN
       </div>

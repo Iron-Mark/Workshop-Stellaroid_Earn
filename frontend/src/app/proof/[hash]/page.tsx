@@ -91,6 +91,32 @@ export default async function ProofPage({ params }: PageProps) {
       <JsonLd
         data={{
           "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: BASE_URL,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Proof",
+              item: `${BASE_URL}/proof`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: `Proof · ${short}`,
+              item: `${BASE_URL}/proof/${hash}`,
+            },
+          ],
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
           "@type": "DigitalDocument",
           name: proofMetadata?.title ?? `Proof of Work · ${short}`,
           description:
@@ -104,7 +130,7 @@ export default async function ProofPage({ params }: PageProps) {
       <SiteNav />
       <main
         id="main"
-        style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}
+        style={{ maxWidth: 900, margin: "0 auto", padding: "48px 24px" }}
       >
         <ProofCard
           hash={hash}

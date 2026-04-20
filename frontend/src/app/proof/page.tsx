@@ -5,8 +5,10 @@ export const metadata: Metadata = {
   title: "Look Up a Certificate",
   description:
     "Paste a SHA-256 hash to view its on-chain record, issuer trust status, and any attached credential evidence. No wallet required.",
+  alternates: { canonical: "/proof" },
 };
 import { SiteFooter } from "@/components/layout/site-footer";
+import { JsonLd } from "@/components/ui/json-ld";
 import { ProofIndexForm } from "@/components/proof/proof-index-form";
 import { DEFAULT_SAMPLE_PROOF_HASH } from "@/lib/demo-data";
 import { getRecentProofHashes } from "@/lib/events";
@@ -26,6 +28,41 @@ export default async function ProofIndex() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "Look Up a Certificate",
+          url: "https://stellaroid-earn-demo.vercel.app/proof",
+          description:
+            "Paste a SHA-256 hash to view its on-chain record, issuer trust status, and any attached credential evidence.",
+          isPartOf: {
+            "@type": "WebApplication",
+            name: "Stellaroid Earn",
+            url: "https://stellaroid-earn-demo.vercel.app",
+          },
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://stellaroid-earn-demo.vercel.app",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Look Up a Certificate",
+              item: "https://stellaroid-earn-demo.vercel.app/proof",
+            },
+          ],
+        }}
+      />
       <SiteNav />
       <main
         id="main"
