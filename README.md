@@ -406,6 +406,12 @@ After collecting feedback from testnet users, the following iteration was comple
 
 ---
 
+## Community Contribution
+
+[![Threads Post](https://img.shields.io/badge/Threads-@iron__markk-000000?style=flat-square&logo=threads&logoColor=white)](https://www.threads.com/@iron_markk/post/DXeJNnlkgLF)
+
+---
+
 ## Built By
 
 **Mark Siazon**  - Hybrid Product Designer & Full-Stack Developer
