@@ -13,6 +13,8 @@ pub enum DataKey {
     Token,
     Issuer(Address),
     Cert(BytesN<32>),
+    NextOpportunityId,
+    Opportunity(u64),
 }
 
 #[contracttype]
@@ -31,6 +33,19 @@ pub enum CredentialStatus {
     Revoked,
     Suspended,
     Expired,
+}
+
+#[contracttype]
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum OpportunityStatus {
+    Draft,
+    Funded,
+    InProgress,
+    Submitted,
+    Approved,
+    Released,
+    Refunded,
+    Cancelled,
 }
 
 #[contracttype]
@@ -57,6 +72,20 @@ pub struct Credential {
     pub expires_at: u64,
 }
 
+#[contracttype]
+#[derive(Clone)]
+pub struct Opportunity {
+    pub id: u64,
+    pub employer: Address,
+    pub candidate: Address,
+    pub cert_hash: BytesN<32>,
+    pub title: String,
+    pub amount: i128,
+    pub status: OpportunityStatus,
+    pub milestone_count: u32,
+    pub current_milestone: u32,
+}
+
 // Human-readable error variants — the frontend maps these to copy,
 // never surfacing raw HostError / ScVal to the user.
 #[contracterror]
@@ -75,6 +104,11 @@ pub enum Error {
     InvalidStatus = 10,
     CredentialRevoked = 11,
     CredentialExpired = 12,
+    OpportunityNotFound = 13,
+    AlreadyFunded = 14,
+    InvalidMilestone = 15,
+    InvalidOpportunityStatus = 16,
+    PaymentLocked = 17,
 }
 
 // ~30d / ~60d in testnet ledgers — keeps certificates alive through a bootcamp demo window.
