@@ -60,22 +60,61 @@ function Badge({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Slide wrapper                                                      */
+/*  Animated child wrapper - staggers entry of each direct child       */
 /* ------------------------------------------------------------------ */
-function Slide({
+function AnimatedChild({
   active,
+  index,
   children,
 }: {
   active: boolean;
+  index: number;
   children: React.ReactNode;
 }) {
   return (
     <div
-      className={`absolute inset-0 flex flex-col justify-center items-start text-left px-[4vw] py-[4vh] sm:px-[5vw] sm:py-[5vh] transition-opacity duration-500 overflow-hidden ${
-        active ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-      }`}
+      className="transition-all duration-500 ease-out"
+      style={{
+        opacity: active ? 1 : 0,
+        transform: active ? "translateY(0)" : "translateY(24px)",
+        transitionDelay: active ? `${index * 80}ms` : "0ms",
+      }}
     >
       {children}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Slide wrapper with staggered child animations                      */
+/* ------------------------------------------------------------------ */
+function Slide({
+  active,
+  children,
+  direction = 0,
+}: {
+  active: boolean;
+  children: React.ReactNode;
+  direction?: number;
+}) {
+  const translateX = active ? "0" : direction >= 0 ? "60px" : "-60px";
+  return (
+    <div
+      className="absolute inset-0 flex flex-col justify-center items-start text-left px-[4vw] py-[4vh] sm:px-[5vw] sm:py-[5vh] overflow-hidden transition-all duration-500 ease-out"
+      style={{
+        opacity: active ? 1 : 0,
+        transform: `translateX(${active ? "0" : translateX})`,
+        pointerEvents: active ? "auto" : "none",
+      }}
+    >
+      {Array.isArray(children)
+        ? children.map((child, i) => (
+            <AnimatedChild key={i} active={active} index={i}>
+              {child}
+            </AnimatedChild>
+          ))
+        : <AnimatedChild active={active} index={0}>{children}</AnimatedChild>
+      }
     </div>
   );
 }
@@ -106,9 +145,11 @@ function Screenshot({
 /* ------------------------------------------------------------------ */
 export default function SlidesPage() {
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   const navigate = useCallback(
     (dir: number) => {
+      setDirection(dir);
       setCurrent((c) => Math.max(0, Math.min(TOTAL - 1, c + dir)));
     },
     []
@@ -138,7 +179,7 @@ export default function SlidesPage() {
         {/* ============================================================ */}
         {/* SLIDE 1 -- Title                                             */}
         {/* ============================================================ */}
-        <Slide active={current === 0}>
+        <Slide direction={direction} active={current === 0}>
           {/* Decorative rings */}
           <svg
             className="absolute right-[5vw] bottom-[5vh] opacity-[0.04] hidden md:block"
@@ -190,7 +231,7 @@ export default function SlidesPage() {
         {/* ============================================================ */}
         {/* SLIDE 2 -- Problem                                           */}
         {/* ============================================================ */}
-        <Slide active={current === 1}>
+        <Slide direction={direction} active={current === 1}>
           {/* Decorative alert icon */}
           <svg
             className="absolute right-[5vw] bottom-[5vh] opacity-[0.04] hidden md:block"
@@ -252,7 +293,7 @@ export default function SlidesPage() {
         {/* ============================================================ */}
         {/* SLIDE 3 -- Solution                                          */}
         {/* ============================================================ */}
-        <Slide active={current === 2}>
+        <Slide direction={direction} active={current === 2}>
           <Badge>The Solution</Badge>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
             Anchor credentials <span className="text-primary">on Stellar</span>
@@ -326,7 +367,7 @@ export default function SlidesPage() {
         {/* ============================================================ */}
         {/* SLIDE 4 -- Product Screens                                   */}
         {/* ============================================================ */}
-        <Slide active={current === 3}>
+        <Slide direction={direction} active={current === 3}>
           <Badge variant="green">Product</Badge>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
             The <span className="text-primary">app</span> in action
@@ -384,7 +425,7 @@ export default function SlidesPage() {
         {/* ============================================================ */}
         {/* SLIDE 5 -- Architecture                                      */}
         {/* ============================================================ */}
-        <Slide active={current === 4}>
+        <Slide direction={direction} active={current === 4}>
           <Badge variant="purple">Architecture</Badge>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
             How it&apos;s <span className="text-primary">built</span>
@@ -481,7 +522,7 @@ export default function SlidesPage() {
         {/* ============================================================ */}
         {/* SLIDE 6 -- Traction                                          */}
         {/* ============================================================ */}
-        <Slide active={current === 5}>
+        <Slide direction={direction} active={current === 5}>
           <Badge>Traction</Badge>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
             User <span className="text-primary">validation</span>
@@ -579,7 +620,7 @@ export default function SlidesPage() {
         {/* ============================================================ */}
         {/* SLIDE 7 -- Links                                             */}
         {/* ============================================================ */}
-        <Slide active={current === 6}>
+        <Slide direction={direction} active={current === 6}>
           {/* Decorative rings */}
           <svg
             className="absolute right-[5vw] bottom-[5vh] opacity-[0.04] hidden md:block"
