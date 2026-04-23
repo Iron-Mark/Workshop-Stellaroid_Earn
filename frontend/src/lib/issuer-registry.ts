@@ -1,6 +1,7 @@
-// Trusted issuer registry — frontend-only trust list.
-// Not on-chain attestation. Maintained by the Stellaroid Earn team.
-// v2 roadmap: migrate to signed Stellar domain TOML + on-chain attestation.
+// DEPRECATED: Display-only fallback for issuer names.
+// Trust source is the on-chain issuer registry — NOT this static map.
+// This file will be removed once all proof pages reliably hydrate from contract state.
+// Do NOT add new entries here. Register issuers on-chain via /issuer/register.
 
 export interface IssuerInfo {
   name: string;
