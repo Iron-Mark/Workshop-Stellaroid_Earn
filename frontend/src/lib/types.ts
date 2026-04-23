@@ -49,3 +49,25 @@ export type ProofMetadata = {
   skills: string[];
   evidence: ProofEvidenceLink[];
 };
+
+export type OpportunityStatus =
+  | "draft"
+  | "funded"
+  | "in_progress"
+  | "submitted"
+  | "approved"
+  | "released"
+  | "refunded"
+  | "cancelled";
+
+export type OpportunityRecord = {
+  id: number;
+  employer: string;
+  candidate: string;
+  certHash: string;
+  title: string;
+  amount: bigint;
+  status: OpportunityStatus;
+  milestoneCount: number;
+  currentMilestone: number;
+};

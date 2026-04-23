@@ -268,6 +268,58 @@ export function humanizeError(err: unknown): HumanError {
       };
     }
 
+    if (
+      message.includes("opportunity not found") ||
+      message.includes("#13")
+    ) {
+      return {
+        title: "Opportunity not found",
+        detail:
+          "No opportunity exists with that ID. It may not have been created yet.",
+        recoverable: true,
+      };
+    }
+
+    if (message.includes("already funded") || message.includes("#14")) {
+      return {
+        title: "Already funded",
+        detail:
+          "This opportunity has already been funded. You cannot fund it again.",
+        recoverable: false,
+      };
+    }
+
+    if (message.includes("invalid milestone") || message.includes("#15")) {
+      return {
+        title: "Invalid milestone",
+        detail:
+          "The milestone action is not valid for the current state of this opportunity.",
+        recoverable: true,
+      };
+    }
+
+    if (
+      message.includes("invalid opportunity") ||
+      message.includes("invalidopportunitystatus") ||
+      message.includes("#16")
+    ) {
+      return {
+        title: "Invalid opportunity state",
+        detail:
+          "That action is blocked by the opportunity's current status. Refresh and try again.",
+        recoverable: true,
+      };
+    }
+
+    if (message.includes("payment locked") || message.includes("#17")) {
+      return {
+        title: "Payment locked",
+        detail:
+          "Funds are locked in escrow and cannot be moved until the opportunity status allows it.",
+        recoverable: false,
+      };
+    }
+
     // Fallback
     return {
       title: "Transaction failed",
