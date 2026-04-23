@@ -344,6 +344,8 @@ https://github.com/user-attachments/assets/stellaroid-earn-demo.mp4
 
 Local copy: [`demo/stellaroid-earn-demo.mp4`](demo/stellaroid-earn-demo.mp4)
 
+**Demo Day slides:** [`/slides`](https://stellaroid-earn-demo.vercel.app/slides) (integrated into the app, arrow keys to navigate)
+
 ---
 
 ## User Validation
