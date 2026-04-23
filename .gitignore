@@ -45,3 +45,4 @@ proof-tech-details.png
 proof-verified-check.png
 *.wasm
 demo/video-frames/
+demo/seed-log.txt
