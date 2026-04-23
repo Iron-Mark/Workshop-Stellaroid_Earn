@@ -375,6 +375,242 @@ impl StellaroidEarn {
     pub fn get_certificate(env: Env, cert_hash: BytesN<32>) -> Option<Credential> {
         env.storage().persistent().get(&DataKey::Cert(cert_hash))
     }
+
+    /// Employer creates a paid trial opportunity linked to a verified credential.
+    /// The opportunity starts in Draft status — employer must fund it next.
+    pub fn create_opportunity(
+        env: Env,
+        employer: Address,
+        candidate: Address,
+        cert_hash: BytesN<32>,
+        title: String,
+        amount: i128,
+        milestone_count: u32,
+    ) -> Result<u64, Error> {
+        if amount <= 0 {
+            return Err(Error::InvalidAmount);
+        }
+        employer.require_auth();
+
+        let cert = load_credential(&env, &cert_hash)?;
+        ensure_not_expired(&env, &cert)?;
+        if cert.owner != candidate {
+            return Err(Error::Unauthorized);
+        }
+        match cert.status {
+            CredentialStatus::Verified => {}
+            CredentialStatus::Revoked => return Err(Error::CredentialRevoked),
+            CredentialStatus::Expired => return Err(Error::CredentialExpired),
+            _ => return Err(Error::InvalidStatus),
+        }
+
+        let id = next_opportunity_id(&env);
+        let opp = Opportunity {
+            id,
+            employer: employer.clone(),
+            candidate,
+            cert_hash,
+            title,
+            amount,
+            status: OpportunityStatus::Draft,
+            milestone_count: if milestone_count == 0 { 1 } else { milestone_count },
+            current_milestone: 0,
+        };
+        let key = DataKey::Opportunity(id);
+        env.storage().persistent().set(&key, &opp);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, TTL_THRESHOLD, TTL_EXTEND);
+        env.events()
+            .publish((symbol_short!("opp_crt"), employer), id);
+        Ok(id)
+    }
+
+    /// Employer funds the opportunity by transferring the escrowed amount to the contract.
+    pub fn fund_opportunity(env: Env, employer: Address, opp_id: u64) -> Result<(), Error> {
+        employer.require_auth();
+
+        let key = DataKey::Opportunity(opp_id);
+        let mut opp: Opportunity = env
+            .storage()
+            .persistent()
+            .get(&key)
+            .ok_or(Error::OpportunityNotFound)?;
+        if opp.employer != employer {
+            return Err(Error::Unauthorized);
+        }
+        if opp.status != OpportunityStatus::Draft {
+            return Err(Error::AlreadyFunded);
+        }
+
+        let token_addr: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::Token)
+            .ok_or(Error::NotInitialized)?;
+        token::Client::new(&env, &token_addr).transfer(
+            &employer,
+            &env.current_contract_address(),
+            &opp.amount,
+        );
+
+        opp.status = OpportunityStatus::Funded;
+        env.storage().persistent().set(&key, &opp);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, TTL_THRESHOLD, TTL_EXTEND);
+        env.events()
+            .publish((symbol_short!("opp_fund"), employer), opp_id);
+        Ok(())
+    }
+
+    /// Candidate marks the current milestone as submitted for employer review.
+    pub fn submit_milestone(env: Env, candidate: Address, opp_id: u64) -> Result<(), Error> {
+        candidate.require_auth();
+
+        let key = DataKey::Opportunity(opp_id);
+        let mut opp: Opportunity = env
+            .storage()
+            .persistent()
+            .get(&key)
+            .ok_or(Error::OpportunityNotFound)?;
+        if opp.candidate != candidate {
+            return Err(Error::Unauthorized);
+        }
+        match opp.status {
+            OpportunityStatus::Funded | OpportunityStatus::InProgress => {}
+            _ => return Err(Error::InvalidOpportunityStatus),
+        }
+
+        opp.status = OpportunityStatus::Submitted;
+        env.storage().persistent().set(&key, &opp);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, TTL_THRESHOLD, TTL_EXTEND);
+        env.events()
+            .publish((symbol_short!("mile_sub"), candidate), opp_id);
+        Ok(())
+    }
+
+    /// Employer approves the current milestone. If all milestones are done,
+    /// the opportunity moves to Approved (ready for release).
+    pub fn approve_milestone(env: Env, employer: Address, opp_id: u64) -> Result<(), Error> {
+        employer.require_auth();
+
+        let key = DataKey::Opportunity(opp_id);
+        let mut opp: Opportunity = env
+            .storage()
+            .persistent()
+            .get(&key)
+            .ok_or(Error::OpportunityNotFound)?;
+        if opp.employer != employer {
+            return Err(Error::Unauthorized);
+        }
+        if opp.status != OpportunityStatus::Submitted {
+            return Err(Error::InvalidOpportunityStatus);
+        }
+
+        opp.current_milestone += 1;
+        if opp.current_milestone >= opp.milestone_count {
+            opp.status = OpportunityStatus::Approved;
+        } else {
+            opp.status = OpportunityStatus::InProgress;
+        }
+        env.storage().persistent().set(&key, &opp);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, TTL_THRESHOLD, TTL_EXTEND);
+        env.events()
+            .publish((symbol_short!("mile_apr"), employer), opp_id);
+        Ok(())
+    }
+
+    /// Employer releases the escrowed funds to the candidate after final approval.
+    pub fn release_payment(env: Env, employer: Address, opp_id: u64) -> Result<(), Error> {
+        employer.require_auth();
+
+        let key = DataKey::Opportunity(opp_id);
+        let mut opp: Opportunity = env
+            .storage()
+            .persistent()
+            .get(&key)
+            .ok_or(Error::OpportunityNotFound)?;
+        if opp.employer != employer {
+            return Err(Error::Unauthorized);
+        }
+        if opp.status != OpportunityStatus::Approved {
+            return Err(Error::InvalidOpportunityStatus);
+        }
+
+        let token_addr: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::Token)
+            .ok_or(Error::NotInitialized)?;
+        token::Client::new(&env, &token_addr).transfer(
+            &env.current_contract_address(),
+            &opp.candidate,
+            &opp.amount,
+        );
+
+        opp.status = OpportunityStatus::Released;
+        env.storage().persistent().set(&key, &opp);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, TTL_THRESHOLD, TTL_EXTEND);
+        env.events().publish(
+            (symbol_short!("pay_rel"), employer),
+            opp_id,
+        );
+        Ok(())
+    }
+
+    /// Employer reclaims escrowed funds. Only allowed from Funded or InProgress status.
+    pub fn refund_opportunity(env: Env, employer: Address, opp_id: u64) -> Result<(), Error> {
+        employer.require_auth();
+
+        let key = DataKey::Opportunity(opp_id);
+        let mut opp: Opportunity = env
+            .storage()
+            .persistent()
+            .get(&key)
+            .ok_or(Error::OpportunityNotFound)?;
+        if opp.employer != employer {
+            return Err(Error::Unauthorized);
+        }
+        match opp.status {
+            OpportunityStatus::Funded | OpportunityStatus::InProgress => {}
+            _ => return Err(Error::InvalidOpportunityStatus),
+        }
+
+        let token_addr: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::Token)
+            .ok_or(Error::NotInitialized)?;
+        token::Client::new(&env, &token_addr).transfer(
+            &env.current_contract_address(),
+            &opp.employer,
+            &opp.amount,
+        );
+
+        opp.status = OpportunityStatus::Refunded;
+        env.storage().persistent().set(&key, &opp);
+        env.storage()
+            .persistent()
+            .extend_ttl(&key, TTL_THRESHOLD, TTL_EXTEND);
+        env.events().publish(
+            (symbol_short!("pay_ref"), employer),
+            opp_id,
+        );
+        Ok(())
+    }
+
+    pub fn get_opportunity(env: Env, opp_id: u64) -> Option<Opportunity> {
+        env.storage()
+            .persistent()
+            .get(&DataKey::Opportunity(opp_id))
+    }
 }
 
 fn get_admin(env: &Env) -> Result<Address, Error> {
@@ -461,6 +697,13 @@ fn status_error(status: &CredentialStatus) -> Error {
         CredentialStatus::Expired => Error::CredentialExpired,
         _ => Error::InvalidStatus,
     }
+}
+
+fn next_opportunity_id(env: &Env) -> u64 {
+    let key = DataKey::NextOpportunityId;
+    let id: u64 = env.storage().instance().get(&key).unwrap_or(0);
+    env.storage().instance().set(&key, &(id + 1));
+    id
 }
 
 #[cfg(test)]
