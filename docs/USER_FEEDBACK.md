@@ -64,7 +64,7 @@ After collecting user feedback, the following improvements were implemented:
 - Added contextual hint text below role tabs explaining each role's purpose
 - Hint only appears in fresh state (before any credential actions)
 
-**Commit:** <!-- TODO: fill after commit -->
+**Commit:** [`c1450bf`](https://github.com/Iron-Mark/Workshop-Stellaroid_Earn/commit/c1450bf)
 
 ---
 

@@ -328,7 +328,7 @@ After collecting feedback from testnet users, the following iteration was comple
 
 | Feedback | Improvement | Commit |
 |----------|-------------|--------|
-| Users confused about which role (Issuer vs Employer) to pick after connecting wallet | Added contextual role guidance hints below the persona toggle | <!-- TODO: fill after commit --> |
+| Users confused about which role (Issuer vs Employer) to pick after connecting wallet | Added contextual role guidance hints below the persona toggle | [`c1450bf`](https://github.com/Iron-Mark/Workshop-Stellaroid_Earn/commit/c1450bf) |
 
 ---
 
