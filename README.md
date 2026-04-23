@@ -19,6 +19,9 @@ Issue, verify, and pay graduates on Stellar testnet  - Soroban + Freighter, end-
 | **Tx evidence** | [init](https://stellar.expert/explorer/testnet/tx/5f949662b430b059b71c9541a971852c527f869b537e123d3f3fb154f93c2e57) · [register](https://stellar.expert/explorer/testnet/tx/277075bbe55fc111f8c7888d72aa974eba5d1f596fa64900c466714ea57e320f) · [verify](https://stellar.expert/explorer/testnet/tx/47ad9094dff1895b68819afeb9b94f30146454c9d2ab1d580347e53139f7c896) · [payment](https://stellar.expert/explorer/testnet/tx/9a60bd71b8f37e89893480bda31c23ebf6deb080e2eb8912d43cf4cba42ebc4b) |
 | **Source verified** | [Stellar Expert source validation](https://stellar.expert/explorer/testnet/contract/CA7P5EPYKC2IW4PCMAH6NRBLHH3WP7AN6WWC3QDRWO4HLE47FAGO6TET)  - WASM hash linked to [GitHub commit `71d2b03`](https://github.com/Iron-Mark/Workshop-Stellaroid_Earn/commit/71d2b032a7ca1da4e2b2e2d0186a940a17e542e0) |
 | **Submission** | Rise In · Stellar Smart Contract Bootcamp · Stellar PH Bootcamp 2026 |
+| **Result** | **Top 5 / 105 participants** · Score: 75.00 |
+
+![Top 5 - Stellar Bootcamp Prize Pool](images/bootcamp-top5.jpg)
 
 ---
 

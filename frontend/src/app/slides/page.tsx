@@ -194,7 +194,7 @@ export default function SlidesPage() {
             <line x1="5" y1="50" x2="95" y2="50" stroke="#f59e0b" strokeWidth="0.5" />
           </svg>
 
-          <Badge>Demo Day - Stellar PH Bootcamp 2026</Badge>
+          <Badge>Top 5 / 105 - Stellar PH Bootcamp 2026</Badge>
           <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
             <span className="text-primary">Stellaroid</span> Earn
           </h1>
@@ -523,14 +523,25 @@ export default function SlidesPage() {
         {/* SLIDE 6 -- Traction                                          */}
         {/* ============================================================ */}
         <Slide direction={direction} active={current === 5}>
-          <Badge>Traction</Badge>
+          <Badge variant="green">Top 5 / 105 Participants</Badge>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
-            User <span className="text-primary">validation</span>
+            User <span className="text-primary">validation</span> &amp; <span className="text-verified">results</span>
           </h2>
 
           {/* Stats */}
           <div className="flex flex-wrap gap-6 sm:gap-10 md:gap-14 my-6 w-full max-w-[85%]">
             {[
+              {
+                num: "#5",
+                label: "Rank / 105",
+                icon: (
+                  <>
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 9 7 12 7s5-3 7.5-3a2.5 2.5 0 0 1 0 5H18" />
+                    <path d="M18 9v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9" />
+                    <path d="M12 7v15" />
+                  </>
+                ),
+              },
               {
                 num: "30+",
                 label: "Testnet Users",
