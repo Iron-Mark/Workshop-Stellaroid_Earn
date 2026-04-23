@@ -66,6 +66,9 @@ function describeEvent(event: RpcEvent): RecentActivityItem | null {
 
   const detailByKind: Record<string, string> = {
     init: "Contract bootstrapped",
+    iss_reg: "Issuer registered",
+    iss_appr: "Issuer approved",
+    iss_susp: "Issuer suspended",
     cert_reg: hashHex ? `Proof ${hashHex.slice(0, 10)}… registered` : "Certificate registered",
     cert_ver: hashHex ? `Proof ${hashHex.slice(0, 10)}… verified` : "Certificate verified",
     reward:
@@ -80,6 +83,9 @@ function describeEvent(event: RpcEvent): RecentActivityItem | null {
 
   const labelByKind: Record<string, string> = {
     init: "Init",
+    iss_reg: "Issuer",
+    iss_appr: "Approved",
+    iss_susp: "Suspended",
     cert_reg: "Registered",
     cert_ver: "Verified",
     reward: "Reward",

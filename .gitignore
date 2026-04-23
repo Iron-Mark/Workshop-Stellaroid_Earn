@@ -17,6 +17,7 @@ next-env.d.ts
 # Testnet credentials (secret keys)
 testnet-accounts.json
 testnet-accounts-batch2.json
+admin-key.json
 
 # OS / editor
 .DS_Store
