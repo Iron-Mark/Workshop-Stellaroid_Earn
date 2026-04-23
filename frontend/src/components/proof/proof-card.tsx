@@ -12,6 +12,9 @@ import { ShareButtons } from "./share-buttons";
 import { ProofQrBlock } from "./proof-qr-block";
 import { HashReveal } from "@/components/ui/hash-reveal";
 import { CredentialMetadataPanel } from "./credential-metadata-panel";
+import { IssuerTrustCard } from "./issuer-trust-card";
+import { CredentialStatusTimeline } from "./credential-status-timeline";
+import { RecruiterCtaPanel } from "./recruiter-cta-panel";
 
 interface ProofCardProps {
   hash: string;
@@ -215,6 +218,9 @@ export function ProofCard({
                 </Badge>
               </div>
             ) : null}
+            {issuer && issuer.status !== "pending" ? (
+              <IssuerTrustCard issuer={issuer} />
+            ) : null}
           </section>
         ) : (
           <div className="flex flex-col items-center gap-1 text-sm text-text-muted border border-dashed border-border rounded-lg p-6 text-center">
@@ -242,6 +248,20 @@ export function ProofCard({
             </Link>
           </div>
         )}
+
+        {cert ? (
+          <div className="grid gap-4 sm:grid-cols-2 border-t border-border pt-4">
+            <CredentialStatusTimeline
+              status={cert.status}
+              issuedAt={cert.issuedAt}
+              verifiedAt={cert.verifiedAt}
+              expiresAt={cert.expiresAt}
+            />
+            {cert.status === "verified" ? (
+              <RecruiterCtaPanel hash={hash} candidateAddress={cert.owner} />
+            ) : null}
+          </div>
+        ) : null}
 
         {/* ③ How to verify */}
         {cert ? (
