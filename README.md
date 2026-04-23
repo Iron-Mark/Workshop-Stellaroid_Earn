@@ -318,7 +318,7 @@ stellaroid-earn/
 
 ### Feedback Collection
 
-- **Google Form:** [Stellaroid Earn — User Feedback Form](<!-- TODO: Replace with Google Form link -->)
+- **Google Form:** [Stellaroid Earn - User Feedback Form](https://docs.google.com/forms/d/e/1FAIpQLSftFt8grSRUPecRVQWSRROLA8DAUOn4T61CrZQHtPQaMTxaWw/viewform)
 - **Exported responses:** [`docs/user-feedback-responses.csv`](docs/user-feedback-responses.csv)
 - **Full feedback documentation:** [`docs/USER_FEEDBACK.md`](docs/USER_FEEDBACK.md)
 

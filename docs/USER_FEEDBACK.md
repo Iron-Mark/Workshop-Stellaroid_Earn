@@ -2,7 +2,7 @@
 
 ## Feedback Collection
 
-**Google Form:** [Stellaroid Earn — User Feedback Form](<!-- TODO: Replace with your Google Form link -->)
+**Google Form:** [Stellaroid Earn - User Feedback Form](https://docs.google.com/forms/d/e/1FAIpQLSftFt8grSRUPecRVQWSRROLA8DAUOn4T61CrZQHtPQaMTxaWw/viewform)
 
 Users were asked to:
 1. Connect their Freighter wallet to the Stellaroid Earn testnet demo
