@@ -69,6 +69,26 @@ fn register_certificate(
     );
 }
 
+fn create_and_fund_opportunity(
+    ctx: &Ctx<'_>,
+    employer: &Address,
+    candidate: &Address,
+    hash: &BytesN<32>,
+    amount: i128,
+) -> u64 {
+    let opp_id = ctx.client.create_opportunity(
+        employer,
+        candidate,
+        hash,
+        &text(&ctx.env, "Paid trial"),
+        &amount,
+        &2, // 2 milestones
+    );
+    ctx.token_admin.mint(employer, &amount);
+    ctx.client.fund_opportunity(employer, &opp_id);
+    opp_id
+}
+
 // T1 — Happy path: approved issuer registers + verifies, then admin rewards.
 #[test]
 fn t1_happy_path_with_approved_issuer() {
@@ -258,4 +278,153 @@ fn t6_issuer_events_emit() {
             (contract_id.clone(), (symbol_short!("iss_appr"),).into_val(e), issuer.into_val(e)),
         ]
     );
+}
+
+// T7 — Full opportunity lifecycle: create → fund → submit → approve → release.
+#[test]
+fn t7_opportunity_happy_path() {
+    let ctx = setup();
+    ctx.env.mock_all_auths();
+    ctx.client.init(&ctx.admin, &ctx.token_addr);
+
+    let issuer = Address::generate(&ctx.env);
+    let student = Address::generate(&ctx.env);
+    let employer = Address::generate(&ctx.env);
+    let hash = BytesN::from_array(&ctx.env, &[7u8; 32]);
+
+    register_issuer(&ctx, &issuer);
+    approve_issuer(&ctx, &issuer);
+    register_certificate(&ctx, &issuer, &student, &hash);
+    ctx.client.verify_certificate(&issuer, &hash);
+
+    let opp_id = create_and_fund_opportunity(&ctx, &employer, &student, &hash, 1_000);
+
+    let opp = ctx.client.get_opportunity(&opp_id).unwrap();
+    assert_eq!(opp.status, OpportunityStatus::Funded);
+    assert_eq!(opp.amount, 1_000);
+
+    // Milestone 1: submit + approve
+    ctx.client.submit_milestone(&student, &opp_id);
+    ctx.client.approve_milestone(&employer, &opp_id);
+    let opp = ctx.client.get_opportunity(&opp_id).unwrap();
+    assert_eq!(opp.status, OpportunityStatus::InProgress);
+    assert_eq!(opp.current_milestone, 1);
+
+    // Milestone 2 (final): submit + approve
+    ctx.client.submit_milestone(&student, &opp_id);
+    ctx.client.approve_milestone(&employer, &opp_id);
+    let opp = ctx.client.get_opportunity(&opp_id).unwrap();
+    assert_eq!(opp.status, OpportunityStatus::Approved);
+
+    // Release payment
+    ctx.client.release_payment(&employer, &opp_id);
+    let opp = ctx.client.get_opportunity(&opp_id).unwrap();
+    assert_eq!(opp.status, OpportunityStatus::Released);
+
+    let balance = token::Client::new(&ctx.env, &ctx.token_addr).balance(&student);
+    assert_eq!(balance, 1_000);
+}
+
+// T8 — Revoked credential cannot be used to create an opportunity.
+#[test]
+fn t8_revoked_credential_blocks_opportunity() {
+    let ctx = setup();
+    ctx.env.mock_all_auths();
+    ctx.client.init(&ctx.admin, &ctx.token_addr);
+
+    let issuer = Address::generate(&ctx.env);
+    let student = Address::generate(&ctx.env);
+    let employer = Address::generate(&ctx.env);
+    let hash = BytesN::from_array(&ctx.env, &[8u8; 32]);
+
+    register_issuer(&ctx, &issuer);
+    approve_issuer(&ctx, &issuer);
+    register_certificate(&ctx, &issuer, &student, &hash);
+    ctx.client.verify_certificate(&issuer, &hash);
+    ctx.client.revoke_certificate(&issuer, &hash);
+
+    let err = ctx
+        .client
+        .try_create_opportunity(
+            &employer,
+            &student,
+            &hash,
+            &text(&ctx.env, "Paid trial"),
+            &1_000,
+            &1,
+        )
+        .err()
+        .unwrap()
+        .unwrap();
+    assert_eq!(err, Error::CredentialRevoked);
+}
+
+// T9 — Employer can refund a funded opportunity.
+#[test]
+fn t9_refund_funded_opportunity() {
+    let ctx = setup();
+    ctx.env.mock_all_auths();
+    ctx.client.init(&ctx.admin, &ctx.token_addr);
+
+    let issuer = Address::generate(&ctx.env);
+    let student = Address::generate(&ctx.env);
+    let employer = Address::generate(&ctx.env);
+    let hash = BytesN::from_array(&ctx.env, &[9u8; 32]);
+
+    register_issuer(&ctx, &issuer);
+    approve_issuer(&ctx, &issuer);
+    register_certificate(&ctx, &issuer, &student, &hash);
+    ctx.client.verify_certificate(&issuer, &hash);
+
+    let opp_id = create_and_fund_opportunity(&ctx, &employer, &student, &hash, 500);
+
+    ctx.client.refund_opportunity(&employer, &opp_id);
+    let opp = ctx.client.get_opportunity(&opp_id).unwrap();
+    assert_eq!(opp.status, OpportunityStatus::Refunded);
+
+    let employer_balance = token::Client::new(&ctx.env, &ctx.token_addr).balance(&employer);
+    assert_eq!(employer_balance, 500);
+}
+
+// T10 — Cannot release payment from non-Approved status.
+#[test]
+fn t10_invalid_status_transitions_fail() {
+    let ctx = setup();
+    ctx.env.mock_all_auths();
+    ctx.client.init(&ctx.admin, &ctx.token_addr);
+
+    let issuer = Address::generate(&ctx.env);
+    let student = Address::generate(&ctx.env);
+    let employer = Address::generate(&ctx.env);
+    let hash = BytesN::from_array(&ctx.env, &[10u8; 32]);
+
+    register_issuer(&ctx, &issuer);
+    approve_issuer(&ctx, &issuer);
+    register_certificate(&ctx, &issuer, &student, &hash);
+    ctx.client.verify_certificate(&issuer, &hash);
+
+    let opp_id = create_and_fund_opportunity(&ctx, &employer, &student, &hash, 300);
+
+    // Cannot release directly from Funded (skipping milestones)
+    let err = ctx
+        .client
+        .try_release_payment(&employer, &opp_id)
+        .err()
+        .unwrap()
+        .unwrap();
+    assert_eq!(err, Error::InvalidOpportunityStatus);
+
+    // Cannot refund after approval
+    ctx.client.submit_milestone(&student, &opp_id);
+    ctx.client.approve_milestone(&employer, &opp_id);
+    ctx.client.submit_milestone(&student, &opp_id);
+    ctx.client.approve_milestone(&employer, &opp_id);
+
+    let err = ctx
+        .client
+        .try_refund_opportunity(&employer, &opp_id)
+        .err()
+        .unwrap()
+        .unwrap();
+    assert_eq!(err, Error::InvalidOpportunityStatus);
 }
