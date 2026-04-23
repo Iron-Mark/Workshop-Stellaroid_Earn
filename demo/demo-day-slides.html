@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stellaroid Earn - Demo Day</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; font-family: 'Inter', system-ui, sans-serif; background: #0a0e1a; color: #e2e8f0; }
+
+  .deck { height: 100vh; width: 100vw; position: relative; }
+  .slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 80px; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+  .slide.active { opacity: 1; pointer-events: auto; }
+
+  /* Background pattern */
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(245,158,11,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(124,58,237,0.06) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0e1a 0%, #0f1629 100%);
+  }
+  .slide > * { position: relative; z-index: 1; }
+
+  /* Typography */
+  h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
+  h2 { font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 16px; }
+  h3 { font-size: 1.4rem; font-weight: 600; color: #94a3b8; margin-bottom: 24px; }
+  p, li { font-size: 1.15rem; line-height: 1.7; color: #cbd5e1; }
+  .accent { color: #f59e0b; }
+  .purple { color: #a78bfa; }
+  .green { color: #34d399; }
+  .muted { color: #64748b; font-size: 0.9rem; }
+
+  /* Badge */
+  .badge { display: inline-block; padding: 6px 16px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
+  .badge-amber { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .badge-purple { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+
+  /* Cards grid */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 900px; margin-top: 20px; }
+  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px; }
+  .card h4 { font-size: 1rem; font-weight: 700; color: #f59e0b; margin-bottom: 8px; }
+  .card p { font-size: 0.9rem; color: #94a3b8; line-height: 1.5; }
+
+  /* Stats row */
+  .stats { display: flex; gap: 40px; margin: 30px 0; }
+  .stat { text-align: center; }
+  .stat .num { font-size: 2.8rem; font-weight: 800; color: #f59e0b; }
+  .stat .label { font-size: 0.85rem; color: #64748b; margin-top: 4px; }
+
+  /* List */
+  ul { list-style: none; max-width: 700px; }
+  ul li { padding: 8px 0; padding-left: 24px; position: relative; }
+  ul li::before { content: ''; position: absolute; left: 0; top: 16px; width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; }
+
+  /* Flow diagram */
+  .flow { display: flex; align-items: center; gap: 12px; margin: 24px 0; flex-wrap: wrap; }
+  .flow-step { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 8px; padding: 12px 20px; font-size: 0.95rem; font-weight: 600; color: #f59e0b; }
+  .flow-arrow { color: #475569; font-size: 1.2rem; }
+
+  /* Two column */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; max-width: 900px; }
+
+  /* Nav */
+  .nav { position: fixed; bottom: 30px; right: 40px; z-index: 100; display: flex; gap: 12px; }
+  .nav button { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-family: inherit; transition: background 0.2s; }
+  .nav button:hover { background: rgba(245,158,11,0.2); }
+  .counter { position: fixed; bottom: 36px; left: 40px; z-index: 100; color: #475569; font-size: 0.85rem; }
+
+  /* Align left */
+  .left { align-items: flex-start; text-align: left; }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Title -->
+  <div class="slide active" data-slide="0">
+    <span class="badge badge-amber">Demo Day - Stellar PH Bootcamp 2026</span>
+    <h1><span class="accent">Stellaroid</span> Earn</h1>
+    <h3>On-chain credential trust for Stellar testnet</h3>
+    <p>Issue, verify, and pay graduates - Soroban + Freighter, end-to-end.</p>
+    <br>
+    <p class="muted">Mark Siazon - Hybrid Product Designer & Full-Stack Developer</p>
+  </div>
+
+  <!-- Slide 2: Problem -->
+  <div class="slide left" data-slide="1">
+    <span class="badge badge-purple">The Problem</span>
+    <h2>Certificates are <span class="accent">easy to fake</span>, hard to verify</h2>
+    <ul>
+      <li>Bootcamp certificates are PDFs anyone can duplicate</li>
+      <li>Employers skip verification or pay for background checks</li>
+      <li>No standard way to prove completion on-chain</li>
+      <li>Payment to graduates is disconnected from verification</li>
+    </ul>
+  </div>
+
+  <!-- Slide 3: Solution -->
+  <div class="slide left" data-slide="2">
+    <span class="badge badge-amber">The Solution</span>
+    <h2>Anchor credentials <span class="accent">on Stellar</span></h2>
+    <div class="flow">
+      <div class="flow-step">Register</div>
+      <span class="flow-arrow">-></span>
+      <div class="flow-step">Verify</div>
+      <span class="flow-arrow">-></span>
+      <div class="flow-step">Pay</div>
+    </div>
+    <ul>
+      <li>Approved issuers register certificate hashes on Soroban</li>
+      <li>Anyone can verify with a URL - no wallet, no login, no API key</li>
+      <li>Employers pay graduates in XLM linked to the credential</li>
+      <li>Sub-cent fees + 5-second finality on Stellar testnet</li>
+    </ul>
+  </div>
+
+  <!-- Slide 4: Tech Stack & Architecture -->
+  <div class="slide left" data-slide="3">
+    <span class="badge badge-purple">Architecture</span>
+    <h2>How it's <span class="accent">built</span></h2>
+    <div class="cards">
+      <div class="card">
+        <h4>Smart Contract</h4>
+        <p>Soroban SDK 22, Rust, 12 functions, 6 tests, typed errors, source-verified on Stellar Expert</p>
+      </div>
+      <div class="card">
+        <h4>Frontend</h4>
+        <p>Next.js 15, React 19, Tailwind v4, Freighter wallet integration, bilingual (EN/TL)</p>
+      </div>
+      <div class="card">
+        <h4>Security</h4>
+        <p>CSP + HSTS + X-Frame-Options, input validation, error normalization, 31-item checklist</p>
+      </div>
+      <div class="card">
+        <h4>Advanced Feature</h4>
+        <p>Fee sponsorship (CAP-0015) - gasless transactions via server-side fee bump</p>
+      </div>
+      <div class="card">
+        <h4>Monitoring</h4>
+        <p>/api/health endpoint, /metrics dashboard, /api/events data indexing</p>
+      </div>
+      <div class="card">
+        <h4>Deployment</h4>
+        <p>Vercel (auto HTTPS, edge caching), contract on Stellar testnet, source verified</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Traction -->
+  <div class="slide" data-slide="4">
+    <span class="badge badge-amber">Traction</span>
+    <h2>User <span class="accent">validation</span></h2>
+    <div class="stats">
+      <div class="stat"><div class="num">30+</div><div class="label">Testnet Users</div></div>
+      <div class="stat"><div class="num">18</div><div class="label">Contract Interactions</div></div>
+      <div class="stat"><div class="num">210+</div><div class="label">Commits</div></div>
+      <div class="stat"><div class="num">4.2</div><div class="label">Avg Rating (5)</div></div>
+    </div>
+    <div class="two-col" style="max-width:700px">
+      <div>
+        <p style="font-weight:600; color:#34d399; margin-bottom:8px">What users liked</p>
+        <p style="font-size:0.9rem">Clean proof page, on-chain transparency, fast finality</p>
+      </div>
+      <div>
+        <p style="font-weight:600; color:#f87171; margin-bottom:8px">What we improved</p>
+        <p style="font-size:0.9rem">Added role guidance hints after "confusing toggle" feedback</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Live Demo -->
+  <div class="slide" data-slide="5">
+    <span class="badge badge-amber">Try It</span>
+    <h2>Live on <span class="accent">Stellar testnet</span></h2>
+    <br>
+    <div class="cards" style="grid-template-columns: 1fr 1fr; max-width: 600px;">
+      <div class="card" style="text-align:center">
+        <h4>Live Demo</h4>
+        <p>stellaroid-earn-demo.vercel.app</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <h4>GitHub</h4>
+        <p>Iron-Mark/Workshop-Stellaroid_Earn</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <h4>Contract</h4>
+        <p>CA7P5EPY...FAGO6TET</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <h4>Feedback Form</h4>
+        <p>Google Form (5+ responses)</p>
+      </div>
+    </div>
+    <br>
+    <p class="muted">Built by Mark Siazon for Stellar PH Bootcamp 2026 / Rise In</p>
+  </div>
+
+</div>
+
+<div class="counter" id="counter">1 / 6</div>
+<div class="nav">
+  <button onclick="navigate(-1)">< Prev</button>
+  <button onclick="navigate(1)">Next ></button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function show(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[n].classList.add('active');
+    document.getElementById('counter').textContent = (n + 1) + ' / ' + total;
+  }
+
+  function navigate(dir) {
+    current = Math.max(0, Math.min(total - 1, current + dir));
+    show(current);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+  });
+</script>
+</body>
+</html>
