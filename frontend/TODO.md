@@ -27,6 +27,19 @@ cd frontend && npm run dev
 
 Open http://localhost:3000 with [Freighter](https://www.freighter.app/) installed and set to **Testnet**.
 
+## Opportunity Layer (2026-04-24)
+
+- [x] `OpportunityStatus` + `OpportunityRecord` types in `types.ts`
+- [x] Opportunity error mappings (#13–#17) in `errors.ts`
+- [x] Opportunity client bindings in `contract-client.ts` (create/fund/submit/approve/release/refund/get)
+- [x] `getOpportunityServer` in `contract-read-server.ts`
+- [x] Proof subcomponents: `issuer-trust-card.tsx`, `credential-status-timeline.tsx`, `recruiter-cta-panel.tsx`
+- [x] `/employer` route with credential lookup + opportunity creation/funding
+- [x] `/opportunity/[id]` route with milestone stepper + role-based action controls
+- [x] `/talent/[address]` passport shell route
+- [x] Navigation links added (site-nav + site-footer)
+- [x] `issuer-registry.ts` marked as deprecated display-only fallback
+
 ## Nice-to-haves (out of scope for bootcamp submission)
 
 - [ ] Per-event detail modal on the Proof page (currently links to stellar.expert)

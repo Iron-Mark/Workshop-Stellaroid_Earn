@@ -47,7 +47,7 @@
 - [x] Add `CredentialStatus`
 - [x] Add `Issuer` struct
 - [x] Replace the old `Certificate` struct with a richer `Credential` struct
-- [ ] Add `NextOpportunityId` storage key
+- [x] Add `NextOpportunityId` storage key
 - [x] Add `Issuer(Address)` storage key
 - [x] Confirm TTL handling still applies to trust-critical records
 
@@ -142,10 +142,10 @@
 
 - [x] Add `IssuerStatus`
 - [x] Add `CredentialStatus`
-- [ ] Add `OpportunityStatus`
+- [x] Add `OpportunityStatus`
 - [x] Add `IssuerRecord`
 - [x] Add richer `CredentialRecord`
-- [ ] Add `OpportunityRecord`
+- [x] Add `OpportunityRecord`
 
 **Definition of done**
 - Shared types are imported instead of redefining status strings in multiple files
@@ -177,7 +177,7 @@
 
 - [x] Add `getIssuerServer`
 - [x] Add `getCredentialServer`
-- [ ] Add `getOpportunityServer` scaffold if contract methods exist
+- [x] Add `getOpportunityServer` scaffold if contract methods exist
 - [x] Share normalization helpers between client and server where practical
 
 **Definition of done**
@@ -246,10 +246,10 @@
 - `frontend/src/components/proof/credential-status-timeline.tsx`
 - `frontend/src/components/proof/recruiter-cta-panel.tsx`
 
-- [ ] Create issuer trust card
+- [x] Create issuer trust card
 - [x] Create metadata panel
-- [ ] Create status timeline
-- [ ] Create recruiter CTA panel
+- [x] Create status timeline
+- [x] Create recruiter CTA panel
 
 **Definition of done**
 - Proof page composition is modular, not one giant component
@@ -278,10 +278,10 @@
 **Files:**
 - `contract/src/lib.rs`
 
-- [ ] Add `OpportunityStatus`
-- [ ] Add `Opportunity` struct
-- [ ] Add `Opportunity(u64)` storage key usage
-- [ ] Add `NextOpportunityId` sequencing
+- [x] Add `OpportunityStatus`
+- [x] Add `Opportunity` struct
+- [x] Add `Opportunity(u64)` storage key usage
+- [x] Add `NextOpportunityId` sequencing
 
 **Definition of done**
 - Contract can store and retrieve opportunity records
@@ -293,14 +293,14 @@
 **Files:**
 - `contract/src/lib.rs`
 
-- [ ] Add `create_opportunity`
-- [ ] Add `fund_opportunity`
-- [ ] Add `submit_milestone`
-- [ ] Add `approve_milestone`
-- [ ] Add `release_payment`
-- [ ] Add `refund_opportunity`
-- [ ] Add `get_opportunity`
-- [ ] Emit opportunity lifecycle events
+- [x] Add `create_opportunity`
+- [x] Add `fund_opportunity`
+- [x] Add `submit_milestone`
+- [x] Add `approve_milestone`
+- [x] Add `release_payment`
+- [x] Add `refund_opportunity`
+- [x] Add `get_opportunity`
+- [x] Emit opportunity lifecycle events
 
 **Definition of done**
 - Full funded-trial lifecycle exists in contract form
@@ -312,12 +312,12 @@
 **Files:**
 - `contract/src/test.rs`
 
-- [ ] Test opportunity creation against valid credential
-- [ ] Test revoked/suspended credential cannot create opportunity
-- [ ] Test fund path
-- [ ] Test release path
-- [ ] Test refund path
-- [ ] Test invalid status transitions fail
+- [x] Test opportunity creation against valid credential
+- [x] Test revoked/suspended credential cannot create opportunity
+- [x] Test fund path
+- [x] Test release path
+- [x] Test refund path
+- [x] Test invalid status transitions fail
 
 **Definition of done**
 - Opportunity lifecycle is covered by tests
@@ -330,9 +330,9 @@
 - `frontend/src/lib/contract-client.ts`
 - `frontend/src/lib/contract-read-server.ts`
 
-- [ ] Add create/fund/submit/approve/release/refund bindings
-- [ ] Add opportunity normalization helpers
-- [ ] Add opportunity server read
+- [x] Add create/fund/submit/approve/release/refund bindings
+- [x] Add opportunity normalization helpers
+- [x] Add opportunity server read
 
 **Definition of done**
 - Frontend can fully drive the opportunity lifecycle
@@ -363,9 +363,9 @@
 **Files to create:**
 - `frontend/src/app/employer/page.tsx`
 
-- [ ] Create employer page
-- [ ] Add candidate lookup/search entry point
-- [ ] Add action to create/fund opportunity
+- [x] Create employer page
+- [x] Add candidate lookup/search entry point
+- [x] Add action to create/fund opportunity
 - [ ] Add shortlist-ready proof summary cards
 
 **Definition of done**
@@ -378,8 +378,8 @@
 **Files to create:**
 - `frontend/src/app/talent/[address]/page.tsx`
 
-- [ ] Create candidate passport page
-- [ ] Show credentials
+- [x] Create candidate passport page
+- [x] Show credentials
 - [ ] Show issuers
 - [ ] Show active/completed opportunities
 - [ ] Show released payments or activity
@@ -394,10 +394,10 @@
 **Files to create:**
 - `frontend/src/app/opportunity/[id]/page.tsx`
 
-- [ ] Create opportunity detail page
-- [ ] Show escrow state
-- [ ] Show milestone state
-- [ ] Show release/refund controls depending on role
+- [x] Create opportunity detail page
+- [x] Show escrow state
+- [x] Show milestone state
+- [x] Show release/refund controls depending on role
 
 **Definition of done**
 - Opportunity lifecycle can be demonstrated on a dedicated page
@@ -430,7 +430,7 @@
 
 - [ ] Create candidate search
 - [ ] Create shortlist display
-- [ ] Create opportunity funding form
+- [x] Create opportunity funding form
 
 ---
 
@@ -441,8 +441,8 @@
 - `frontend/src/components/talent/talent-credential-list.tsx`
 - `frontend/src/components/talent/talent-opportunity-history.tsx`
 
-- [ ] Create passport summary
-- [ ] Create credential list
+- [x] Create passport summary
+- [x] Create credential list
 - [ ] Create opportunity history
 
 ---
@@ -455,9 +455,9 @@
 - `frontend/src/components/opportunity/milestone-stepper.tsx`
 - `frontend/src/components/opportunity/opportunity-timeline.tsx`
 
-- [ ] Create opportunity card
-- [ ] Create funding form
-- [ ] Create milestone stepper
+- [x] Create opportunity card
+- [x] Create funding form
+- [x] Create milestone stepper
 - [ ] Create opportunity timeline
 
 ---
@@ -470,9 +470,9 @@
 - `frontend/src/lib/issuer-registry.ts`
 - proof/issuer UI files
 
-- [ ] Stop using the static registry as the source of trust
-- [ ] Keep it only for temporary display enrichment if needed
-- [ ] Ensure proof badges are based on on-chain issuer status
+- [x] Stop using the static registry as the source of trust
+- [x] Keep it only for temporary display enrichment if needed
+- [x] Ensure proof badges are based on on-chain issuer status
 
 **Definition of done**
 - Trust comes from contract state, not from a local hardcoded map
@@ -500,12 +500,12 @@
 - contract + frontend touched files
 
 - [ ] Run `cargo test`
-- [ ] Run `npm run build`
-- [ ] Verify proof route still works
-- [ ] Verify issuer route renders
-- [ ] Verify employer route renders
-- [ ] Verify opportunity route renders
-- [ ] Verify no raw error leaks in new flows
+- [x] Run `npm run build`
+- [x] Verify proof route still works
+- [x] Verify issuer route renders
+- [x] Verify employer route renders
+- [x] Verify opportunity route renders
+- [x] Verify no raw error leaks in new flows
 
 **Definition of done**
 - Contract and frontend both build and run with the upgraded model
@@ -532,6 +532,6 @@ If time runs short, stop after these:
 - [x] role-based verification
 - [x] credential revocation/suspension
 - [x] rich proof page
-- [ ] opportunity create/fund/release flow
+- [x] opportunity create/fund/release flow
 
 That is the minimum strong demo set.
