@@ -24,6 +24,8 @@ import type {
   CertificateStatus,
   IssuerRecord,
   IssuerStatus,
+  OpportunityRecord,
+  OpportunityStatus,
 } from "@/lib/types";
 
 const FALLBACK_SIMULATION_SOURCE =
@@ -581,6 +583,16 @@ function normalizeError(error: unknown): string {
     return "This credential has been revoked.";
   if (/#12\b|CredentialExpired/i.test(message))
     return "This credential has expired.";
+  if (/#13\b|OpportunityNotFound/i.test(message))
+    return "No opportunity found for that ID.";
+  if (/#14\b|AlreadyFunded/i.test(message))
+    return "This opportunity has already been funded.";
+  if (/#15\b|InvalidMilestone/i.test(message))
+    return "Invalid milestone action for the current state.";
+  if (/#16\b|InvalidOpportunityStatus/i.test(message))
+    return "This action is not allowed in the opportunity's current status.";
+  if (/#17\b|PaymentLocked/i.test(message))
+    return "Payment is locked in escrow.";
   return message;
 }
 
@@ -626,6 +638,55 @@ function normalizeCertificate(value: unknown): CertificateRecord | null {
     verifiedAt: normalizeTimestamp(record.verified_at),
     expiresAt: normalizeTimestamp(record.expires_at),
     verified: status === "verified",
+  };
+}
+
+function normalizeOpportunityStatus(value: unknown): OpportunityStatus {
+  const key = normalizeStatusKey(value);
+  switch (key) {
+    case "draft":
+    case "0":
+      return "draft";
+    case "funded":
+    case "1":
+      return "funded";
+    case "inprogress":
+    case "in_progress":
+    case "2":
+      return "in_progress";
+    case "submitted":
+    case "3":
+      return "submitted";
+    case "approved":
+    case "4":
+      return "approved";
+    case "released":
+    case "5":
+      return "released";
+    case "refunded":
+    case "6":
+      return "refunded";
+    case "cancelled":
+    case "7":
+      return "cancelled";
+    default:
+      return "draft";
+  }
+}
+
+function normalizeOpportunity(value: unknown): OpportunityRecord | null {
+  if (value == null) return null;
+  const record = value as Record<string, unknown>;
+  return {
+    id: Number(normalizeBigInt(record.id)),
+    employer: normalizeAddress(record.employer),
+    candidate: normalizeAddress(record.candidate),
+    certHash: normalizeString(record.cert_hash),
+    title: normalizeString(record.title),
+    amount: normalizeBigInt(record.amount),
+    status: normalizeOpportunityStatus(record.status),
+    milestoneCount: Number(normalizeBigInt(record.milestone_count)),
+    currentMilestone: Number(normalizeBigInt(record.current_milestone)),
   };
 }
 
@@ -801,6 +862,93 @@ export async function linkPayment(
       { value: hexToBytes32(certHashHex), type: "bytes32" },
       { value: amount, type: "i128" },
     ]),
+  );
+}
+
+export async function createOpportunity(
+  employer: string,
+  candidate: string,
+  certHashHex: string,
+  title: string,
+  amount: bigint,
+  milestoneCount: number,
+) {
+  return signAndSubmit(
+    employer,
+    "create_opportunity",
+    buildArgs([
+      { value: employer, type: "address" },
+      { value: candidate, type: "address" },
+      { value: hexToBytes32(certHashHex), type: "bytes32" },
+      { value: title, type: "string" },
+      { value: amount, type: "i128" },
+      { value: milestoneCount, type: "u32" },
+    ]),
+    (v) => Number(normalizeBigInt(v)),
+  );
+}
+
+export async function fundOpportunity(employer: string, oppId: number) {
+  return signAndSubmit(
+    employer,
+    "fund_opportunity",
+    buildArgs([
+      { value: employer, type: "address" },
+      { value: BigInt(oppId), type: "u32" },
+    ]),
+  );
+}
+
+export async function submitMilestone(candidate: string, oppId: number) {
+  return signAndSubmit(
+    candidate,
+    "submit_milestone",
+    buildArgs([
+      { value: candidate, type: "address" },
+      { value: BigInt(oppId), type: "u32" },
+    ]),
+  );
+}
+
+export async function approveMilestone(employer: string, oppId: number) {
+  return signAndSubmit(
+    employer,
+    "approve_milestone",
+    buildArgs([
+      { value: employer, type: "address" },
+      { value: BigInt(oppId), type: "u32" },
+    ]),
+  );
+}
+
+export async function releasePayment(employer: string, oppId: number) {
+  return signAndSubmit(
+    employer,
+    "release_payment",
+    buildArgs([
+      { value: employer, type: "address" },
+      { value: BigInt(oppId), type: "u32" },
+    ]),
+  );
+}
+
+export async function refundOpportunity(employer: string, oppId: number) {
+  return signAndSubmit(
+    employer,
+    "refund_opportunity",
+    buildArgs([
+      { value: employer, type: "address" },
+      { value: BigInt(oppId), type: "u32" },
+    ]),
+  );
+}
+
+export async function getOpportunity(oppId: number) {
+  return simulateRead(
+    getReadAddress(),
+    "get_opportunity",
+    buildArgs([{ value: BigInt(oppId), type: "u32" }]),
+    normalizeOpportunity,
   );
 }
 

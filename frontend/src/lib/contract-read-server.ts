@@ -17,6 +17,8 @@ import type {
   CertificateStatus,
   IssuerRecord,
   IssuerStatus,
+  OpportunityRecord,
+  OpportunityStatus,
 } from "@/lib/types";
 
 const FALLBACK_SIMULATION_SOURCE =
@@ -288,5 +290,87 @@ export async function getIssuerServer(issuer: string) {
 
     const rawScVal = xdr.ScVal.fromXDR(rawResultXdr, "base64");
     return normalizeIssuer(scValToNative(rawScVal));
+  }
+}
+
+function normalizeOpportunityStatus(value: unknown): OpportunityStatus {
+  const key = normalizeStatusKey(value);
+  switch (key) {
+    case "funded": case "1": return "funded";
+    case "inprogress": case "in_progress": case "2": return "in_progress";
+    case "submitted": case "3": return "submitted";
+    case "approved": case "4": return "approved";
+    case "released": case "5": return "released";
+    case "refunded": case "6": return "refunded";
+    case "cancelled": case "7": return "cancelled";
+    case "draft": case "0": default: return "draft";
+  }
+}
+
+function normalizeOpportunity(value: unknown): OpportunityRecord | null {
+  if (value == null) return null;
+  const record = value as Record<string, unknown>;
+  return {
+    id: normalizeTimestamp(record.id),
+    employer: normalizeAddress(record.employer),
+    candidate: normalizeAddress(record.candidate),
+    certHash: normalizeString(record.cert_hash),
+    title: normalizeString(record.title),
+    amount: BigInt(normalizeTimestamp(record.amount)),
+    status: normalizeOpportunityStatus(record.status),
+    milestoneCount: normalizeTimestamp(record.milestone_count),
+    currentMilestone: normalizeTimestamp(record.current_milestone),
+  };
+}
+
+export async function getOpportunityServer(oppId: number) {
+  ensureConfigured();
+  const server = getServer();
+  const sourceAccount = new Account(getSimulationSourceAddress(), "0");
+  const args = [nativeToScVal(oppId, { type: "u32" })];
+
+  const transaction = new TransactionBuilder(sourceAccount, {
+    fee: BASE_FEE,
+    networkPassphrase: getExpectedNetworkPassphrase(),
+  })
+    .addOperation(
+      Operation.invokeContractFunction({
+        contract: appConfig.contractId,
+        function: "get_opportunity",
+        args,
+      }),
+    )
+    .setTimeout(30)
+    .build();
+
+  try {
+    const simulation = await server.simulateTransaction(transaction);
+
+    if (rpc.Api.isSimulationError(simulation)) {
+      throw new Error(simulation.error);
+    }
+    if (!simulation.result?.retval) {
+      throw new Error("Simulation for get_opportunity returned no value.");
+    }
+
+    return normalizeOpportunity(scValToNative(simulation.result.retval));
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e);
+    if (!/Bad union switch/i.test(message)) {
+      throw e;
+    }
+
+    const rawSimulation = await server._simulateTransaction(transaction);
+    if (rawSimulation.error) {
+      throw new Error(rawSimulation.error);
+    }
+
+    const rawResultXdr = rawSimulation.results?.[0]?.xdr;
+    if (!rawResultXdr) {
+      throw new Error("Simulation for get_opportunity returned no value.");
+    }
+
+    const rawScVal = xdr.ScVal.fromXDR(rawResultXdr, "base64");
+    return normalizeOpportunity(scValToNative(rawScVal));
   }
 }
